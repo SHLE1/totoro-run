@@ -38,25 +38,79 @@ const handleScanned = async () => {
   }
 };
 </script>
+
+
+
 <template>
-  <p class="text-subtitle-1">
-    古典时代的人发现人体是权力的对象和目标。……这种人体是被操纵、被塑造、被规训的。它服从，配合，变得灵巧、强壮。“人是机器”这部大书是在两个领域被同时撰写的。
-  </p>
-  <p class="mt-2 text-end">—— 米歇尔·福柯《规训与惩罚》</p>
-  <VDivider class="my-4" />
-  <div class="flex flex-col gap-4">
-    <p class="text-body-1">请用微信扫码，扫码后点击“下一步”按钮</p>
-    <VCard :height="200" :width="200">
-      <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />
-      <div v-else class="h-100 w-100 flex items-center justify-center">
-        {{ message }}
+  <div class="page-container flex justify-center items-center">
+    <div class="scan-container">
+      <p class="text-center text-body-1">
+        请用微信扫码，扫码后点击“下一步”按钮<br />
+      </p>
+      <VCard class="qr-code-card">
+        <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />
+        <div v-else class="h-100 w-100 flex items-center justify-center">
+          {{ message }}
+        </div>
+      </VCard>
+      <div class="mt-4 flex justify-center">
+        <VBtn color="primary" append-icon="i-mdi-arrow-right" @click="handleScanned"> 下一步 </VBtn>
       </div>
-    </VCard>
-    <div class="mt-2 flex">
-      <VBtn color="primary" append-icon="i-mdi-arrow-right" @click="handleScanned"> 下一步 </VBtn>
     </div>
-    <div class="text-sm pre-wrap">
-      {{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}
+    
+    <div class="promo-container mt-8">
+      <div class="promo-text text-center text-h6 font-weight-bold">
+        ChatGPT，国内可用，低价直连：
+        <a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
+      </div>
+    </div>
+    
+    <div class="text-container mt-4">
+      <div class="text-sm pre-wrap text-center">
+        {{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.page-container {
+  padding: 16px;
+  flex-direction: column;
+}
+
+.scan-container {
+  text-align: center;
+}
+
+.qr-code-card {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.promo-container {
+  border: 1px solid #ccc; /* 边框样式 */
+  background-color: #f9f9f9; /* 背景色 */
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 340px; /* 最大宽度，根据需要调整 */
+  margin: 0 auto;
+}
+
+.promo-text {
+  font-size: 1.25rem; /* 增大字体大小 */
+  color: #333;
+}
+
+.promo-link {
+  color: #ff0000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.text-container {
+  max-width: 300px; /* 最大宽度，根据需要调整 */
+  margin: 0 auto;
+}
+</style>

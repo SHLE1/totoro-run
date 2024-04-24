@@ -2,10 +2,10 @@ version: '3.4'
 
 services:
   totoropara:
-    image: ghcr.io/beiyanyunyi/totoro-paradise:main
-    container_name: totoro-paradise
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    image: hypered1/longmao:latest
+    container_name: longmao
+    # build: # 注释掉 build 字段，因为我们不使用本地构建
+    #   context: .
+    #   dockerfile: Dockerfile
     ports:
       - 3000:3000

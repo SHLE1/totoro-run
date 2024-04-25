@@ -11,6 +11,7 @@ useHead({
 window.global = window;
 </script>
 
+<!---
 <style scoped>
   VApp {
     background-image: url('https://bingw.jasonzeng.dev/?index=random');
@@ -18,6 +19,7 @@ window.global = window;
     background-position: center;
   }
 </style>
+-->
 
 <template>
   <VApp>

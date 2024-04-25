@@ -10,6 +10,15 @@ useHead({
 <script lang="ts">
 window.global = window;
 </script>
+
+<style scoped>
+  VApp {
+    background-image: url('https://www.yangshangzhen.com/bing/wallpaper');
+    background-size: cover;
+    background-position: center;
+  }
+</style>
+
 <template>
   <VApp>
     <VAppBar color="primary">

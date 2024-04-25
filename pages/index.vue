@@ -44,7 +44,7 @@ const handleScanned = async () => {
 <template>
   <div class="page-container flex justify-center items-center">
     <div class="scan-container">
-      <p class="text-center text-body-1">
+      <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
       </p>
       <VCard class="qr-code-card">
@@ -88,6 +88,8 @@ const handleScanned = async () => {
 
 .scan-container {
   text-align: center;
+  margin-top: 20px;
+
 }
 
 .qr-code-card {
@@ -98,11 +100,13 @@ const handleScanned = async () => {
 
 .promo-container {
   border: 1px solid #ccc; /* 边框样式 */
-  background-color: #f9f9f9; /* 背景色 */
+  background-color: rgba(255, 255, 255, 0.7); /* 半透明背景 */
   padding: 10px;
   border-radius: 4px;
   max-width: 400px; /* 最大宽度，根据需要调整 */
   margin: 0 auto;
+  margin-top: -50px;
+  margin-bottom: 20px;
 }
 
 .promo-text {
@@ -118,12 +122,28 @@ const handleScanned = async () => {
 
 .text-container {
   border: 1px solid #ccc; /* 边框样式 */
+  padding: 15px; /* 内部填充 */
+  background-color: rgba(255, 255, 255, 0.7); /* 半透明背景 */
+  color: #333; /* 字体颜色 */
+  font-size: 16px; /* 字体大小 */
+  font-weight: bold; /* 字体粗细 */
+  border-radius: 5px; /* 边框圆角 */
+  font-family: 'Microsoft YaHei', 'SimSun', sans-serif; /* 字体 */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.scan-instruction {
+  border: 1px solid #ccc; /* 边框样式 */
   padding: 10px; /* 内部填充 */
   background-color: rgba(255, 255, 255, 0.7); /* 半透明背景 */
   color: #333; /* 字体颜色 */
   font-size: 16px; /* 字体大小 */
   font-weight: bold; /* 字体粗细 */
-  border-radius: 10px; /* 边框圆角 */
+  border-radius: 5px; /* 边框圆角 */
   font-family: 'Microsoft YaHei', 'SimSun', sans-serif; /* 字体 */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
+
 </style>

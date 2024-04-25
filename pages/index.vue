@@ -60,7 +60,7 @@ const handleScanned = async () => {
     
     <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
-        ChatGPT，国内可用，低价直连：
+        ChatGPT，国内可用，低价直连，注册免费体验：
         <a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
       </div>
     </div>
@@ -94,7 +94,7 @@ const handleScanned = async () => {
   background-color: #f9f9f9; /* 背景色 */
   padding: 10px;
   border-radius: 4px;
-  max-width: 340px; /* 最大宽度，根据需要调整 */
+  max-width: 400px; /* 最大宽度，根据需要调整 */
   margin: 0 auto;
 }
 
@@ -110,7 +110,7 @@ const handleScanned = async () => {
 }
 
 .text-container {
-  max-width: 300px; /* 最大宽度，根据需要调整 */
+  max-width: 320px; /* 最大宽度，根据需要调整 */
   margin: 0 auto;
 }
 </style>

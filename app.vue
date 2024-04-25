@@ -4,7 +4,7 @@
 const appConfig = useAppConfig();
 
 useHead({
-  title: '龙猫乐园'
+  title: '新时代龙猫'
 })
 </script>
 <script lang="ts">
@@ -13,7 +13,7 @@ window.global = window;
 <template>
   <VApp>
     <VAppBar color="primary">
-      <VAppBarTitle>龙猫乐园</VAppBarTitle>
+      <VAppBarTitle class="text-center">打破龙猫垄断！</VAppBarTitle>
       <template #append>
         <VAppBarNavIcon
           v-ripple icon="i-mdi-github" href="https://github.com/BeiyanYunyi/totoro-paradise"

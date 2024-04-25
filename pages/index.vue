@@ -85,7 +85,7 @@ const handleScanned = async () => {
   -o-background-size: cover;
   background-size: cover;
 }
-</style>
+
 
 .scan-container {
   text-align: center;

@@ -13,7 +13,7 @@ window.global = window;
 
 <style scoped>
   VApp {
-    background-image: url('https://www.yangshangzhen.com/bing/wallpaper');
+    background-image: url('https://bingw.jasonzeng.dev/?index=random');
     background-size: cover;
     background-position: center;
   }

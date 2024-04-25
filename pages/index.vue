@@ -117,7 +117,11 @@ const handleScanned = async () => {
 }
 
 .text-container {
-  max-width: 320px; /* 最大宽度，根据需要调整 */
-  margin: 0 auto;
+  border: 1px solid #ccc; /* 边框样式 */
+  padding-bottom: 10px; /* 底部填充 */
+  background-color: rgba(255, 255, 255, 0.7); /* 半透明背景 */
+  color: #333; /* 字体颜色 */
+  font-size: 16px; /* 字体大小 */
+  font-weight: bold; /* 字体粗细 */
 }
 </style>

@@ -79,19 +79,22 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   <VBtn v-if="!runned && !running" color="primary my-4" append-icon="i-mdi-run" @click="handleRun">
     确认开跑
   </VBtn>
-  <template v-if="running">
-    <div class="d-flex justify-space-between mt-4">
-      <span>{{ timePassed }}/{{ needTime }}</span>
-      <span>{{ Math.ceil((timePassed / needTime) * 100) }}%</span>
-    </div>
-    <VProgressLinear
-      v-if="timePassed && needTime"
-      color="primary"
-      :model-value="(timePassed / needTime) * 100"
-      class="mt-2"
-    />
-  </template>
-  <p v-if="runned" class="mt-4">
-    <b>跑步完成，去 App 里看记录吧</b>
-  </p>
+<template v-if="running">
+  <div class="d-flex justify-space-between mt-4">
+    <span>{{ timePassed }}/{{ needTime }}</span>
+    <span>{{ Math.ceil((timePassed / needTime) * 100) }}%</span>
+  </div>
+  <VProgressLinear
+    v-if="timePassed && needTime"
+    color="primary"
+    :model-value="(timePassed / needTime) * 100"
+    class="mt-2"
+  />
+</template>
+<p v-if="runned" class="mt-4">
+  <b>跑步完成，去 App 里看记录吧</b>
+</p>
+<p class="mt-4">
+  如果你觉得此项目对你有所帮助，就分享给你的朋友吧
+</p>
 </template>

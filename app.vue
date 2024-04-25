@@ -13,13 +13,15 @@ window.global = window;
 <template>
   <VApp>
     <VAppBar color="primary">
-      <VAppBarTitle class="text-center">打破龙猫垄断！</VAppBarTitle>
+      <VAppBarTitle class="text-center">打破龙猫垄断!实现龙猫自由!</VAppBarTitle>
+      <!-- 
       <template #append>
         <VAppBarNavIcon
           v-ripple icon="i-mdi-github" href="https://github.com/BeiyanYunyi/totoro-paradise"
           rel="noreferrer noopener" target="_blank"
         />
       </template>
+      -->
     </VAppBar>
     <VMain>
       <div class="p-4">

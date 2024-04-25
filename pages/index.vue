@@ -60,6 +60,9 @@ const handleScanned = async () => {
     
     <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
+      注册免费体验：单独的文字，不影响FFchat
+      </div>
+      <div class="promo-text text-center text-h6 font-weight-bold">
       ChatGPT，国内可用，低价直连：
       </div>
       <div class="promo-text text-center text-h6 font-weight-bold">

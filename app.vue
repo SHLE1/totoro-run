@@ -4,8 +4,15 @@
 const appConfig = useAppConfig();
 
 useHead({
-  title: '新时代龙猫'
-})
+  title: '龙猫森林奇遇记',
+  link: [
+    {
+      rel: 'icon',
+      href: '/机器猫.ico',
+      type: 'image/x-icon',
+    },
+  ],
+});
 </script>
 <script lang="ts">
 window.global = window;
@@ -24,7 +31,7 @@ window.global = window;
 <template>
   <VApp>
     <VAppBar color="primary">
-      <VAppBarTitle class="text-center">打破龙猫垄断!实现龙猫自由!</VAppBarTitle>
+      <VAppBarTitle class="text-center">致力于不浪费大学生宝贵的自由</VAppBarTitle>
       <!-- 
       <template #append>
         <VAppBarNavIcon
@@ -38,7 +45,7 @@ window.global = window;
       <div class="p-4">
         <NuxtPage />
         <p class="mt-4 text-xs">
-          Powered by totoro-paradise v{{ appConfig.version }}
+          Powered by Hypered1
         </p>
       </div>
     </VMain>

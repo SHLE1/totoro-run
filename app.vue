@@ -21,8 +21,8 @@ window.global = window;
 
 <template>
   <VApp>
-    <VAppBar color="primary" dense>
-      <VAppBarTitle class="text-center white--text headline">致力于不浪费大学生宝贵的自由</VAppBarTitle>
+    <VAppBar color="secondary" dark dense elevated>
+      <VAppBarTitle class="text-center white--text display-1">龙猫！启动！</VAppBarTitle>
     </VAppBar>
     <VMain>
       <div class="p-8">
@@ -36,10 +36,6 @@ window.global = window;
 </template>
 
 <style scoped>
-* {
-  font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
 .VAppBar {
   height: 80px;
 }

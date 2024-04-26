@@ -89,7 +89,7 @@ const handleScanned = async () => {
 .scan-container {
   text-align: center;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: -10px;
 }
 
 .qr-code-card {

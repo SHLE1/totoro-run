@@ -8,14 +8,23 @@ useHead({
   link: [
     {
       rel: 'icon',
-      href: '/机器猫.svg',
-      type: 'image/svg+xml',
+      href: '/机器猫-16x16.ico',
+      sizes: '16x16',
+      type: 'image/x-icon',
     },
     {
       rel: 'icon',
-      href: '/机器猫.ico',
+      href: '/机器猫-32x32.ico',
+      sizes: '32x32',
       type: 'image/x-icon',
     },
+    {
+      rel: 'icon',
+      href: '/机器猫-64x64.ico',
+      sizes: '64x64',
+      type: 'image/x-icon',
+    },
+    // 你可以添加更多的图标链接
   ],
 });
 

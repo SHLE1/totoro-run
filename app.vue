@@ -8,11 +8,17 @@ useHead({
   link: [
     {
       rel: 'icon',
+      href: '/机器猫.svg',
+      type: 'image/svg+xml',
+    },
+    {
+      rel: 'icon',
       href: '/机器猫.ico',
       type: 'image/x-icon',
     },
   ],
 });
+
 </script>
 <script lang="ts">
 window.global = window;

@@ -57,16 +57,16 @@ const handleScanned = async () => {
         <VBtn color="primary" append-icon="i-mdi-arrow-right" @click="handleScanned"> 下一步 </VBtn>
       </div>
     </div>
-    
- <div class="promo-container mt-8">
-  <div class="promo-text text-center text-h6 font-weight-bold">
-    ChatGPT，国内可用，低价直连：
-  </div>
-  <div class="promo-text text-center text-h6 font-weight-bold">
-    注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
-  </div>
-</div>
-    
+
+    <div class="promo-container mt-8">
+      <div class="promo-text text-center text-h6 font-weight-bold">
+        ChatGPT，国内可用，低价直连：
+      </div>
+      <div class="promo-text text-center text-h6 font-weight-bold">
+        注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
+      </div>
+    </div>
+
     <div class="text-container mt-4">
       <div class="text-sm pre-wrap text-center">
         {{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}
@@ -79,7 +79,7 @@ const handleScanned = async () => {
 .page-container {
   padding: 16px;
   flex-direction: column;
-  background: url('https://bingw.jasonzeng.dev/?index=random') no-repeat center center fixed; 
+  background: url('https://bingw.jasonzeng.dev/?index=random') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -99,18 +99,29 @@ const handleScanned = async () => {
 }
 
 .promo-container {
-  border: 1px solid #ccc; /* 边框样式 */
-  background-color: rgba(255, 255, 255, 0.7); /* 半透明背景 */
+  border: 1px solid #ccc;
+  /* 边框样式 */
+  background-color: rgba(255, 255, 255, 0.7);
+  /* 半透明背景 */
   padding: 10px;
   border-radius: 4px;
-  max-width: 400px; /* 最大宽度，根据需要调整 */
+  max-width: 400px;
+  /* 最大宽度，根据需要调整 */
   margin: 0 auto;
   margin-top: -50px;
   margin-bottom: 20px;
+  transition: transform 0.3s ease-in-out;
+  /* 添加过渡效果 */
+}
+
+.promo-container:hover {
+  transform: scale(1.05);
+  /* 鼠标悬停时放大元素 */
 }
 
 .promo-text {
-  font-size: 1.25rem; /* 增大字体大小 */
+  font-size: 1.25rem;
+  /* 增大字体大小 */
   color: #333;
 }
 
@@ -121,29 +132,44 @@ const handleScanned = async () => {
 }
 
 .text-container {
-  border: 1px solid #ccc; /* 边框样式 */
-  padding: 15px; /* 内部填充 */
-  background-color: rgba(255, 255, 255, 0.7); /* 半透明背景 */
-  color: #333; /* 字体颜色 */
-  font-size: 16px; /* 字体大小 */
-  font-weight: bold; /* 字体粗细 */
-  border-radius: 5px; /* 边框圆角 */
-  font-family: 'Microsoft YaHei', 'SimSun', sans-serif; /* 字体 */
+  border: 1px solid #ccc;
+  /* 边框样式 */
+  padding: 15px;
+  /* 内部填充 */
+  background-color: rgba(255, 255, 255, 0.7);
+  /* 半透明背景 */
+  color: #333;
+  /* 字体颜色 */
+  font-size: 16px;
+  /* 字体大小 */
+  font-weight: bold;
+  /* 字体粗细 */
+  border-radius: 5px;
+  /* 边框圆角 */
+  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+  /* 字体 */
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
 .scan-instruction {
-  border: 1px solid #ccc; /* 边框样式 */
-  padding: 10px; /* 内部填充 */
-  background-color: rgba(255, 255, 255, 0.7); /* 半透明背景 */
-  color: #333; /* 字体颜色 */
-  font-size: 16px; /* 字体大小 */
-  font-weight: bold; /* 字体粗细 */
-  border-radius: 5px; /* 边框圆角 */
-  font-family: 'Microsoft YaHei', 'SimSun', sans-serif; /* 字体 */
+  border: 1px solid #ccc;
+  /* 边框样式 */
+  padding: 10px;
+  /* 内部填充 */
+  background-color: rgba(255, 255, 255, 0.7);
+  /* 半透明背景 */
+  color: #333;
+  /* 字体颜色 */
+  font-size: 16px;
+  /* 字体大小 */
+  font-weight: bold;
+  /* 字体粗细 */
+  border-radius: 5px;
+  /* 边框圆角 */
+  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+  /* 字体 */
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
 </style>

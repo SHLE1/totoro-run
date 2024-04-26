@@ -21,8 +21,8 @@ window.global = window;
 
 <template>
   <VApp>
-    <VAppBar color="secondary" dark dense elevated>
-      <VAppBarTitle class="text-center white--text display-1">龙猫！启动！</VAppBarTitle>
+    <VAppBar color="primary" dense>
+      <VAppBarTitle class="text-center white--text headline">龙猫！启动</VAppBarTitle>
     </VAppBar>
     <VMain>
       <div class="p-8">

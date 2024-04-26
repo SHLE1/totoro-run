@@ -152,6 +152,11 @@ const handleScanned = async () => {
   margin-bottom: 20px;
 }
 
+.text-container:hover {
+  transform: scale(1.05);
+  /* 鼠标悬停时放大元素 */
+}
+
 .scan-instruction {
   border: 1px solid #ccc;
   /* 边框样式 */
@@ -171,5 +176,10 @@ const handleScanned = async () => {
   /* 字体 */
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.scan-instruction:hover {
+  transform: scale(1.05);
+  /* 鼠标悬停时放大元素 */
 }
 </style>

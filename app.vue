@@ -18,36 +18,42 @@ useHead({
 window.global = window;
 </script>
 
-<!---
-<style scoped>
-  VApp {
-    background-image: url('https://bingw.jasonzeng.dev/?index=random');
-    background-size: cover;
-    background-position: center;
-  }
-</style>
--->
 
 <template>
   <VApp>
-    <VAppBar color="primary">
-      <VAppBarTitle class="text-center">致力于不浪费大学生宝贵的自由</VAppBarTitle>
-      <!-- 
-      <template #append>
-        <VAppBarNavIcon
-          v-ripple icon="i-mdi-github" href="https://github.com/BeiyanYunyi/totoro-paradise"
-          rel="noreferrer noopener" target="_blank"
-        />
-      </template>
-      -->
+    <VAppBar color="primary" dense>
+      <VAppBarTitle class="text-center white--text headline">致力于不浪费大学生宝贵的自由</VAppBarTitle>
     </VAppBar>
     <VMain>
-      <div class="p-4">
+      <div class="p-8">
         <NuxtPage />
-        <p class="mt-4 text-xs">
+        <p class="mt-4 text-sm grey--text">
           Powered by Hypered1
         </p>
       </div>
     </VMain>
   </VApp>
 </template>
+
+<style scoped>
+* {
+  font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.VAppBar {
+  height: 80px;
+}
+
+.VAppBarTitle {
+  font-size: 24px;
+}
+
+.VMain {
+  margin: 20px;
+}
+
+p {
+  color: #888;
+  font-size: 14px;
+}
+</style>

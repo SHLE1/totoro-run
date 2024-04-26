@@ -54,7 +54,7 @@ const handleScanned = async () => {
         </div>
       </VCard>
       <div class="mt-4 flex justify-center">
-        <VBtn large color="primary" append-icon="i-mdi-arrow-right" @click="handleScanned"> 下一步 </VBtn>
+        <VBtn x-large color="primary" append-icon="i-mdi-arrow-right" @click="handleScanned"> 下一步 </VBtn>
       </div>
     </div>
 
@@ -89,7 +89,7 @@ const handleScanned = async () => {
 .scan-container {
   text-align: center;
   margin-top: 20px;
-
+  margin-bottom: 20px;
 }
 
 .qr-code-card {

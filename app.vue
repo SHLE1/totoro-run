@@ -21,35 +21,24 @@ window.global = window;
 
 <template>
   <VApp>
-    <VAppBar color="primary" dense>
-      <VAppBarTitle class="text-center white--text headline">龙猫！启动</VAppBarTitle>
+    <VAppBar color="primary">
+      <VAppBarTitle class="text-center">龙猫！启动！</VAppBarTitle>
+      <!-- 
+      <template #append>
+        <VAppBarNavIcon
+          v-ripple icon="i-mdi-github" href="https://github.com/BeiyanYunyi/totoro-paradise"
+          rel="noreferrer noopener" target="_blank"
+        />
+      </template>
+-->
     </VAppBar>
     <VMain>
-      <div class="p-8">
+      <div class="p-4">
         <NuxtPage />
-        <p class="mt-4 text-sm grey--text">
+        <p class="mt-4 text-xs">
           Powered by Hypered1
         </p>
       </div>
     </VMain>
   </VApp>
 </template>
-
-<style scoped>
-.VAppBar {
-  height: 80px;
-}
-
-.VAppBarTitle {
-  font-size: 24px;
-}
-
-.VMain {
-  margin: 20px;
-}
-
-p {
-  color: #888;
-  font-size: 14px;
-}
-</style>

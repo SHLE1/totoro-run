@@ -79,7 +79,7 @@ const handleScanned = async () => {
 .page-container {
   padding: 16px;
   flex-direction: column;
-  background: url('https://t.mwm.moe/ycy') no-repeat center center fixed;
+  background: url('https://t.mwm.moe/ysz') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

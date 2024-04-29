@@ -4,7 +4,7 @@
 const appConfig = useAppConfig();
 
 useHead({
-  title: '龙猫森林奇遇记',
+  title: '龙猫!启动!',
   link: [
     {
       rel: 'icon',
@@ -37,7 +37,7 @@ window.global = window;
 <template>
   <VApp>
     <VAppBar color="primary">
-      <VAppBarTitle class="text-center">龙猫！启动！</VAppBarTitle>
+      <VAppBarTitle class="text-center">让每个人都能感受到科技的乐趣</VAppBarTitle>
       <!-- 
       <template #append>
         <VAppBarNavIcon

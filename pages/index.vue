@@ -46,6 +46,7 @@ const handleScanned = async () => {
     <div class="scan-container">
       <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
+        你也可以使用：run1.aapl.top<br />
       </p>
       <VCard class="qr-code-card">
         <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />

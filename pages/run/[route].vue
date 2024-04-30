@@ -75,10 +75,13 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 <template>
   <p class="text-body-1">已选择路径 {{ target.pointName }}</p>
   <p class="text-body-1 mt-2">请再次确认是否开跑</p>
-  <p class="text-body-1 mt-2">跑步过程中请保持页面前台打开！不要退出！不要断网！</p>
-  <VBtn v-if="!runned && !running" color="primary my-4" append-icon="i-mdi-run" @click="handleRun">
-    确认开跑
-  </VBtn>
+  <p class="text-body-1 mt-2 warning-text">跑步过程中请保持页面前台打开！不要退出！不要断网！</p>
+  <div class="button-container">
+    <VBtn v-if="!runned && !running" class="button d-flex align-center" color="primary my-4" append-icon="i-mdi-run"
+      @click="handleRun">
+      确认开跑
+    </VBtn>
+  </div>
   <template v-if="running">
     <div class="d-flex justify-space-between mt-4">
       <span>{{ timePassed }}/{{ needTime }}</span>
@@ -94,3 +97,27 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
     如果你觉得此项目对你有所帮助，就分享给你的朋友吧
   </p>
 </template>
+
+<style scoped>
+.text-body-1,
+.mt-4,
+.d-flex,
+.button {
+  text-align: center;
+}
+
+.button {
+  width: 100px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.warning-text {
+  font-size: 30px;
+  color: red;
+  font-weight: bold;
+}
+</style>

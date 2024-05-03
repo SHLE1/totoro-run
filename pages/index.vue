@@ -1,3 +1,7 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 <script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
 
@@ -42,145 +46,43 @@ const handleScanned = async () => {
 
 
 <template>
-  <div class="page-container flex justify-center items-center">
-    <div class="scan-container">
-      <p class="text-center text-body-1 scan-instruction">
+  <div class="p-4 flex flex-col items-center justify-center bg-center bg-no-repeat bg-cover"
+    style="background-image: url('https://t.mwm.moe/ysz')">
+    <div class="text-center mt-5 mb-[-10px]">
+      <p
+        class="text-center text-lg font-bold p-2.5 bg-white bg-opacity-70 rounded text-gray-800 mt-5 mb-5 transform hover:scale-105 transition-transform duration-300">
         请用微信扫码，扫码后点击“下一步”按钮<br />
         你也可以使用：run1.aapl.top<br />
       </p>
-      <VCard class="qr-code-card">
-        <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />
-        <div v-else class="h-100 w-100 flex items-center justify-center">
+      <div class="w-50 h-50 mx-auto">
+        <img v-if="!message" :src="data!.imgUrl" class="w-full" referrerpolicy="no-referrer" />
+        <div v-else class="h-full w-full flex items-center justify-center">
           {{ message }}
         </div>
-      </VCard>
+      </div>
       <div class="mt-4 flex justify-center">
-        <VBtn x-large color="primary" append-icon="i-mdi-arrow-right" @click="handleScanned"> 下一步 </VBtn>
+        <button
+          class="px-8 py-3 bg-blue-500 text-white rounded-lg text-xl font-bold flex items-center justify-center transform hover:scale-105 transition-transform duration-300"
+          @click="handleScanned">
+          下一步
+          <i class="mdi mdi-arrow-right ml-2"></i>
+        </button>
       </div>
     </div>
 
-    <div class="promo-container mt-8">
-      <div class="promo-text text-center text-h6 font-weight-bold">
+    <div
+      class="border border-gray-300 bg-white bg-opacity-70 p-2.5 rounded max-w-md mx-auto mt-[-50px] mb-5 transform hover:scale-105 transition-transform duration-300">
+      <div class="text-center text-lg font-bold text-gray-800">
         ChatGPT，国内可用，低价直连：
       </div>
-      <div class="promo-text text-center text-h6 font-weight-bold">
-        注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
+      <div class="text-center text-lg font-bold text-gray-800">
+        注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="text-red-500 font-bold no-underline">FFchat</a>
       </div>
     </div>
 
-    <div class="text-container mt-4">
-      <div class="text-sm pre-wrap text-center">
-        {{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}
-      </div>
+    <div
+      class="border border-gray-300 p-3.75 bg-white bg-opacity-70 text-gray-800 text-lg font-bold rounded text-center mt-5 mb-5 transform hover:scale-105 transition-transform duration-300">
+      {{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}
     </div>
   </div>
 </template>
-
-<style scoped>
-.page-container {
-  padding: 16px;
-  flex-direction: column;
-  background: url('https://t.mwm.moe/ysz') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
-.scan-container {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: -10px;
-}
-
-.qr-code-card {
-  width: 200px;
-  height: 200px;
-  margin: 0 auto;
-}
-
-.promo-container {
-  border: 1px solid #ccc;
-  /* 边框样式 */
-  background-color: rgba(255, 255, 255, 0.7);
-  /* 半透明背景 */
-  padding: 10px;
-  border-radius: 4px;
-  max-width: 400px;
-  /* 最大宽度，根据需要调整 */
-  margin: 0 auto;
-  margin-top: -50px;
-  margin-bottom: 20px;
-  transition: transform 0.3s ease-in-out;
-  /* 添加过渡效果 */
-}
-
-.promo-container:hover {
-  transform: scale(1.05);
-  /* 鼠标悬停时放大元素 */
-}
-
-.promo-text {
-  font-size: 1.25rem;
-  /* 增大字体大小 */
-  color: #333;
-}
-
-.promo-link {
-  color: #ff0000;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.text-container {
-  border: 1px solid #ccc;
-  /* 边框样式 */
-  padding: 15px;
-  /* 内部填充 */
-  background-color: rgba(255, 255, 255, 0.7);
-  /* 半透明背景 */
-  color: #333;
-  /* 字体颜色 */
-  font-size: 16px;
-  /* 字体大小 */
-  font-weight: bold;
-  /* 字体粗细 */
-  border-radius: 5px;
-  /* 边框圆角 */
-  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
-  /* 字体 */
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.text-container:hover {
-  transform: scale(1.05);
-  /* 鼠标悬停时放大元素 */
-}
-
-.scan-instruction {
-  border: 1px solid #ccc;
-  /* 边框样式 */
-  padding: 10px;
-  /* 内部填充 */
-  background-color: rgba(255, 255, 255, 0.7);
-  /* 半透明背景 */
-  color: #333;
-  /* 字体颜色 */
-  font-size: 16px;
-  /* 字体大小 */
-  font-weight: bold;
-  /* 字体粗细 */
-  border-radius: 5px;
-  /* 边框圆角 */
-  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
-  /* 字体 */
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.scan-instruction:hover {
-  transform: scale(1.05);
-  /* 鼠标悬停时放大元素 */
-}
-</style>

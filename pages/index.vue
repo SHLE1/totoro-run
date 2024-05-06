@@ -46,7 +46,6 @@ const handleScanned = async () => {
     <div class="scan-container">
       <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
-        你也可以使用：run1.aapl.top<br />
       </p>
       <VCard class="qr-code-card">
         <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />
@@ -73,8 +72,33 @@ const handleScanned = async () => {
         {{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}
       </div>
     </div>
+
+    <!-- 鼠标特效 - 小星星拖尾 -->
+    <span class="js-cursor-container"></span>
   </div>
 </template>
+
+<script lang="ts">
+export default {
+  mounted() {
+    const yinghuaScript = document.createElement('script');
+    yinghuaScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/yinghua.js';
+    document.body.appendChild(yinghuaScript);
+
+    const aixinScript = document.createElement('script');
+    aixinScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/aixin.js';
+    document.body.appendChild(aixinScript);
+
+    const yanhuabowenScript = document.createElement('script');
+    yanhuabowenScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/yanhuabowen.js';
+    document.body.appendChild(yanhuabowenScript);
+
+    const xiaoxingxingScript = document.createElement('script');
+    xiaoxingxingScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/xiaoxingxing.js';
+    document.body.appendChild(xiaoxingxingScript);
+  }
+}
+</script>
 
 <style scoped>
 .page-container {

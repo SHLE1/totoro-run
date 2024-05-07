@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+
 // import '@unocss/reset/tailwind.css';
 
 const appConfig = useAppConfig();
@@ -28,6 +30,21 @@ useHead({
   ],
 });
 
+onMounted(() => {
+  const script1 = document.createElement('script');
+  script1.async = true;
+  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ';
+  document.head.appendChild(script1);
+
+  const script2 = document.createElement('script');
+  script2.textContent = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KEFCFSXRWJ');
+  `;
+  document.head.appendChild(script2);
+});
 </script>
 <script lang="ts">
 window.global = window;

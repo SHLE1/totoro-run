@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
+import { onMounted } from 'vue';
 
 const sunrunPaper = useSunRunPaper();
 const session = useSession();
@@ -19,6 +20,24 @@ watchEffect(() => {
 const handleUpdate = (target: string) => {
   selectValue.value = target;
 };
+
+onMounted(() => {
+  const script1 = document.createElement('script');
+  script1.async = true;
+  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ';
+  document.head.appendChild(script1);
+
+  const script2 = document.createElement('script');
+  script2.textContent = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KEFCFSXRWJ');
+  `;
+  document.head.appendChild(script2);
+});
+
+
 </script>
 <template>
   <p>请核对个人信息</p>
@@ -43,25 +62,13 @@ const handleUpdate = (target: string) => {
     </tbody>
   </VTable>
   <template v-if="data">
-    <VSelect
-      v-model="selectValue"
-      :items="data.runPointList"
-      item-title="pointName"
-      item-value="pointId"
-      variant="underlined"
-      label="路线"
-      class="mt-2"
-    />
+    <VSelect v-model="selectValue" :items="data.runPointList" item-title="pointName" item-value="pointId"
+      variant="underlined" label="路线" class="mt-2" />
     <div class="flex gap-4">
-      <VBtn
-        variant="outlined"
-        color="primary"
-        append-icon="i-mdi-gesture"
-        @click="
-          selectValue =
-            data!.runPointList[Math.floor(Math.random() * data!.runPointList.length)].pointId
-        "
-      >
+      <VBtn variant="outlined" color="primary" append-icon="i-mdi-gesture" @click="
+        selectValue =
+        data!.runPointList[Math.floor(Math.random() * data!.runPointList.length)].pointId
+        ">
         随机路线
       </VBtn>
       <NuxtLink v-if="selectValue" :to="`/run/${encodeURIComponent(selectValue)}`">

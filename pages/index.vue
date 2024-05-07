@@ -1,10 +1,27 @@
 <script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
+import { onMounted } from 'vue';
 
 const router = useRouter();
 const { data } = await useFetch<{ uuid: string; imgUrl: string }>('/api/scanQr');
 const message = ref('');
 const session = useSession();
+
+onMounted(() => {
+  const script1 = document.createElement('script');
+  script1.async = true;
+  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ';
+  document.head.appendChild(script1);
+
+  const script2 = document.createElement('script');
+  script2.textContent = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KEFCFSXRWJ');
+  `;
+  document.head.appendChild(script2);
+});
 
 const handleScanned = async () => {
   const scanRes = await $fetch(`/api/scanQr/${data!.value!.uuid}`);

@@ -140,25 +140,55 @@ export default {
   margin: 0 auto;
 }
 
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  25% {
+    background-position: 100% 0%;
+  }
+
+  50% {
+    background-position: 50% 100%;
+  }
+
+  75% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+
 .promo-container {
   border: 1px solid #ccc;
   /* 边框样式 */
   background-color: rgba(255, 255, 255, 0.7);
   /* 半透明背景 */
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 8px;
   max-width: 400px;
   /* 最大宽度，根据需要调整 */
   margin: 0 auto;
   margin-top: -50px;
   margin-bottom: 20px;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 1s ease-in-out;
   /* 添加过渡效果 */
+  /* 添加渐变背景 */
+  background: radial-gradient(circle, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  /* 调整动画的持续时间和速度曲线 */
+  animation: gradient 15s linear infinite;
 }
 
 .promo-container:hover {
-  transform: scale(1.05);
   /* 鼠标悬停时放大元素 */
+  transform: scale(1.05);
+  /* 添加阴影效果 */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .promo-text {
@@ -168,9 +198,17 @@ export default {
 }
 
 .promo-link {
-  color: #ff0000;
+  color: #013569;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 900;
+  /* 添加文字阴影 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  /* 调整背景色的透明度 */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* 添加一些内边距 */
+  padding: 5px;
+  /* 设置边框半径 */
+  border-radius: 15px;
 }
 
 .text-container {

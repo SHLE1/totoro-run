@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 
-// import '@unocss/reset/tailwind.css';
-
 const appConfig = useAppConfig();
 
 useHead({
@@ -53,16 +51,8 @@ window.global = window;
 
 <template>
   <VApp>
-    <VAppBar color="primary">
-      <VAppBarTitle class="text-center">让每个人都能感受到科技的乐趣</VAppBarTitle>
-      <!-- 
-      <template #append>
-        <VAppBarNavIcon
-          v-ripple icon="i-mdi-github" href="https://github.com/BeiyanYunyi/totoro-paradise"
-          rel="noreferrer noopener" target="_blank"
-        />
-      </template>
--->
+    <VAppBar class="gradient" elevation="3">
+      <VAppBarTitle class="text-center text-white">让每个人都能感受到科技的乐趣</VAppBarTitle>
     </VAppBar>
     <VMain>
       <div class="p-4">
@@ -74,3 +64,25 @@ window.global = window;
     </VMain>
   </VApp>
 </template>
+
+<style scoped>
+::v-deep .gradient {
+  background: linear-gradient(45deg, #1a95ed, #24c2de, #31d475);
+  background-size: 200% 200%;
+  animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>

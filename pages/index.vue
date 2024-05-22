@@ -87,7 +87,12 @@ const handleScanned = async () => {
     <div class="text-container mt-4">
       <div class="text-sm pre-wrap text-center">
         <!--{{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}-->
-        不点我的广告就去自己跑！
+        快点我的广告！<br>
+        不点我的广告就去自己跑！<br>
+        真的很好用！<br>
+        还能免费体验！<br>
+        还很便宜！<br>
+        真的！
       </div>
     </div>
 

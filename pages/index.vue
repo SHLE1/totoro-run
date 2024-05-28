@@ -84,15 +84,15 @@ const handleScanned = async () => {
       </div>
     </div>
 
-    <div class="text-container mt-4">
-      <div class="text-sm pre-wrap text-center">
+    <div class="promo-container mt-8">
+      <div class="promo-text text-center text-h6 font-weight-bold">
         <!--{{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}-->
-        快点我的广告！<br>
-        不点我的广告就去自己跑！<br>
-        真的很好用！<br>
-        还能免费体验！<br>
-        还很便宜！<br>
-        真的！
+        论文不想写？<br>
+        作业不会做？<br>
+        点击上方FFchat<br>
+        帮你解决学习难题！<br>
+        赶快点击试用吧！<br>
+        感谢！
       </div>
     </div>
 

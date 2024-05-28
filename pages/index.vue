@@ -87,12 +87,12 @@ const handleScanned = async () => {
     <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
         <!--{{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}-->
-        论文不想写？<br>
-        作业不会做？<br>
+        论文不想写?<br>
+        作业不会做?<br>
         点击上方FFchat<br>
-        帮你解决学习难题！<br>
-        赶快点击试用吧！<br>
-        感谢！
+        帮你解决学习难题<br>
+        赶快点击试用吧!<br>
+        感谢支持
       </div>
     </div>
 

@@ -172,22 +172,16 @@ export default {
 
 .promo-container {
   border: 1px solid #ccc;
-  /* 边框样式 */
   background-color: rgba(255, 255, 255, 0.7);
-  /* 半透明背景 */
   padding: 10px;
   border-radius: 8px;
   max-width: 400px;
-  /* 最大宽度，根据需要调整 */
   margin: 0 auto;
   margin-top: -50px;
   margin-bottom: 20px;
   transition: transform 1s ease-in-out;
-  /* 添加过渡效果 */
-  /* 添加渐变背景 */
-  background: radial-gradient(circle, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background: radial-gradient(circle, #a8d8ea, #aa96da, #a1e3d8, #fcbad3, #ffffd2);
   background-size: 400% 400%;
-  /* 调整动画的持续时间和速度曲线 */
   animation: gradient 15s linear infinite;
 }
 

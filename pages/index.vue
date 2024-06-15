@@ -63,7 +63,7 @@ const handleScanned = async () => {
     <div class="scan-container">
       <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
-        你也可以使用run1.aapl.top
+        一起为D哥的母亲哀悼一分钟
       </p>
       <VCard class="qr-code-card">
         <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />
@@ -76,26 +76,27 @@ const handleScanned = async () => {
       </div>
     </div>
 
-    <div class="promo-container mt-8">
+    <!-- <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
-        ChatGPT，国内可用，低价直连：
+      ChatGPT，国内可用，低价直连：
       </div>
       <div class="promo-text text-center text-h6 font-weight-bold">
-        注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
+      注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
       </div>
-    </div>
+    </div> -->
 
-    <div class="promo-container mt-8">
+
+    <!-- <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
-        <!--{{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}-->
-        论文不想写?<br>
-        作业不会做?<br>
-        点击上方FFchat<br>
-        帮你解决学习难题<br>
-        赶快点击试用吧!<br>
-        感谢支持
+      论文不想写?<br>
+      作业不会做?<br>
+      点击上方FFchat<br>
+      帮你解决学习难题<br>
+      赶快点击试用吧!<br>
+      感谢支持
       </div>
-    </div>
+    </div> -->
+
 
     <!-- 鼠标特效 - 小星星拖尾 -->
     <span class="js-cursor-container"></span>

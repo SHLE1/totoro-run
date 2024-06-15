@@ -89,7 +89,7 @@ const handleScanned = async () => {
     <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
         本项目完全开源<br>
-        衍生自GitHub"https://github.com/BeiyanYunyi/totoro-paradise"<br>
+        衍生自<a href="https://github.com/BeiyanYunyi/totoro-paradise" target="_blank">GitHub</a><br>
         如果你也想自行部署<br>
         请参照GitHub指引<br>
         或发邮件到service@aapl.top<br>

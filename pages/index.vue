@@ -86,16 +86,17 @@ const handleScanned = async () => {
     </div> -->
 
 
-    <!-- <div class="promo-container mt-8">
+    <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
-      论文不想写?<br>
-      作业不会做?<br>
-      点击上方FFchat<br>
-      帮你解决学习难题<br>
-      赶快点击试用吧!<br>
-      感谢支持
+        本项目完全开源<br>
+        衍生自GitHub"https://github.com/BeiyanYunyi/totoro-paradise"<br>
+        如果你也想自行部署<br>
+        请参照GitHub指引<br>
+        或发邮件到service@aapl.top<br>
+        我可以提供有偿支持<br>
+        向不合理收费说不!
       </div>
-    </div> -->
+    </div>
 
 
     <!-- 鼠标特效 - 小星星拖尾 -->

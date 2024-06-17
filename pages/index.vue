@@ -76,14 +76,14 @@ const handleScanned = async () => {
       </div>
     </div>
 
-    <!-- <div class="promo-container mt-8">
+    <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
-      ChatGPT，国内可用，低价直连：
+        ChatGPT，国内可用，低价直连：
       </div>
       <div class="promo-text text-center text-h6 font-weight-bold">
-      注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
+        注册免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
       </div>
-    </div> -->
+    </div>
 
 
     <div class="promo-container mt-8">

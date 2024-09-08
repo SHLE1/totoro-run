@@ -94,6 +94,9 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
     <b>跑步完成，去 App 里看记录吧</b>
   </p>
   <p class="mt-4">
+    AI聊天，GPT4，就在 <a href="https://chat.aigoo.xyz" target="_blank">FFchat</a>
+  </p>
+  <p class="mt-4">
     如果你觉得此项目对你有所帮助，就分享给你的朋友吧
   </p>
 </template>

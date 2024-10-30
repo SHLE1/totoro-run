@@ -63,7 +63,8 @@ const handleScanned = async () => {
     <div class="scan-container">
       <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
-        免费服务，能用就行
+        免费服务，能用就行，不能用多试试
+        实在不行就掏钱吧
       </p>
       <VCard class="qr-code-card">
         <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />

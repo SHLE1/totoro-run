@@ -126,13 +126,19 @@ export default {
 
 <style scoped>
 .page-container {
+  min-height: 100vh;
   padding: 16px;
   flex-direction: column;
   background: url('https://t.alcy.cc/ycy') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   background-size: cover;
+  position: fixed;
+  /* 添加固定定位 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  /* 添加滚动条 */
 }
 
 .scan-container {

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const router = useRouter();
 const { data } = await useFetch<{ uuid: string; imgUrl: string }>('/api/scanQr');
 const message = ref('');
 const session = useSession();
+const dialogVisible = ref(false);
 
 onMounted(() => {
   const script1 = document.createElement('script');
@@ -21,6 +22,8 @@ onMounted(() => {
     gtag('config', 'G-KEFCFSXRWJ');
   `;
   document.head.appendChild(script2);
+
+  dialogVisible.value = true;
 });
 
 const handleScanned = async () => {
@@ -63,7 +66,8 @@ const handleScanned = async () => {
     <div class="scan-container">
       <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
-        免费服务，能用就行，不能用多试试
+        免费服务，能用就行，不能用多试试<br />
+        为防止恶意滥用及攻击，我们启用了严格的并发限制，如果有人跟你同时使用，极有可能造成失败<br />
         实在不行就掏钱吧
       </p>
       <VCard class="qr-code-card">
@@ -101,6 +105,25 @@ const handleScanned = async () => {
     <!-- 鼠标特效 - 小星星拖尾 -->
     <span class="js-cursor-container"></span>
   </div>
+
+  <!-- 添加 Dialog 组件 -->
+  <el-dialog v-model="dialogVisible" title="提示" width="50%" :close-on-click-modal="false">
+    <div class="text-body-1">
+      请用微信扫码，扫码后点击"下一步"按钮<br />
+      免费服务，能用就行，不能用多试试<br />
+      为防止恶意滥用及攻击，我们启用了严格的并发限制<br />
+      如果有人跟你同时使用，极有可能造成失败<br />
+      或者是你运气好碰到我在更新<br />
+      实在不行就掏钱吧
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">
+          我知道了
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -215,7 +238,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.2);
   /* 添加一些内边距 */
   padding: 5px;
-  /* 设置边框半径 */
+  /* 设置边框��径 */
   border-radius: 15px;
 }
 

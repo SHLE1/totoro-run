@@ -23,6 +23,7 @@
     "cli-progress": "^3.12.0",
     "colors": "^1.4.0",
     "date-fns": "^2.30.0",
+    "element-plus": "^2.8.7",
     "ky": "^1.2.3",
     "md5": "^2.3.0",
     "minimist": "^1.2.8",

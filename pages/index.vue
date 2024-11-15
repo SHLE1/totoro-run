@@ -6,7 +6,13 @@ const router = useRouter();
 const { data } = await useFetch<{ uuid: string; imgUrl: string }>('/api/scanQr');
 const message = ref('');
 const session = useSession();
-const dialogVisible = ref(false);
+
+// 弹窗控制变量
+const showDialog = ref(true);
+
+const closeDialog = () => {
+  showDialog.value = false;
+};
 
 onMounted(() => {
   const script1 = document.createElement('script');
@@ -22,8 +28,6 @@ onMounted(() => {
     gtag('config', 'G-KEFCFSXRWJ');
   `;
   document.head.appendChild(script2);
-
-  dialogVisible.value = true;
 });
 
 const handleScanned = async () => {
@@ -63,11 +67,35 @@ const handleScanned = async () => {
 
 <template>
   <div class="page-container flex justify-center items-center">
+    <v-dialog v-model="showDialog" persistent max-width="560" :scrim="true">
+      <v-card class="dialog-card">
+        <v-card-item class="dialog-content">
+          <v-card-title class="dialog-title">
+            温馨提示
+          </v-card-title>
+          <v-card-text class="dialog-text">
+            <p class="primary-text">免费服务，能用就行，不能用多试试</p>
+            <p class="subtitle-text text-center">如果运行失败，可能是：</p>
+            <ul class="reason-list">
+              <li>为了防止滥用，我们限制并发<br>
+                所以如果有人在和你同时使用，可能只有一个会成功</li>
+              <li>你运气很好，刚好遇到我们的维护时间</li>
+            </ul>
+          </v-card-text>
+        </v-card-item>
+        <v-card-actions class="dialog-actions">
+          <v-btn color="primary" block @click="closeDialog" class="confirm-button">
+            <v-icon start icon="mdi-check-circle" class="mr-2"></v-icon>
+            我已阅读并知晓上述内容
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <div class="scan-container">
       <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
         免费服务，能用就行，不能用多试试<br />
-        为防止恶意滥用及攻击，我们启用了严格的并发限制，如果有人跟你同时使用，极有可能造成失败<br />
         实在不行就掏钱吧
       </p>
       <VCard class="qr-code-card">
@@ -105,25 +133,6 @@ const handleScanned = async () => {
     <!-- 鼠标特效 - 小星星拖尾 -->
     <span class="js-cursor-container"></span>
   </div>
-
-  <!-- 添加 Dialog 组件 -->
-  <el-dialog v-model="dialogVisible" title="提示" width="50%" :close-on-click-modal="false">
-    <div class="text-body-1">
-      请用微信扫码，扫码后点击"下一步"按钮<br />
-      免费服务，能用就行，不能用多试试<br />
-      为防止恶意滥用及攻击，我们启用了严格的并发限制<br />
-      如果有人跟你同时使用，极有可能造成失败<br />
-      或者是你运气好碰到我在更新<br />
-      实在不行就掏钱吧
-    </div>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">
-          我知道了
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -238,7 +247,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.2);
   /* 添加一些内边距 */
   padding: 5px;
-  /* 设置边框��径 */
+  /* 设置边框半径 */
   border-radius: 15px;
 }
 
@@ -293,4 +302,130 @@ export default {
   transform: scale(1.05);
   /* 鼠标悬停时放大元素 */
 }
+
+/* 添加按钮样式 */
+.text-button {
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  transition: transform 0.2s ease;
+}
+
+.text-button:hover {
+  transform: scale(1.05);
+}
+
+/* 其他样式保持不变 */
+
+/* 添加弹窗相关样式 */
+:deep(.v-dialog) {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 16px !important;
+}
+
+:deep(.dialog-card) {
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+:deep(.dialog-content) {
+  padding: 32px 40px 24px !important;
+}
+
+:deep(.dialog-title) {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  color: #333;
+  text-align: center;
+  margin-bottom: 24px !important;
+  line-height: 1.4;
+}
+
+:deep(.dialog-text) {
+  font-size: 1.1rem !important;
+  line-height: 1.8;
+  color: #555;
+}
+
+.primary-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #1976d2;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.subtitle-text {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+:deep(.reason-list) {
+  list-style: none;
+  padding-left: 0;
+  margin: 16px 0;
+}
+
+:deep(.reason-list li) {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+:deep(.reason-list li::before) {
+  content: "•";
+  position: absolute;
+  left: 8px;
+  color: #1976d2;
+  font-size: 1.2em;
+}
+
+:deep(.dialog-actions) {
+  padding: 0 40px 32px !important;
+}
+
+.confirm-button {
+  height: 48px !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  transition: transform 0.2s ease;
+}
+
+.confirm-button:hover {
+  transform: translateY(-2px);
+}
+
+/* 以下是渐变动画效果 */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+:deep(.dialog-card) {
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(240, 247, 255, 0.95)) !important;
+  background-size: 200% 200% !important;
+  animation: gradientBG 15s ease infinite;
+}
+
+/* 其他样式保持不变 */
 </style>

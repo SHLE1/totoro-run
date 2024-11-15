@@ -96,6 +96,7 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   <p class="mt-4">
     AI聊天，GPT4，就在 <a href="https://chat.aigoo.xyz" target="_blank">FFchat</a>
   </p>
+  <p class="mt-4">验明校友身份即可免费使用</p>
   <p class="mt-4">
     如果你觉得此项目对你有所帮助，就分享给你的朋友吧
   </p>

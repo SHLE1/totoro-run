@@ -52,15 +52,17 @@ window.global = window;
 <template>
   <VApp>
     <VAppBar class="custom-app-bar" elevation="0" :height="64">
-      <VAppBarTitle class="app-title text-center">
+      <!-- 左侧添加 VSpacer 实现标题居中 -->
+      <VSpacer></VSpacer>
+      <VAppBarTitle class="app-title">
         让每个人都能感受到科技的乐趣
       </VAppBarTitle>
       <VSpacer></VSpacer>
       <VBtn href="https://chat.aigoo.xyz" target="_blank" class="chat-btn" color="transparent">
-        <VAvatar size="32" class="mr-2">
+        <VAvatar size="32" class="mr-2 rounded-lg">
           <VImg
             src="https://p.sda1.dev/19/04a7d00040652fbcba52e4d67712e8aa/18D95B70-B36B-42E7-87F5-82D9D07BED0B_1_201_a.jpeg"
-            alt="FFchat" />
+            alt="FFchat" class="rounded-lg" />
         </VAvatar>
         <span class="chat-text">FFchat</span>
       </VBtn>
@@ -89,6 +91,11 @@ window.global = window;
   color: rgba(255, 255, 255, 0.95);
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .app-title:hover {
@@ -119,16 +126,24 @@ window.global = window;
 .chat-btn {
   margin-right: 16px;
   transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 6px 12px;
 }
 
 .chat-btn:hover {
   opacity: 0.9;
-  transform: scale(1.05);
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .chat-text {
   color: white;
   font-weight: 500;
   margin-left: 4px;
+}
+
+/* 添加圆角矩形样式 */
+.rounded-lg {
+  border-radius: 12px !important;
 }
 </style>

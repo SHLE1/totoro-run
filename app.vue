@@ -51,12 +51,10 @@ window.global = window;
 
 <template>
   <VApp>
-    <!-- 添加 absolute 和 floating 属性 -->
-    <VAppBar class="gradient" elevation="3" absolute floating>
+    <VAppBar class="gradient" elevation="3">
       <VAppBarTitle class="text-center text-white">让每个人都能感受到科技的乐趣</VAppBarTitle>
     </VAppBar>
-    <!-- 为了防止内容被导航栏遮挡，给 VMain 添加上边距 -->
-    <VMain style="padding-top: 64px;">
+    <VMain>
       <div class="p-4">
         <NuxtPage />
         <p class="mt-4 text-xs">
@@ -72,8 +70,6 @@ window.global = window;
   background: linear-gradient(45deg, #1a95ed, #24c2de, #31d475);
   background-size: 200% 200%;
   animation: gradient 5s ease infinite;
-  /* 可以添加一些阴影效果增强悬浮感 */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes gradient {

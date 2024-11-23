@@ -81,7 +81,6 @@ const handleScanned = async () => {
                 所以如果有人在和你同时使用，可能只有一个会成功</li>
               <li>你运气很好，刚好遇到我们的维护时间</li>
             </ul>
-            ChatGPT，访问 <a href="https://chat.aigoo.xyz" target="_blank">FFchat</a> 即刻体验<br />
           </v-card-text>
         </v-card-item>
         <v-card-actions class="dialog-actions">

@@ -74,7 +74,7 @@ const handleScanned = async () => {
             温馨提示
           </v-card-title>
           <v-card-text class="dialog-text">
-            <p class="primary-text">免费服务，能用就行，不能用多试试</p>
+            <p class="primary-text">免费服务，能用就行，不能用多试试，能用就多推广一下</p>
             <p class="subtitle-text text-center">如果运行失败，可能是：</p>
             <ul class="reason-list">
               <li>为了防止滥用，我们限制并发<br>

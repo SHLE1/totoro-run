@@ -109,17 +109,17 @@ const handleScanned = async () => {
       </div>
     </div>
 
-    <!--
+
     <div class="promo-container mt-8">
-          <div class="promo-text text-center text-h6 font-weight-bold">
-            如果此项目对你有所帮助<br>
-            ChatGPT，国内可用，低价直连
-          </div>
-          <div class="promo-text text-center text-h6 font-weight-bold">
-            点击免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
-          </div>
+      <div class="promo-text text-center text-h6 font-weight-bold">
+        如果此项目对你有所帮助<br>
+        ChatGPT，国内可用，低价直连
+      </div>
+      <div class="promo-text text-center text-h6 font-weight-bold">
+        点击免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
+      </div>
     </div>
-    -->
+
 
 
     <div class="promo-container mt-8">

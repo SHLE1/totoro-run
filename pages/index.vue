@@ -112,20 +112,12 @@ const handleScanned = async () => {
 
     <div class="promo-container mt-8">
       <div class="promo-text text-center text-h6 font-weight-bold">
-        如果此项目对你有所帮助<br>
-        ChatGPT，国内可用，低价直连
+        本项目完全公益，没有任何收费<br>
+        没有任何广告，因为插不了
       </div>
       <div class="promo-text text-center text-h6 font-weight-bold">
-        点击免费体验：<a href="https://chat.aigoo.xyz" target="_blank" class="promo-link">FFchat</a>
-      </div>
-    </div>
-
-
-
-    <div class="promo-container mt-8">
-      <div class="promo-text text-center text-h6 font-weight-bold">
-        本项目完全开源<br>
-        衍生自<a href="https://github.com/BeiyanYunyi/totoro-paradise" target="_blank">GitHub</a><br>
+        作者已经毕业，且用且珍惜<br>
+        有需求请到GitHub提issue
       </div>
     </div>
 

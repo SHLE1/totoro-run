@@ -58,6 +58,14 @@ window.global = window;
         让每个人都能感受到科技的乐趣
       </VAppBarTitle>
       <VSpacer></VSpacer>
+      <VBtn href="https://github.com/SHLE1/totoro-run" target="_blank" class="chat-btn" color="transparent">
+        <VAvatar size="32" class="mr-2 rounded-lg">
+          <VImg
+            src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
+            alt="Github" class="rounded-lg" />
+        </VAvatar>
+        <span class="chat-text">FFchat</span>
+      </VBtn>
     </VAppBar>
     <VMain>
       <div class="p-4">
@@ -65,15 +73,6 @@ window.global = window;
         <p class="mt-4 text-xs">
           Powered by Hypered1
         </p>
-        <div class="github-link mt-2">
-          <a href="https://github.com/SHLE1/totoro-run" target="_blank">
-            <svg role="img" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <title>GitHub</title>
-              <path d="M12,0.5A12,12,0,0,0,8.21,23.4c0.6,0.11,0.82-0.26,0.82-0.58,0-0.29-0.01-1.12-0.02-2.2-3.34,0.73-4.04-1.61-4.04-1.61-0.55-1.4-1.35-1.77-1.35-1.77-1.1-0.75,0.09-0.74,0.09-0.74,1.22,0.09,1.86,1.25,1.86,1.25,1.08,1.85,2.83,1.32,3.52,1.01,0.11-0.79,0.42-1.32,0.76-1.62-2.67-0.3-5.47-1.33-5.47-5.93,0-1.31,0.47-2.38,1.25-3.22-0.13-0.3-0.54-1.52,0.12-3.17,0-0.01,1.01-0.32,3.3,1.23a11.5,11.5,0,0,1,6,0c2.28-1.55,3.29-1.23,3.29-1.23,0.66,1.65,0.25,2.87,0.12,3.17,0.78,0.84,1.25,1.91,1.25,3.22,0,4.61-2.8,5.62-5.48,5.92,0.43,0.37,0.81,1.1,0.81,2.22,0,1.61-0.01,2.91-0.01,3.31,0,0.32,0.22,0.69,0.83,0.57A12,12,0,0,0,12,0.5Z" />
-            </svg>
-            totoro-run
-          </a>
-        </div>
       </div>
     </VMain>
   </VApp>
@@ -146,24 +145,5 @@ window.global = window;
 /* 添加圆角矩形样式 */
 .rounded-lg {
   border-radius: 12px !important;
-}
-
-.github-link {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  color: white;
-}
-
-.github-link a {
-  text-decoration: none;
-  color: white;
-  display: flex;
-  align-items: center;
-}
-
-.github-link svg {
-  margin-right: 4px;
 }
 </style>

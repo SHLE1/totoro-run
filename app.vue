@@ -64,7 +64,7 @@ window.global = window;
             src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
             alt="Github" class="rounded-lg" />
         </VAvatar>
-        <span class="chat-text">FFchat</span>
+        <span class="chat-text">Github</span>
       </VBtn>
     </VAppBar>
     <VMain>

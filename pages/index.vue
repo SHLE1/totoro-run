@@ -74,12 +74,12 @@ const handleScanned = async () => {
             温馨提示
           </v-card-title>
           <v-card-text class="dialog-text">
-            <p class="primary-text">免费服务，能用就行，不能用多试试，能用就多推广一下</p>
+            <p class="primary-text">免费服务，失败请重试，能用就多推广一下</p>
             <p class="subtitle-text text-center">如果运行失败，可能是：</p>
             <ul class="reason-list">
-              <li>为了防止滥用，我们限制并发<br>
+              <li>为了防止滥用，可能限制并发<br>
                 所以如果有人在和你同时使用，可能只有一个会成功</li>
-              <li>你运气很好，刚好遇到我们的维护时间</li>
+              <li>你运气很好，刚好遇到维护时间</li>
             </ul>
           </v-card-text>
         </v-card-item>
@@ -95,7 +95,6 @@ const handleScanned = async () => {
     <div class="scan-container">
       <p class="text-center text-body-1 scan-instruction">
         请用微信扫码，扫码后点击“下一步”按钮<br />
-        免费服务，能用就行，不能用多试试<br />
         积极传播，杜绝无良商家！
       </p>
       <VCard class="qr-code-card">
@@ -114,8 +113,7 @@ const handleScanned = async () => {
       <div class="promo-text text-center text-h6 font-weight-bold">
         本项目完全公益，没有任何收费<br>
         没有任何广告，因为插不了<br>
-        作者已经毕业，且用且珍惜<br>
-        有需求请到GitHub提issue
+        作者已经毕业，欢迎fork接手
       </div>
     </div>
 

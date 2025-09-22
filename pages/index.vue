@@ -113,7 +113,8 @@ const handleScanned = async () => {
       <div class="promo-text text-center text-h6 font-weight-bold">
         本项目完全公益，没有任何收费<br>
         没有任何广告，因为插不了<br>
-        作者已经毕业，欢迎fork接手
+        我已功德圆满，各位道友再见<br>
+        请前往 https://nuaaguide.online/ 获得更好的体验
       </div>
     </div>
 

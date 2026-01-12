@@ -53,7 +53,10 @@
       "has": "npm:@nolyfill/has@latest",
       "hasown": "npm:@nolyfill/hasown@latest",
       "isarray": "npm:@nolyfill/isarray@latest",
-      "side-channel": "npm:@nolyfill/side-channel@latest"
+      "side-channel": "npm:@nolyfill/side-channel@latest",
+      "cross-spawn": "^7.0.6",
+      "nanoid": "^5.1.5",
+      "undici": "^7.10.0"
     }
   }
 }

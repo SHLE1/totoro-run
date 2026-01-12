@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import generateRoute from '~/src/utils/generateRoute';
+import getCenter from '~/src/utils/getCenter';
 
 const props = defineProps<{ target: string }>();
 const emit = defineEmits<{ (e: 'update:target', target: string): void }>();

@@ -51,19 +51,20 @@ window.global = window;
 
 <template>
   <VApp>
-    <VAppBar class="custom-app-bar" elevation="0" :height="64">
+    <VAppBar class="custom-app-bar" elevation="0" :height="56">
       <VAppBarTitle class="app-title">
-        <span style="color: #1e3a5f !important;">让每个人都能感受到科技的乐趣</span>
+        <span>让每个人都能感受到科技的乐趣</span>
       </VAppBarTitle>
       <VSpacer></VSpacer>
-      <VBtn href="https://github.com/SHLE1/totoro-run" target="_blank" class="chat-btn" color="transparent">
-        <VAvatar size="32" class="mr-2 rounded-lg">
-          <VImg
-            src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-            alt="Github" class="rounded-lg" />
-        </VAvatar>
-        <span class="chat-text">Github</span>
-      </VBtn>
+      <div class="header-links">
+        <a href="https://github.com/SHLE1/totoro-run" target="_blank" class="header-link">
+          <span class="mdi mdi-github"></span> GitHub
+        </a>
+        <span class="link-divider">|</span>
+        <a href="https://nuaaguide.online/" target="_blank" class="header-link">
+          <span class="mdi mdi-school"></span> 校友项目
+        </a>
+      </div>
     </VAppBar>
     <VMain>
       <div class="p-4">
@@ -78,38 +79,39 @@ window.global = window;
 
 <style scoped>
 .custom-app-bar {
-  background: #3b82f6;
+  background: #ffffff !important;
+  border-bottom: 2px solid #3b82f6;
 }
 
 .app-title {
   font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.5px;
-  white-space: nowrap;
-  margin-left: 16px;
 }
 
 :deep(.app-title .v-toolbar-title__placeholder) {
-  color: #fff !important;
+  color: #1e3a5f !important;
 }
 
-.chat-btn {
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-right: 16px;
-  border-radius: 8px;
-  padding: 6px 12px;
 }
 
-.chat-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+.header-link {
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
 }
 
-.chat-text {
-  color: white;
-  font-weight: 500;
-  margin-left: 4px;
+.header-link:hover {
+  color: #3b82f6;
 }
 
-.rounded-lg {
-  border-radius: 8px !important;
+.link-divider {
+  color: #cbd5e1;
 }
 </style>

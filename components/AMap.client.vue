@@ -85,8 +85,8 @@ watch(
   async () => {
     if (!containerRef.value) return;
     const AMapLoaded = await AMapLoader.load({
-      key: 'af2315aca7fe4d6f21421402aa91a102', // 申请好的Web端开发者Key，首次调用 load 时必填
-      version: '2.0', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+      key: 'af2315aca7fe4d6f21421402aa91a102',
+      version: '1.4.15',
     });
     AMap.value = AMapLoaded;
     map.value = new AMap.value.Map(containerRef.value);

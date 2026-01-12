@@ -135,7 +135,7 @@ onMounted(() => {
         <p class="map-hint">地图中的路线仅为展示效果，不等于最终路线</p>
         <div class="map-container">
           <ClientOnly>
-            <AMap :target="selectValue" @update:target="handleUpdate" />
+            <TMap :target="selectValue" @update:target="handleUpdate" />
           </ClientOnly>
         </div>
       </div>

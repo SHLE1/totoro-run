@@ -151,15 +151,6 @@ const handleScanned = async () => {
           <span class="badge-icon">&#9889;</span>
           <span>完全免费 &bull; 开源项目</span>
         </div>
-        <div class="footer-links">
-          <a href="https://github.com/SHLE1/totoro-run" target="_blank" class="footer-link">
-            <span class="link-icon">&#128187;</span> GitHub
-          </a>
-          <span class="link-divider">|</span>
-          <a href="https://nuaaguide.online/" target="_blank" class="footer-link">
-            <span class="link-icon">&#128218;</span> 校友项目
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -354,40 +345,10 @@ export default {
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
-  margin-bottom: 16px;
 }
 
 .badge-icon {
   font-size: 1rem;
-}
-
-.footer-links {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.footer-link {
-  color: #64748b;
-  text-decoration: none;
-  font-size: 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: color 0.2s ease;
-}
-
-.footer-link:hover {
-  color: #3b82f6;
-}
-
-.link-icon {
-  font-size: 1rem;
-}
-
-.link-divider {
-  color: #cbd5e1;
 }
 
 /* 弹窗样式 */

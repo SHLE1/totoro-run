@@ -30,19 +30,20 @@ window.global = window;
 
 <template>
   <VApp>
-    <VAppBar class="custom-app-bar" elevation="0" :height="56">
-      <VAppBarTitle class="app-title">
-        <span>让每个人都能感受到科技的乐趣</span>
-      </VAppBarTitle>
-      <VSpacer></VSpacer>
-      <div class="header-links">
-        <a href="https://github.com/SHLE1/totoro-run" target="_blank" class="header-link">
-          <span class="mdi mdi-github"></span> GitHub
-        </a>
-        <span class="link-divider">|</span>
-        <a href="https://nuaaguide.online/" target="_blank" class="header-link">
-          <span class="mdi mdi-school"></span> 校友项目
-        </a>
+    <VAppBar class="custom-app-bar" elevation="0">
+      <div class="app-bar-content">
+        <VAppBarTitle class="app-title">
+          <span>让每个人都能感受到科技的乐趣</span>
+        </VAppBarTitle>
+        <div class="header-links">
+          <a href="https://github.com/SHLE1/totoro-run" target="_blank" class="header-link">
+            <span class="mdi mdi-github"></span> GitHub
+          </a>
+          <span class="link-divider">|</span>
+          <a href="https://nuaaguide.online/" target="_blank" class="header-link">
+            <span class="mdi mdi-school"></span> 校友项目
+          </a>
+        </div>
       </div>
     </VAppBar>
     <VMain>
@@ -60,6 +61,16 @@ window.global = window;
 .custom-app-bar {
   background: #ffffff !important;
   border-bottom: 2px solid #3b82f6;
+  height: auto !important;
+  min-height: 56px;
+}
+
+.app-bar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
 }
 
 .app-title {
@@ -76,7 +87,6 @@ window.global = window;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-right: 16px;
 }
 
 .header-link {
@@ -92,6 +102,24 @@ window.global = window;
 
 .link-divider {
   color: #cbd5e1;
+}
+
+@media (max-width: 480px) {
+  .app-bar-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .app-title {
+    font-size: 0.9rem;
+  }
+
+  :deep(.app-title .v-toolbar-title__placeholder) {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
 }
 </style>
 

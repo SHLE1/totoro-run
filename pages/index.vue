@@ -142,16 +142,13 @@ const handleScanned = async () => {
 <style scoped>
 .page-container {
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 16px;
   flex-direction: column;
   background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #f0f4f8 100%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* 鼠标跟随光圈 */
@@ -365,6 +362,11 @@ const handleScanned = async () => {
 
 /* 响应式 */
 @media (max-width: 480px) {
+  .hero-section {
+    padding-top: 40px;
+    margin-bottom: 16px;
+  }
+
   .hero-title {
     font-size: 1.5rem;
   }

@@ -52,10 +52,8 @@ window.global = window;
 <template>
   <VApp>
     <VAppBar class="custom-app-bar" elevation="0" :height="64">
-      <!-- 左侧添加 VSpacer 实现标题居中 -->
-      <VSpacer></VSpacer>
       <VAppBarTitle class="app-title">
-        让每个人都能感受到科技的乐趣
+        <span style="color: #1e3a5f !important;">让每个人都能感受到科技的乐趣</span>
       </VAppBarTitle>
       <VSpacer></VSpacer>
       <VBtn href="https://github.com/SHLE1/totoro-run" target="_blank" class="chat-btn" color="transparent">
@@ -80,59 +78,28 @@ window.global = window;
 
 <style scoped>
 .custom-app-bar {
-  background: linear-gradient(135deg, #59bbe9 0%, #2e4455 100%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: #3b82f6;
 }
 
 .app-title {
   font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.95);
   letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  text-align: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   white-space: nowrap;
+  margin-left: 16px;
 }
 
-.app-title:hover {
-  transform: scale(1.02);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-::v-deep .gradient {
-  background: linear-gradient(45deg, #1a95ed, #24c2de, #31d475);
-  background-size: 200% 200%;
-  animation: gradient 5s ease infinite;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+:deep(.app-title .v-toolbar-title__placeholder) {
+  color: #fff !important;
 }
 
 .chat-btn {
   margin-right: 16px;
-  transition: all 0.3s ease;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 6px 12px;
 }
 
 .chat-btn:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -142,8 +109,7 @@ window.global = window;
   margin-left: 4px;
 }
 
-/* 添加圆角矩形样式 */
 .rounded-lg {
-  border-radius: 12px !important;
+  border-radius: 8px !important;
 }
 </style>

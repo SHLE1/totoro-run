@@ -10,6 +10,15 @@ const session = useSession();
 // 弹窗控制变量
 const showDialog = ref(true);
 
+// 鼠标跟随光圈
+const mouseX = ref(0);
+const mouseY = ref(0);
+
+const handleMouseMove = (e: MouseEvent) => {
+  mouseX.value = e.clientX;
+  mouseY.value = e.clientY;
+};
+
 const closeDialog = () => {
   showDialog.value = false;
 };
@@ -66,91 +75,100 @@ const handleScanned = async () => {
 
 
 <template>
-  <div class="page-container flex justify-center items-center">
-    <v-dialog v-model="showDialog" persistent max-width="560" :scrim="true">
+  <div class="page-container flex justify-center items-center" @mousemove="handleMouseMove">
+    <!-- 鼠标跟随光圈 -->
+    <div
+      class="cursor-glow"
+      :style="{ left: mouseX + 'px', top: mouseY + 'px' }"
+    ></div>
+
+    <v-dialog v-model="showDialog" persistent max-width="420" :scrim="true">
       <v-card class="dialog-card">
-        <v-card-item class="dialog-content">
-          <v-card-title class="dialog-title">
-            温馨提示
-          </v-card-title>
-          <v-card-text class="dialog-text">
-            <p class="primary-text">免费服务，失败请重试，能用就多推广一下</p>
-            <p class="subtitle-text text-center">如果运行失败，可能是：</p>
-            <ul class="reason-list">
-              <li>为了防止滥用，可能限制并发<br>
-                所以如果有人在和你同时使用，可能只有一个会成功</li>
-              <li>你运气很好，刚好遇到维护时间</li>
-            </ul>
-          </v-card-text>
-        </v-card-item>
+        <v-card-title class="dialog-title">
+          <span class="dialog-icon">&#128075;</span> 欢迎使用
+        </v-card-title>
+        <v-card-text class="dialog-text">
+          <p>这是一个<strong>完全免费</strong>的公益项目。</p>
+          <p class="mt-2 text-hint">如遇失败请稍后重试，可能是服务器繁忙或正在维护。</p>
+        </v-card-text>
         <v-card-actions class="dialog-actions">
-          <v-btn color="primary" block @click="closeDialog" class="confirm-button">
-            <v-icon start icon="mdi-check-circle" class="mr-2"></v-icon>
-            我已阅读并知晓上述内容
+          <v-btn color="primary" block variant="flat" @click="closeDialog">
+            开始使用
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <div class="scan-container">
-      <p class="text-center text-body-1 scan-instruction">
-        请用微信扫码，扫码后点击“下一步”按钮<br />
-        积极传播，杜绝无良商家！
-      </p>
-      <VCard class="qr-code-card">
-        <img v-if="!message" :src="data!.imgUrl" class="w-100" referrerpolicy="no-referrer" />
-        <div v-else class="h-100 w-100 flex items-center justify-center">
-          {{ message }}
+    <div class="main-content">
+      <!-- 标题区域 -->
+      <div class="hero-section">
+        <h1 class="hero-title">龙猫校园助手</h1>
+        <p class="hero-subtitle">简单三步，轻松完成校园跑</p>
+      </div>
+
+      <!-- 扫码区域 -->
+      <div class="scan-section">
+        <div class="step-indicator">
+          <div class="step active">
+            <span class="step-num">1</span>
+            <span class="step-text">扫码</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <span class="step-text">确认</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <span class="step-text">完成</span>
+          </div>
         </div>
-      </VCard>
-      <div class="mt-4 flex justify-center">
-        <VBtn x-large color="primary" append-icon="i-mdi-arrow-right" @click="handleScanned"> 下一步 </VBtn>
+
+        <VCard class="qr-code-card" elevation="4">
+          <img v-if="!message" :src="data!.imgUrl" class="qr-image" referrerpolicy="no-referrer" />
+          <div v-else class="qr-message">
+            {{ message }}
+          </div>
+        </VCard>
+
+        <p class="scan-hint">请使用<strong>微信</strong>扫描上方二维码</p>
+
+        <VBtn
+          size="large"
+          color="primary"
+          class="next-btn"
+          append-icon="i-mdi-arrow-right"
+          @click="handleScanned"
+        >
+          扫码完成，下一步
+        </VBtn>
+      </div>
+
+      <!-- 底部信息 -->
+      <div class="footer-section">
+        <div class="footer-badge">
+          <span class="badge-icon">&#9889;</span>
+          <span>完全免费 &bull; 开源项目</span>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/SHLE1/totoro-run" target="_blank" class="footer-link">
+            <span class="link-icon">&#128187;</span> GitHub
+          </a>
+          <span class="link-divider">|</span>
+          <a href="https://nuaaguide.online/" target="_blank" class="footer-link">
+            <span class="link-icon">&#128218;</span> 校友项目
+          </a>
+        </div>
       </div>
     </div>
-
-
-<div class="promo-container mt-8">
-      <div class="promo-text text-center text-h6 font-weight-bold">
-        本项目完全公益，没有任何收费<br>
-        没有任何广告，因为插不了<br>
-        我已功德圆满，各位道友再见<br>
-        请前往 https://nuaaguide.online/ 获得更好的体验
-      </div>
-    </div>
-
-
-
-    <div class="promo-container mt-8">
-      <div class="promo-text text-center text-h6 font-weight-bold">
-        本项目完全开源<br>
-        衍生自<a href="https://github.com/BeiyanYunyi/totoro-paradise" target="_blank">GitHub</a><br>
-      </div>
-    </div>
-
-
-    <!-- 鼠标特效 - 小星星拖尾 -->
-    <span class="js-cursor-container"></span>
   </div>
 </template>
 
 <script lang="ts">
 export default {
   mounted() {
-    const yinghuaScript = document.createElement('script');
-    yinghuaScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/yinghua.js';
-    document.body.appendChild(yinghuaScript);
-
-    const aixinScript = document.createElement('script');
-    aixinScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/aixin.js';
-    document.body.appendChild(aixinScript);
-
-    const yanhuabowenScript = document.createElement('script');
-    yanhuabowenScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/yanhuabowen.js';
-    document.body.appendChild(yanhuabowenScript);
-
-    const xiaoxingxingScript = document.createElement('script');
-    xiaoxingxingScript.src = 'https://cdn.jsdelivr.net/gh/mocchen/cssmeihua/js/xiaoxingxing.js';
-    document.body.appendChild(xiaoxingxingScript);
+    // 特效已移除，保持简洁
   }
 }
 </script>
@@ -160,270 +178,270 @@ export default {
   min-height: 100vh;
   padding: 16px;
   flex-direction: column;
-  background: url('https://t.alcy.cc/ycy') no-repeat center center fixed;
-  background-size: cover;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #f0f4f8 100%);
   position: fixed;
-  /* 添加固定定位 */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   overflow-y: auto;
-  /* 添加滚动条 */
+  overflow-x: hidden;
 }
 
-.scan-container {
+/* 鼠标跟随光圈 */
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 40%, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  transition: left 0.1s ease-out, top 0.1s ease-out;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* 标题区域 */
+.hero-section {
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: -10px;
+  margin-bottom: 20px;
+  padding-top: 64px;
+}
+
+.hero-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* 步骤指示器 */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  gap: 8px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.step.active .step-num {
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.step-text {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.step.active .step-text {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.step-line {
+  width: 40px;
+  height: 2px;
+  background: #e2e8f0;
+  margin-bottom: 18px;
+}
+
+/* 扫码区域 */
+.scan-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
 }
 
 .qr-code-card {
   width: 200px;
   height: 200px;
   margin: 0 auto;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  25% {
-    background-position: 100% 0%;
-  }
-
-  50% {
-    background-position: 50% 100%;
-  }
-
-  75% {
-    background-position: 0% 0%;
-  }
-
-  100% {
-    background-position: 100% 50%;
-  }
-}
-
-
-.promo-container {
-  border: 1px solid #ccc;
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 10px;
-  border-radius: 8px;
-  max-width: 400px;
-  margin: 0 auto;
-  margin-top: -50px;
-  margin-bottom: 20px;
-  transition: transform 1s ease-in-out;
-  background: radial-gradient(circle, #a8d8ea, #aa96da, #a1e3d8, #fcbad3, #ffffd2);
-  background-size: 400% 400%;
-  animation: gradient 15s linear infinite;
-}
-
-.promo-container:hover {
-  /* 鼠标悬停时放大元素 */
-  transform: scale(1.05);
-  /* 添加阴影效果 */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-.promo-text {
-  font-size: 1.25rem;
-  /* 增大字体大小 */
-  color: #333;
-}
-
-.promo-link {
-  color: #013569;
-  text-decoration: none;
-  font-weight: 900;
-  /* 添加文字阴影 */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  /* 调整背景色的透明度 */
-  background-color: rgba(255, 255, 255, 0.2);
-  /* 添加一些内边距 */
-  padding: 5px;
-  /* 设置边框半径 */
-  border-radius: 15px;
-}
-
-.text-container {
-  border: 1px solid #ccc;
-  /* 边框样式 */
-  padding: 15px;
-  /* 内部填充 */
-  background-color: rgba(255, 255, 255, 0.7);
-  /* 半透明背景 */
-  color: #333;
-  /* 字体颜色 */
-  font-size: 16px;
-  /* 字体大小 */
-  font-weight: bold;
-  /* 字体粗细 */
-  border-radius: 5px;
-  /* 边框圆角 */
-  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
-  /* 字体 */
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.text-container:hover {
-  transform: scale(1.05);
-  /* 鼠标悬停时放大元素 */
-}
-
-.scan-instruction {
-  border: 1px solid #ccc;
-  /* 边框样式 */
-  padding: 10px;
-  /* 内部填充 */
-  background-color: rgba(255, 255, 255, 0.7);
-  /* 半透明背景 */
-  color: #333;
-  /* 字体颜色 */
-  font-size: 16px;
-  /* 字体大小 */
-  font-weight: bold;
-  /* 字体粗细 */
-  border-radius: 5px;
-  /* 边框圆角 */
-  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
-  /* 字体 */
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.scan-instruction:hover {
-  transform: scale(1.05);
-  /* 鼠标悬停时放大元素 */
-}
-
-/* 添加按钮样式 */
-.text-button {
-  font-size: 1.1rem !important;
-  font-weight: bold !important;
-  padding: 12px 24px !important;
-  border-radius: 8px !important;
-  transition: transform 0.2s ease;
-}
-
-.text-button:hover {
-  transform: scale(1.05);
-}
-
-/* 其他样式保持不变 */
-
-/* 添加弹窗相关样式 */
-:deep(.v-dialog) {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border-radius: 16px !important;
-}
-
-:deep(.dialog-card) {
-  border-radius: 16px !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px !important;
   overflow: hidden;
 }
 
-:deep(.dialog-content) {
-  padding: 32px 40px 24px !important;
+.qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-:deep(.dialog-title) {
-  font-size: 2rem !important;
-  font-weight: 600 !important;
-  color: #333;
+.qr-message {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ef4444;
+  font-weight: 500;
+  padding: 16px;
+}
+
+.scan-hint {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.scan-hint strong {
+  color: #22c55e;
+}
+
+.next-btn {
+  margin-top: 20px;
+  padding: 0 32px;
+  height: 48px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 24px;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+/* 底部信息 */
+.footer-section {
+  margin-top: 32px;
   text-align: center;
-  margin-bottom: 24px !important;
-  line-height: 1.4;
+}
+
+.footer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.badge-icon {
+  font-size: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.footer-link {
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #3b82f6;
+}
+
+.link-icon {
+  font-size: 1rem;
+}
+
+.link-divider {
+  color: #cbd5e1;
+}
+
+/* 弹窗样式 */
+:deep(.dialog-card) {
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.dialog-title {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  padding: 20px 20px 8px !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dialog-icon {
+  font-size: 1.5rem;
 }
 
 :deep(.dialog-text) {
-  font-size: 1.1rem !important;
-  line-height: 1.8;
-  color: #555;
-}
-
-.primary-text {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #1976d2;
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.subtitle-text {
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 16px;
-}
-
-:deep(.reason-list) {
-  list-style: none;
-  padding-left: 0;
-  margin: 16px 0;
-}
-
-:deep(.reason-list li) {
-  position: relative;
-  padding-left: 24px;
-  margin-bottom: 16px;
+  font-size: 0.95rem !important;
+  color: #475569;
+  padding: 8px 20px 16px !important;
   line-height: 1.6;
 }
 
-:deep(.reason-list li::before) {
-  content: "•";
-  position: absolute;
-  left: 8px;
-  color: #1976d2;
-  font-size: 1.2em;
+.text-hint {
+  font-size: 0.85rem !important;
+  color: #94a3b8;
 }
 
 :deep(.dialog-actions) {
-  padding: 0 40px 32px !important;
+  padding: 8px 20px 20px !important;
 }
 
-.confirm-button {
-  height: 48px !important;
-  font-size: 1.1rem !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.5px;
-  text-transform: none !important;
-  border-radius: 8px !important;
-  transition: transform 0.2s ease;
-}
-
-.confirm-button:hover {
-  transform: translateY(-2px);
-}
-
-/* 以下是渐变动画效果 */
-@keyframes gradientBG {
-  0% {
-    background-position: 0% 50%;
+/* 响应式 */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.5rem;
   }
 
-  50% {
-    background-position: 100% 50%;
+  .scan-section {
+    padding: 20px 16px;
   }
 
-  100% {
-    background-position: 0% 50%;
+  .qr-code-card {
+    width: 180px;
+    height: 180px;
+  }
+
+  .cursor-glow {
+    display: none;
   }
 }
-
-:deep(.dialog-card) {
-  background: linear-gradient(45deg,
-      rgba(255, 255, 255, 0.95),
-      rgba(240, 247, 255, 0.95)) !important;
-  background-size: 200% 200% !important;
-  animation: gradientBG 15s ease infinite;
-}
-
-/* 其他样式保持不变 */
 </style>

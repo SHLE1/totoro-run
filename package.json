@@ -45,7 +45,7 @@
     "@types/uuid": "^9.0.7",
     "@unocss/eslint-plugin": "^0.58.5",
     "eslint": "^8.57.0",
-    "eslint-plugin-format": "^0.1.0",
+    "eslint-plugin-format": "^1.2.0",
     "nuxt": "^3.9.1",
     "typescript": "^5.3.3"
   },

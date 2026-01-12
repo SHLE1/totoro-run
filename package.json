@@ -43,7 +43,7 @@
     "@types/md5": "^2.3.5",
     "@types/minimist": "^1.2.5",
     "@types/uuid": "^9.0.7",
-    "@unocss/eslint-plugin": "^0.58.5",
+    "@unocss/eslint-plugin": "^66.5.12",
     "eslint": "^8.57.0",
     "eslint-plugin-format": "^1.2.0",
     "nuxt": "^3.9.1",

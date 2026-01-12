@@ -46,7 +46,7 @@
     "@unocss/eslint-plugin": "^0.58.5",
     "eslint": "^8.57.0",
     "eslint-plugin-format": "^1.2.0",
-    "nuxt": "^3.9.1",
+    "nuxt": "^4.2.2",
     "typescript": "^5.3.3"
   },
   "pnpm": {

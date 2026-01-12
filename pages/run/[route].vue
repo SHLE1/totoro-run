@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useNow } from '@vueuse/core';
-import { onMounted, onUnmounted } from 'vue';
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
 import generateRunReq from '~~/src/controllers/generateSunRunExercisesReq';
 import generateRoute from '~~/src/utils/generateRoute';
@@ -239,12 +238,12 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 
 .step.active .step-text {
   color: #3b82f6;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .step.completed .step-text {
   color: #22c55e;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .step-line {
@@ -439,7 +438,7 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   height: 44px;
   border-radius: 22px;
   text-transform: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* 响应式 */

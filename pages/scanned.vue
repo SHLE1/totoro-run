@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
-import { onMounted } from 'vue';
 
 const sunrunPaper = useSunRunPaper();
 const session = useSession();
@@ -20,24 +19,7 @@ watchEffect(() => {
 const handleUpdate = (target: string) => {
   selectValue.value = target;
 };
-
-onMounted(() => {
-  const script1 = document.createElement('script');
-  script1.async = true;
-  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ';
-  document.head.appendChild(script1);
-
-  const script2 = document.createElement('script');
-  script2.textContent = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-KEFCFSXRWJ');
-  `;
-  document.head.appendChild(script2);
-});
-
-
+</script>
 </script>
 <template>
   <div class="page-wrapper">
@@ -198,12 +180,12 @@ onMounted(() => {
 
 .step.active .step-text {
   color: #3b82f6;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .step.completed .step-text {
   color: #22c55e;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .step-line {
@@ -266,13 +248,13 @@ onMounted(() => {
 .info-label {
   font-size: 0.75rem;
   color: #94a3b8;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .info-value {
   font-size: 0.95rem;
   color: #1e293b;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* 路线选择 */
@@ -296,7 +278,7 @@ onMounted(() => {
   height: 44px;
   border-radius: 22px;
   text-transform: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .start-link {
@@ -309,7 +291,7 @@ onMounted(() => {
   height: 44px;
   border-radius: 22px;
   text-transform: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* 地图 */

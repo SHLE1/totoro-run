@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
-import { onMounted, ref } from 'vue';
 
 const router = useRouter();
 const { data } = await useFetch<{ uuid: string; imgUrl: string }>('/api/scanQr');
@@ -22,22 +21,6 @@ const handleMouseMove = (e: MouseEvent) => {
 const closeDialog = () => {
   showDialog.value = false;
 };
-
-onMounted(() => {
-  const script1 = document.createElement('script');
-  script1.async = true;
-  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ';
-  document.head.appendChild(script1);
-
-  const script2 = document.createElement('script');
-  script2.textContent = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-KEFCFSXRWJ');
-  `;
-  document.head.appendChild(script2);
-});
 
 const handleScanned = async () => {
   const scanRes = await $fetch(`/api/scanQr/${data!.value!.uuid}`);
@@ -141,7 +124,7 @@ const handleScanned = async () => {
           append-icon="i-mdi-arrow-right"
           @click="handleScanned"
         >
-          扫码完成，下一步
+          <strong>扫码完成，下一步</strong>
         </VBtn>
       </div>
 
@@ -155,14 +138,6 @@ const handleScanned = async () => {
     </div>
   </div>
 </template>
-
-<script lang="ts">
-export default {
-  mounted() {
-    // 特效已移除，保持简洁
-  }
-}
-</script>
 
 <style scoped>
 .page-container {
@@ -264,7 +239,7 @@ export default {
 
 .step.active .step-text {
   color: #3b82f6;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .step-line {
@@ -304,7 +279,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: #ef4444;
-  font-weight: 500;
+  font-weight: 600;
   padding: 16px;
 }
 
@@ -323,7 +298,7 @@ export default {
   padding: 0 32px;
   height: 48px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 24px;
   text-transform: none;
   letter-spacing: 0.5px;
@@ -344,7 +319,9 @@ export default {
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .badge-icon {

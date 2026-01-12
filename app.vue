@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-
-const appConfig = useAppConfig();
-
 useHead({
   title: '龙猫!启动!',
   link: [
@@ -24,24 +20,7 @@ useHead({
       sizes: '64x64',
       type: 'image/x-icon',
     },
-    // 你可以添加更多的图标链接
   ],
-});
-
-onMounted(() => {
-  const script1 = document.createElement('script');
-  script1.async = true;
-  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ';
-  document.head.appendChild(script1);
-
-  const script2 = document.createElement('script');
-  script2.textContent = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-KEFCFSXRWJ');
-  `;
-  document.head.appendChild(script2);
 });
 </script>
 <script lang="ts">
@@ -113,5 +92,13 @@ window.global = window;
 
 .link-divider {
   color: #cbd5e1;
+}
+</style>
+
+<style>
+/* 全局字体平滑设置，统一 Chrome 和 Safari 的渲染效果 */
+*, *::before, *::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 </style>

@@ -20,7 +20,6 @@ const handleUpdate = (target: string) => {
   selectValue.value = target;
 };
 </script>
-</script>
 <template>
   <div class="page-wrapper">
     <!-- 步骤指示器 -->

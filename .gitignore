@@ -13,3 +13,7 @@ functions
 pnpm-lock.yaml
 pnpm-lock.yaml
 pnpm-lock.yaml
+
+# Claude Code 配置目录
+.claude/
+.codex/

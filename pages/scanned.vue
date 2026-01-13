@@ -22,215 +22,99 @@ const handleUpdate = (target: string) => {
 </script>
 <template>
   <div class="page-wrapper">
-    <!-- 步骤指示器 -->
-    <nav class="step-indicator" aria-label="进度步骤">
-      <div class="step completed">
-        <span class="step-num" aria-hidden="true">&#10003;</span>
-        <span class="step-text">扫码</span>
-      </div>
-      <div class="step-line active" aria-hidden="true"></div>
-      <div class="step active" aria-current="step">
-        <span class="step-num" aria-hidden="true">2</span>
-        <span class="step-text">确认</span>
-      </div>
-      <div class="step-line" aria-hidden="true"></div>
-      <div class="step">
-        <span class="step-num" aria-hidden="true">3</span>
-        <span class="step-text">完成</span>
-      </div>
-    </nav>
+    <StepIndicator :active-step="2" :completed-steps="[1]" />
 
-    <!-- 个人信息卡片 -->
-    <section class="info-card" aria-labelledby="info-card-title">
-      <div class="card-header">
-        <span class="header-icon" aria-hidden="true">&#128100;</span>
-        <h2 id="info-card-title" class="header-title">个人信息确认</h2>
-      </div>
-      <dl class="info-grid">
-        <div class="info-item">
-          <dt class="info-label">学校</dt>
-          <dd class="info-value">{{ session.campusName }}</dd>
-        </div>
-        <div class="info-item">
-          <dt class="info-label">学院</dt>
-          <dd class="info-value">{{ session.collegeName }}</dd>
-        </div>
-        <div class="info-item">
-          <dt class="info-label">学号</dt>
-          <dd class="info-value">{{ session.stuNumber }}</dd>
-        </div>
-        <div class="info-item">
-          <dt class="info-label">姓名</dt>
-          <dd class="info-value">{{ session.stuName }}</dd>
-        </div>
-      </dl>
-    </section>
+    <div class="page-stack">
+      <UiCard title="个人信息确认" icon="mdi mdi-account">
+        <dl class="info-grid">
+          <div class="info-item">
+            <dt class="info-label">学校</dt>
+            <dd class="info-value">{{ session.campusName }}</dd>
+          </div>
+          <div class="info-item">
+            <dt class="info-label">学院</dt>
+            <dd class="info-value">{{ session.collegeName }}</dd>
+          </div>
+          <div class="info-item">
+            <dt class="info-label">学号</dt>
+            <dd class="info-value">{{ session.stuNumber }}</dd>
+          </div>
+          <div class="info-item">
+            <dt class="info-label">姓名</dt>
+            <dd class="info-value">{{ session.stuName }}</dd>
+          </div>
+        </dl>
+      </UiCard>
 
-    <!-- 路线选择卡片 -->
-    <template v-if="data">
-      <section class="route-card" aria-labelledby="route-card-title">
-        <div class="card-header">
-          <span class="header-icon" aria-hidden="true">&#128205;</span>
-          <h2 id="route-card-title" class="header-title">选择跑步路线</h2>
-        </div>
+      <template v-if="data">
+        <UiCard title="选择跑步路线" icon="mdi mdi-map-marker">
+          <VSelect
+            v-model="selectValue"
+            :items="data.runPointList"
+            item-title="pointName"
+            item-value="pointId"
+            variant="outlined"
+            label="请选择路线"
+            class="route-select"
+            density="comfortable"
+            hide-details
+            aria-label="选择跑步路线"
+          />
 
-        <VSelect
-          v-model="selectValue"
-          :items="data.runPointList"
-          item-title="pointName"
-          item-value="pointId"
-          variant="outlined"
-          label="请选择路线"
-          class="route-select"
-          density="comfortable"
-          hide-details
-          aria-label="选择跑步路线"
-        />
-
-        <div class="btn-group">
-          <VBtn
-            variant="tonal"
-            color="primary"
-            prepend-icon="i-mdi-shuffle-variant"
-            class="random-btn"
-            @click="selectValue = data!.runPointList[Math.floor(Math.random() * data!.runPointList.length)].pointId"
-          >
-            随机选择
-          </VBtn>
-          <NuxtLink v-if="selectValue" :to="`/run/${encodeURIComponent(selectValue)}`" class="start-link">
-            <VBtn color="cta" append-icon="i-mdi-run" class="start-btn">
+          <div class="btn-group">
+            <VBtn
+              variant="tonal"
+              color="primary"
+              prepend-icon="i-mdi-shuffle-variant"
+              class="ui-btn ui-btn--sm random-btn"
+              @click="selectValue = data!.runPointList[Math.floor(Math.random() * data!.runPointList.length)].pointId"
+            >
+              随机选择
+            </VBtn>
+            <NuxtLink v-if="selectValue" :to="`/run/${encodeURIComponent(selectValue)}`" class="start-link">
+              <VBtn color="cta" append-icon="i-mdi-run" class="ui-btn start-btn">
+                开始跑步
+              </VBtn>
+            </NuxtLink>
+            <VBtn v-else color="cta" append-icon="i-mdi-run" class="ui-btn start-btn" disabled aria-disabled="true">
               开始跑步
             </VBtn>
-          </NuxtLink>
-          <VBtn v-else color="cta" append-icon="i-mdi-run" class="start-btn" disabled aria-disabled="true">
-            开始跑步
-          </VBtn>
-        </div>
-      </section>
+          </div>
+        </UiCard>
 
-      <!-- 地图预览卡片 -->
-      <section class="map-card" aria-labelledby="map-card-title">
-        <div class="card-header">
-          <span class="header-icon" aria-hidden="true">&#128506;</span>
-          <h2 id="map-card-title" class="header-title">路线预览</h2>
-        </div>
-        <p class="map-hint">地图中的路线仅为展示效果，不等于最终路线</p>
-        <div class="map-container" role="img" aria-label="跑步路线地图预览">
-          <ClientOnly>
-            <TMap :target="selectValue" @update:target="handleUpdate" />
-          </ClientOnly>
-        </div>
-      </section>
-    </template>
+        <UiCard title="路线预览" icon="mdi mdi-map-outline">
+          <p class="map-hint">地图中的路线仅为展示效果，不等于最终路线</p>
+          <div class="map-container" role="img" aria-label="跑步路线地图预览">
+            <div v-if="!selectValue" class="map-empty">
+              <span class="mdi mdi-map-search map-empty-icon" aria-hidden="true"></span>
+              <span>请选择路线以预览地图</span>
+            </div>
+            <ClientOnly v-else>
+              <TMap :target="selectValue" @update:target="handleUpdate" />
+            </ClientOnly>
+          </div>
+        </UiCard>
+      </template>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .page-wrapper {
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
   padding: 24px 16px 40px;
-}
-
-/* 步骤指示器 */
-.step-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 28px;
-  gap: 8px;
-}
-
-.step {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  gap: 20px;
 }
 
-.step-num {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #e2e8f0;
-  color: #94a3b8;
+.page-stack {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: all 0.3s ease-out;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.step.active .step-num {
-  background: #3b82f6;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.step.completed .step-num {
-  background: #22c55e;
-  color: #fff;
-}
-
-.step-text {
-  font-size: 0.75rem;
-  color: #94a3b8;
-}
-
-.step.active .step-text {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-.step.completed .step-text {
-  color: #22c55e;
-  font-weight: 600;
-}
-
-.step-line {
-  width: 40px;
-  height: 2px;
-  background: #e2e8f0;
-  margin-bottom: 18px;
-}
-
-.step-line.active {
-  background: #22c55e;
-}
-
-/* 卡片通用样式 */
-.info-card,
-.route-card,
-.map-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.header-icon {
-  font-size: 1.25rem;
-}
-
-.header-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0;
-}
-
-/* 个人信息网格 */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -244,30 +128,30 @@ const handleUpdate = (target: string) => {
   flex-direction: column;
   gap: 4px;
   padding: 12px;
-  background: #f8fafc;
-  border-radius: 10px;
+  background: var(--ui-surface-muted);
+  border-radius: var(--ui-radius-sm);
+  border: 1px solid var(--ui-border);
 }
 
 .info-label {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--ui-text-muted);
   font-weight: 400;
 }
 
 .info-value {
   font-size: 0.95rem;
-  color: #1e293b;
+  color: var(--ui-text);
   font-weight: 600;
   margin: 0;
 }
 
-/* 路线选择 */
 .route-select {
   margin-bottom: 16px;
 }
 
 :deep(.route-select .v-field) {
-  border-radius: 12px;
+  border-radius: var(--ui-radius-md);
 }
 
 .btn-group {
@@ -279,10 +163,6 @@ const handleUpdate = (target: string) => {
 .random-btn {
   flex: 1;
   min-width: 120px;
-  height: 44px;
-  border-radius: 22px;
-  text-transform: none;
-  font-weight: 600;
 }
 
 .start-link {
@@ -292,25 +172,24 @@ const handleUpdate = (target: string) => {
 
 .start-btn {
   width: 100%;
-  height: 44px;
-  border-radius: 22px;
-  text-transform: none;
-  font-weight: 600;
 }
 
-/* 地图 */
 .map-hint {
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--ui-text-muted);
   margin-bottom: 12px;
 }
 
 .map-container {
   width: 100%;
   height: 300px;
-  border-radius: 12px;
+  border-radius: var(--ui-radius-md);
   overflow: hidden;
-  background: #f1f5f9;
+  background: var(--ui-surface-muted);
+  border: 1px solid var(--ui-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .map-container :deep(#mapContainer) {
@@ -318,7 +197,21 @@ const handleUpdate = (target: string) => {
   height: 100% !important;
 }
 
-/* 响应式 */
+.map-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  color: var(--ui-text-muted);
+  font-size: 0.85rem;
+}
+
+.map-empty-icon {
+  font-size: 1.6rem;
+  color: rgb(var(--ui-primary));
+}
+
 @media (max-width: 480px) {
   .info-grid {
     grid-template-columns: 1fr;
@@ -332,66 +225,5 @@ const handleUpdate = (target: string) => {
   .start-link {
     min-width: 100%;
   }
-}
-</style>
-
-<!-- 深色模式样式（非 scoped） -->
-<style>
-.v-theme--dark .step-num {
-  background: #334155;
-  color: #64748b;
-}
-
-.v-theme--dark .step.active .step-num {
-  background: #60a5fa;
-  color: #0f172a;
-}
-
-.v-theme--dark .step.completed .step-num {
-  background: #4ade80;
-  color: #0f172a;
-}
-
-.v-theme--dark .step.active .step-text {
-  color: #60a5fa;
-}
-
-.v-theme--dark .step.completed .step-text {
-  color: #4ade80;
-}
-
-.v-theme--dark .step-line {
-  background: #334155;
-}
-
-.v-theme--dark .step-line.active {
-  background: #4ade80;
-}
-
-.v-theme--dark .info-card,
-.v-theme--dark .route-card,
-.v-theme--dark .map-card {
-  background: #1e293b;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-}
-
-.v-theme--dark .card-header {
-  border-bottom-color: #334155;
-}
-
-.v-theme--dark .header-title {
-  color: #f1f5f9;
-}
-
-.v-theme--dark .info-item {
-  background: #0f172a;
-}
-
-.v-theme--dark .info-value {
-  color: #f1f5f9;
-}
-
-.v-theme--dark .map-container {
-  background: #0f172a;
 }
 </style>

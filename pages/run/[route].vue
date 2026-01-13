@@ -6,7 +6,6 @@ import generateRoute from '~~/src/utils/generateRoute';
 
 const now = useNow({ interval: 1000 });
 const startTime = ref(new Date());
-const endTime = ref(new Date());
 const timePassed = computed(() => Number(now.value) - Number(startTime.value));
 const needTime = ref(0);
 const running = ref(false);
@@ -16,6 +15,64 @@ const session = useSession();
 const { route } = params as { route: string };
 const runned = computed(() => !running.value && !!needTime.value);
 const target = computed(() => sunRunPaper.value.runPointList.find((r) => r.pointId === route)!);
+
+const runState = computed(() => {
+  if (running.value) {
+    return 'running';
+  }
+  if (runned.value) {
+    return 'done';
+  }
+  return 'ready';
+});
+
+const activeStep = computed(() => (running.value ? 3 : 0));
+const completedSteps = computed(() => {
+  const steps = [1, 2];
+  if (runned.value) {
+    steps.push(3);
+  }
+  return steps;
+});
+
+const runCardTone = computed(() => {
+  if (runned.value) {
+    return 'success';
+  }
+  if (running.value) {
+    return 'info';
+  }
+  return 'warning';
+});
+
+const runHeaderTitle = computed(() => {
+  if (runState.value === 'running') {
+    return '跑步进行中...';
+  }
+  if (runState.value === 'done') {
+    return '跑步完成';
+  }
+  return '开跑前请确认';
+});
+
+const runHeaderIcon = computed(() => {
+  if (runState.value === 'running') {
+    return 'mdi mdi-run';
+  }
+  if (runState.value === 'done') {
+    return 'mdi mdi-check-circle';
+  }
+  return 'mdi mdi-alert-circle';
+});
+
+const progressPercent = computed(() => {
+  if (!needTime.value) {
+    return 0;
+  }
+  return Math.min(100, Math.max(0, (timePassed.value / needTime.value) * 100));
+});
+
+const progressPercentLabel = computed(() => Math.ceil(progressPercent.value));
 
 const formatTime = (ms: number) => {
   const totalSeconds = Math.floor(ms / 1000);
@@ -38,7 +95,6 @@ const handleRun = async () => {
   });
   startTime.value = now.value;
   needTime.value = Number(targetTime) - Number(now.value);
-  endTime.value = targetTime;
   running.value = true;
 
   await TotoroApiWrapper.getRunBegin({
@@ -64,6 +120,7 @@ const handleRun = async () => {
     running.value = false;
   }, needTime.value);
 };
+
 onMounted(() => {
   window.addEventListener('beforeunload', handleBeforeUnload);
 });
@@ -81,248 +138,107 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 </script>
 <template>
   <div class="page-wrapper">
-    <!-- 步骤指示器 -->
-    <nav class="step-indicator" aria-label="进度步骤">
-      <div class="step completed">
-        <span class="step-num" aria-hidden="true">&#10003;</span>
-        <span class="step-text">扫码</span>
-      </div>
-      <div class="step-line active" aria-hidden="true"></div>
-      <div class="step completed">
-        <span class="step-num" aria-hidden="true">&#10003;</span>
-        <span class="step-text">确认</span>
-      </div>
-      <div class="step-line" :class="{ active: runned }" aria-hidden="true"></div>
-      <div class="step" :class="{ active: running, completed: runned }" :aria-current="running || runned ? 'step' : undefined">
-        <span class="step-num" aria-hidden="true">{{ runned ? '&#10003;' : '3' }}</span>
-        <span class="step-text">完成</span>
-      </div>
-    </nav>
+    <StepIndicator :active-step="activeStep" :completed-steps="completedSteps" />
 
-    <!-- 路线信息卡片 -->
-    <section class="route-info-card" aria-labelledby="route-info-title">
-      <div class="card-header">
-        <span class="header-icon" aria-hidden="true">&#128205;</span>
-        <h2 id="route-info-title" class="header-title">已选择路线</h2>
-      </div>
-      <div class="route-name">{{ target.pointName }}</div>
-    </section>
+    <div class="page-stack">
+      <UiCard title="已选择路线" icon="mdi mdi-map-marker" class="route-info-card">
+        <div class="route-name">{{ target.pointName }}</div>
+      </UiCard>
 
-    <!-- 跑步状态卡片 -->
-    <section class="run-card" aria-live="polite">
-      <!-- 未开始状态 -->
-      <template v-if="!runned && !running">
-        <div class="card-header">
-          <span class="header-icon" aria-hidden="true">&#9888;</span>
-          <h2 class="header-title">开跑前请确认</h2>
-        </div>
-        <div class="warning-box" role="alert">
-          <p class="warning-text">跑步过程中请保持页面前台打开</p>
-          <p class="warning-subtext">不要退出 &bull; 不要断网 &bull; 不要切换应用</p>
-        </div>
-        <VBtn
-          color="cta"
-          size="large"
-          class="start-run-btn"
-          prepend-icon="i-mdi-run"
-          @click="handleRun"
-        >
-          确认开跑
-        </VBtn>
-      </template>
-
-      <!-- 跑步中状态 -->
-      <template v-if="running">
-        <div class="card-header">
-          <span class="header-icon running-icon" aria-hidden="true">&#127939;</span>
-          <h2 class="header-title">跑步进行中...</h2>
-        </div>
-        <div class="progress-section">
-          <div class="time-display">
-            <div class="time-item">
-              <span class="time-label">已用时</span>
-              <span class="time-value" aria-live="polite">{{ formatTime(timePassed) }}</span>
-            </div>
-            <div class="time-divider" aria-hidden="true"></div>
-            <div class="time-item">
-              <span class="time-label">总时长</span>
-              <span class="time-value">{{ formatTime(needTime) }}</span>
-            </div>
+      <UiCard
+        :title="runHeaderTitle"
+        :icon="runHeaderIcon"
+        :tone="runCardTone"
+        class="run-card"
+        :class="{ running: runState === 'running' }"
+        aria-live="polite"
+      >
+        <template v-if="runState === 'ready'">
+          <div class="warning-box" role="alert">
+            <p class="warning-text">跑步过程中请保持页面前台打开</p>
+            <p class="warning-subtext">不要退出 &bull; 不要断网 &bull; 不要切换应用</p>
           </div>
-          <div class="progress-bar-wrapper">
-            <VProgressLinear
-              color="primary"
-              :model-value="(timePassed / needTime) * 100"
-              height="12"
-              rounded
-              :aria-label="`跑步进度 ${Math.ceil((timePassed / needTime) * 100)}%`"
-            />
-            <span class="progress-percent" aria-hidden="true">{{ Math.ceil((timePassed / needTime) * 100) }}%</span>
-          </div>
-          <p class="running-hint">请勿关闭此页面，跑步完成后会自动提示</p>
-        </div>
-      </template>
-
-      <!-- 完成状态 -->
-      <template v-if="runned">
-        <div class="card-header success">
-          <span class="header-icon" aria-hidden="true">&#127881;</span>
-          <h2 class="header-title">跑步完成</h2>
-        </div>
-        <div class="success-section" role="status">
-          <div class="success-icon" aria-hidden="true">&#10004;</div>
-          <p class="success-text">恭喜！本次跑步已完成</p>
-          <p class="success-hint">请前往 App 查看跑步记录</p>
-        </div>
-        <NuxtLink to="/" class="back-link">
-          <VBtn variant="tonal" color="primary" class="back-btn">
-            返回首页
+          <VBtn color="cta" class="ui-btn start-run-btn" prepend-icon="i-mdi-run" @click="handleRun">
+            确认开跑
           </VBtn>
-        </NuxtLink>
-      </template>
-    </section>
+        </template>
+
+        <template v-else-if="runState === 'running'">
+          <div class="progress-section">
+            <div class="time-display">
+              <div class="time-item">
+                <span class="time-label">已用时</span>
+                <span class="time-value" aria-live="polite">{{ formatTime(timePassed) }}</span>
+              </div>
+              <div class="time-divider" aria-hidden="true"></div>
+              <div class="time-item">
+                <span class="time-label">总时长</span>
+                <span class="time-value">{{ formatTime(needTime) }}</span>
+              </div>
+            </div>
+            <div class="progress-bar-wrapper">
+              <VProgressLinear
+                color="primary"
+                :model-value="progressPercent"
+                height="12"
+                rounded
+                :aria-label="`跑步进度 ${progressPercentLabel}%`"
+              />
+              <span class="progress-percent" aria-hidden="true">{{ progressPercentLabel }}%</span>
+            </div>
+            <p class="running-hint">请勿关闭此页面，跑步完成后会自动提示</p>
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="success-section" role="status">
+            <div class="success-icon" aria-hidden="true">
+              <span class="mdi mdi-check" aria-hidden="true"></span>
+            </div>
+            <p class="success-text">恭喜！本次跑步已完成</p>
+            <p class="success-hint">请前往 App 查看跑步记录</p>
+          </div>
+          <NuxtLink to="/" class="back-link">
+            <VBtn variant="tonal" color="primary" class="ui-btn ui-btn--sm back-btn">
+              返回首页
+            </VBtn>
+          </NuxtLink>
+        </template>
+      </UiCard>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .page-wrapper {
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
   padding: 24px 16px 40px;
-}
-
-/* 步骤指示器 */
-.step-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 28px;
-  gap: 8px;
-}
-
-.step {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  gap: 20px;
 }
 
-.step-num {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #e2e8f0;
-  color: #94a3b8;
+.page-stack {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: all 0.3s ease-out;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.step.active .step-num {
-  background: #3b82f6;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.step.completed .step-num {
-  background: #22c55e;
-  color: #fff;
-}
-
-.step-text {
-  font-size: 0.75rem;
-  color: #94a3b8;
-}
-
-.step.active .step-text {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-.step.completed .step-text {
-  color: #22c55e;
-  font-weight: 600;
-}
-
-.step-line {
-  width: 40px;
-  height: 2px;
-  background: #e2e8f0;
-  margin-bottom: 18px;
-}
-
-.step-line.active {
-  background: #22c55e;
-}
-
-/* 卡片通用样式 */
-.route-info-card,
-.run-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.card-header.success {
-  border-bottom-color: #dcfce7;
-}
-
-.header-icon {
-  font-size: 1.25rem;
-}
-
-.running-icon {
-  animation: bounce 1s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .running-icon {
-    animation: none;
-  }
-}
-
-.header-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0;
-}
-
-/* 路线信息 */
 .route-name {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: rgb(var(--ui-primary));
   text-align: center;
   padding: 12px;
-  background: #eff6ff;
-  border-radius: 10px;
+  background: rgba(var(--ui-primary), 0.12);
+  border-radius: var(--ui-radius-sm);
 }
 
-/* 警告框 */
 .warning-box {
-  background: #fef3c7;
-  border: 1px solid #fcd34d;
-  border-radius: 12px;
+  background: rgba(var(--ui-warning), 0.14);
+  border: 1px solid rgba(var(--ui-warning), 0.4);
+  border-radius: var(--ui-radius-md);
   padding: 16px;
   margin-bottom: 20px;
   text-align: center;
@@ -331,25 +247,19 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 .warning-text {
   font-size: 1rem;
   font-weight: 600;
-  color: #92400e;
+  color: rgb(var(--ui-warning));
   margin-bottom: 4px;
 }
 
 .warning-subtext {
   font-size: 0.85rem;
-  color: #a16207;
+  color: var(--ui-text-subtle);
 }
 
 .start-run-btn {
   width: 100%;
-  height: 52px;
-  border-radius: 26px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-transform: none;
 }
 
-/* 进度区域 */
 .progress-section {
   text-align: center;
 }
@@ -370,20 +280,20 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 
 .time-label {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--ui-text-muted);
 }
 
 .time-value {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--ui-text);
   font-variant-numeric: tabular-nums;
 }
 
 .time-divider {
   width: 1px;
   height: 40px;
-  background: #e2e8f0;
+  background: var(--ui-border);
 }
 
 .progress-bar-wrapper {
@@ -397,15 +307,14 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   top: -24px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: rgb(var(--ui-primary));
 }
 
 .running-hint {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--ui-text-muted);
 }
 
-/* 完成状态 */
 .success-section {
   text-align: center;
   padding: 20px 0;
@@ -415,8 +324,8 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #dcfce7;
-  color: #22c55e;
+  background: rgba(var(--ui-success), 0.18);
+  color: rgb(var(--ui-success));
   font-size: 2rem;
   display: flex;
   align-items: center;
@@ -427,13 +336,13 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 .success-text {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--ui-text);
   margin-bottom: 4px;
 }
 
 .success-hint {
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--ui-text-muted);
 }
 
 .back-link {
@@ -443,111 +352,26 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 
 .back-btn {
   width: 100%;
-  height: 44px;
-  border-radius: 22px;
-  text-transform: none;
-  font-weight: 600;
 }
 
-/* 响应式 */
+:deep(.run-card.running .ui-card__icon) {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :deep(.run-card.running .ui-card__icon) {
+    animation: none;
+  }
+}
+
 @media (max-width: 480px) {
   .time-value {
     font-size: 1.5rem;
   }
-}
-</style>
-
-<!-- 深色模式样式（非 scoped） -->
-<style>
-.v-theme--dark .step-num {
-  background: #334155;
-  color: #64748b;
-}
-
-.v-theme--dark .step.active .step-num {
-  background: #60a5fa;
-  color: #0f172a;
-}
-
-.v-theme--dark .step.completed .step-num {
-  background: #4ade80;
-  color: #0f172a;
-}
-
-.v-theme--dark .step.active .step-text {
-  color: #60a5fa;
-}
-
-.v-theme--dark .step.completed .step-text {
-  color: #4ade80;
-}
-
-.v-theme--dark .step-line {
-  background: #334155;
-}
-
-.v-theme--dark .step-line.active {
-  background: #4ade80;
-}
-
-.v-theme--dark .route-info-card,
-.v-theme--dark .run-card {
-  background: #1e293b;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-}
-
-.v-theme--dark .card-header {
-  border-bottom-color: #334155;
-}
-
-.v-theme--dark .card-header.success {
-  border-bottom-color: #166534;
-}
-
-.v-theme--dark .header-title {
-  color: #f1f5f9;
-}
-
-.v-theme--dark .route-name {
-  color: #60a5fa;
-  background: rgba(96, 165, 250, 0.15);
-}
-
-.v-theme--dark .warning-box {
-  background: rgba(252, 211, 77, 0.15);
-  border-color: #a16207;
-}
-
-.v-theme--dark .warning-text {
-  color: #fde047;
-}
-
-.v-theme--dark .warning-subtext {
-  color: #fcd34d;
-}
-
-.v-theme--dark .time-value {
-  color: #f1f5f9;
-}
-
-.v-theme--dark .time-divider {
-  background: #334155;
-}
-
-.v-theme--dark .progress-percent {
-  color: #60a5fa;
-}
-
-.v-theme--dark .success-icon {
-  background: rgba(74, 222, 128, 0.2);
-  color: #4ade80;
-}
-
-.v-theme--dark .success-text {
-  color: #f1f5f9;
-}
-
-.v-theme--dark .success-hint {
-  color: #94a3b8;
 }
 </style>

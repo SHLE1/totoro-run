@@ -38,9 +38,38 @@ onMounted(() => {
 });
 </script>
 <template>
-  <VTextarea v-model="encoded" variant="outlined" />
-  <div class="pre-wrap">
-    {{ JSON.stringify(decoded, null, 2) }}
-    {{ encrypted }}
+  <div class="page-wrapper">
+    <UiCard title="请求解码" icon="mdi mdi-code-json">
+      <VTextarea v-model="encoded" variant="outlined" auto-grow rows="6" />
+      <div class="result-block">
+        <pre class="pre-wrap">{{ JSON.stringify(decoded, null, 2) }}</pre>
+        <div class="encoded-again">{{ encrypted }}</div>
+      </div>
+    </UiCard>
   </div>
 </template>
+
+<style scoped>
+.page-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.result-block {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--ui-radius-md);
+  background: var(--ui-surface-muted);
+  border: 1px solid var(--ui-border);
+  color: var(--ui-text);
+  font-size: 0.85rem;
+  display: grid;
+  gap: 12px;
+}
+
+.encoded-again {
+  color: var(--ui-text-muted);
+  word-break: break-word;
+}
+</style>

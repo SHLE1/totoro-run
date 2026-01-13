@@ -90,6 +90,7 @@ window.global = window;
   border-bottom: 1px solid var(--ui-border);
   height: auto !important;
   min-height: 56px;
+  padding-top: env(safe-area-inset-top);
 }
 
 .app-bar-content {
@@ -170,8 +171,8 @@ window.global = window;
   .app-bar-content {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    padding: 16px 16px 18px;
+    gap: 8px;
+    padding: 12px 16px 14px;
   }
 
   .app-title {

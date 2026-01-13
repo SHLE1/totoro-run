@@ -132,7 +132,7 @@ window.global = window;
 }
 
 .theme-toggle:hover {
-  background: rgba(249, 115, 22, 0.12);
+  background: rgba(46, 159, 240, 0.12);
   color: rgb(var(--ui-primary));
 }
 
@@ -200,14 +200,14 @@ window.global = window;
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* 主色调 - 活力橙（运动能量感） */
-  --ui-primary: 249 115 22;
-  --ui-primary-light: 251 146 60;
-  --ui-primary-strong: 234 88 12;
+  /* 主色调 - 哆啦A梦蓝（轻盈清爽） */
+  --ui-primary: 46 159 240;
+  --ui-primary-light: 107 190 246;
+  --ui-primary-strong: 30 131 214;
 
-  /* 辅助色 - 信任蓝（可靠感） */
-  --ui-secondary: 59 130 246;
-  --ui-secondary-light: 96 165 250;
+  /* 辅助色 - 浅蓝（层级区分） */
+  --ui-secondary: 142 210 250;
+  --ui-secondary-light: 190 231 253;
 
   /* 功能色 */
   --ui-success: 22 163 74;
@@ -244,7 +244,7 @@ window.global = window;
   --ui-btn-height-sm: 44px;
 
   /* 焦点环 */
-  --ui-ring: 0 0 0 2px rgba(249, 115, 22, 0.35);
+  --ui-ring: 0 0 0 2px rgba(46, 159, 240, 0.35);
 
   /* 字体系统 */
   --ui-font-heading: 'Outfit', 'Noto Sans SC', 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -437,7 +437,7 @@ button, a, input, select, textarea {
 }
 
 .v-theme--dark .theme-toggle:hover {
-  background: rgba(251, 146, 60, 0.15);
+  background: rgba(107, 190, 246, 0.15);
   color: rgb(var(--ui-primary-light));
 }
 

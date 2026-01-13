@@ -144,15 +144,6 @@ const handleScanned = async () => {
           @keydown.space.prevent="handleQrClick"
         >
           <div class="qr-refresh-hint" aria-hidden="true">点击刷新二维码</div>
-          <button
-            class="refresh-icon-btn"
-            type="button"
-            :disabled="pending"
-            aria-label="刷新二维码"
-            @click="handleRefresh"
-          >
-            <span class="mdi mdi-refresh" aria-hidden="true"></span>
-          </button>
           <div v-if="pending" class="qr-placeholder" aria-busy="true">
             <VProgressCircular indeterminate size="36" color="primary" />
             <span class="qr-status">二维码生成中...</span>
@@ -247,9 +238,10 @@ const handleScanned = async () => {
 .hero-title {
   font-size: 2rem;
   font-weight: 700;
+  font-family: var(--ui-font-heading);
   color: var(--ui-text);
   margin-bottom: 8px;
-  letter-spacing: 1px;
+  letter-spacing: -0.02em;
 }
 
 .hero-subtitle {
@@ -261,8 +253,7 @@ const handleScanned = async () => {
 .scan-section {
   border-radius: var(--ui-radius-xl);
   text-align: center;
-  box-shadow: var(--ui-shadow-card);
-  padding: 24px;
+  padding: 32px 24px;
 }
 
 .qr-code-card {
@@ -272,12 +263,18 @@ const handleScanned = async () => {
   border-radius: var(--ui-radius-lg) !important;
   overflow: hidden;
   background: var(--ui-surface-muted);
+  border: 2px solid var(--ui-border);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   cursor: pointer;
   padding: 0;
+  transition: border-color var(--ui-transition-normal) ease-out;
+}
+
+.qr-code-card:hover:not(.qr-disabled) {
+  border-color: rgb(var(--ui-primary));
 }
 
 .qr-code-card.qr-disabled {
@@ -311,40 +308,6 @@ const handleScanned = async () => {
 
 .qr-code-card.qr-disabled .qr-refresh-hint {
   opacity: 0;
-}
-
-.refresh-icon-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  color: rgb(var(--ui-primary));
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.refresh-icon-btn:hover:not(:disabled) {
-  background: rgb(var(--ui-primary));
-  color: white;
-  transform: rotate(90deg);
-}
-
-.refresh-icon-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.refresh-icon-btn .mdi {
-  font-size: 18px;
 }
 
 @media (hover: hover) {

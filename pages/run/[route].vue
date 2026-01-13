@@ -226,18 +226,20 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 }
 
 .route-name {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 600;
+  font-family: var(--ui-font-heading);
   color: rgb(var(--ui-primary));
   text-align: center;
   padding: 12px;
-  background: rgba(var(--ui-primary), 0.12);
-  border-radius: var(--ui-radius-sm);
+  background: rgba(var(--ui-primary), 0.1);
+  border-radius: var(--ui-radius-md);
+  border: 2px solid rgba(var(--ui-primary), 0.2);
 }
 
 .warning-box {
-  background: rgba(var(--ui-warning), 0.14);
-  border: 1px solid rgba(var(--ui-warning), 0.4);
+  background: rgba(var(--ui-warning), 0.1);
+  border: 2px solid rgba(var(--ui-warning), 0.3);
   border-radius: var(--ui-radius-md);
   padding: 16px;
   margin-bottom: 20px;
@@ -247,6 +249,7 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 .warning-text {
   font-size: 1rem;
   font-weight: 600;
+  font-family: var(--ui-font-heading);
   color: rgb(var(--ui-warning));
   margin-bottom: 4px;
 }
@@ -286,6 +289,7 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 .time-value {
   font-size: 1.75rem;
   font-weight: 700;
+  font-family: var(--ui-font-heading);
   color: var(--ui-text);
   font-variant-numeric: tabular-nums;
 }
@@ -321,12 +325,13 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 }
 
 .success-icon {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: rgba(var(--ui-success), 0.18);
+  background: rgba(var(--ui-success), 0.15);
+  border: 3px solid rgba(var(--ui-success), 0.3);
   color: rgb(var(--ui-success));
-  font-size: 2rem;
+  font-size: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -334,8 +339,9 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 }
 
 .success-text {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 600;
+  font-family: var(--ui-font-heading);
   color: var(--ui-text);
   margin-bottom: 4px;
 }

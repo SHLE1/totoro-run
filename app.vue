@@ -132,7 +132,7 @@ window.global = window;
 }
 
 .theme-toggle:hover {
-  background: rgba(59, 130, 246, 0.12);
+  background: rgba(249, 115, 22, 0.12);
   color: rgb(var(--ui-primary));
 }
 
@@ -197,59 +197,175 @@ window.global = window;
 
 <style>
 @import "public/fonts/noto-sans-sc/noto-sans-sc.css";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --ui-primary: 59 130 246;
-  --ui-primary-strong: 37 99 235;
-  --ui-success: 34 197 94;
+  /* 主色调 - 活力橙（运动能量感） */
+  --ui-primary: 249 115 22;
+  --ui-primary-light: 251 146 60;
+  --ui-primary-strong: 234 88 12;
+
+  /* 辅助色 - 信任蓝（可靠感） */
+  --ui-secondary: 59 130 246;
+  --ui-secondary-light: 96 165 250;
+
+  /* 功能色 */
+  --ui-success: 22 163 74;
   --ui-warning: 245 158 11;
   --ui-danger: 239 68 68;
+
+  /* 背景色 */
   --ui-surface: #ffffff;
   --ui-surface-muted: #f8fafc;
   --ui-surface-strong: #f1f5f9;
-  --ui-text: #0f172a;
+
+  /* 文字色 */
+  --ui-text: #1e293b;
   --ui-text-muted: #64748b;
   --ui-text-subtle: #475569;
+
+  /* 边框和分割线 */
   --ui-border: #e2e8f0;
   --ui-divider: #e2e8f0;
-  --ui-shadow-card: 0 6px 24px rgba(15, 23, 42, 0.08);
-  --ui-shadow-soft: 0 2px 12px rgba(15, 23, 42, 0.06);
-  --ui-radius-xl: 20px;
-  --ui-radius-lg: 16px;
-  --ui-radius-md: 12px;
-  --ui-radius-sm: 10px;
+
+  /* 阴影（扁平化设计，减少使用） */
+  --ui-shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --ui-shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.05);
+
+  /* 圆角 */
+  --ui-radius-xl: 16px;
+  --ui-radius-lg: 12px;
+  --ui-radius-md: 8px;
+  --ui-radius-sm: 6px;
   --ui-radius-pill: 999px;
+
+  /* 按钮尺寸（移动端友好） */
   --ui-btn-height: 48px;
   --ui-btn-height-sm: 44px;
-  --ui-ring: 0 0 0 2px rgba(59, 130, 246, 0.35);
-  --ui-font-sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Source Han Sans SC',
+
+  /* 焦点环 */
+  --ui-ring: 0 0 0 2px rgba(249, 115, 22, 0.35);
+
+  /* 字体系统 */
+  --ui-font-heading: 'Outfit', 'Noto Sans SC', 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ui-font-body: 'Work Sans', 'Noto Sans SC', 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ui-font-sans: 'Work Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Source Han Sans SC',
     'Noto Sans CJK SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* 过渡时长（扁平化设计） */
+  --ui-transition-fast: 150ms;
+  --ui-transition-normal: 200ms;
+  --ui-transition-slow: 300ms;
 }
 
 .v-theme--dark {
+  /* 深色模式背景 */
   --ui-surface: #0f172a;
   --ui-surface-muted: #111827;
   --ui-surface-strong: #1e293b;
+
+  /* 深色模式文字 */
   --ui-text: #f1f5f9;
   --ui-text-muted: #94a3b8;
   --ui-text-subtle: #cbd5e1;
+
+  /* 深色模式边框 */
   --ui-border: #334155;
   --ui-divider: #334155;
-  --ui-shadow-card: 0 6px 24px rgba(0, 0, 0, 0.4);
-  --ui-shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.3);
+
+  /* 深色模式阴影（扁平化设计，减少使用） */
+  --ui-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --ui-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .ui-btn {
   height: var(--ui-btn-height);
-  border-radius: calc(var(--ui-btn-height) / 2);
+  border-radius: var(--ui-radius-lg);
   text-transform: none;
   font-weight: 600;
   letter-spacing: 0.2px;
+  font-family: var(--ui-font-body);
+  transition: all var(--ui-transition-fast) ease-out;
+  cursor: pointer;
+  border: none;
+  padding: 0 24px;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  touch-action: manipulation;
 }
 
 .ui-btn--sm {
   height: var(--ui-btn-height-sm);
-  border-radius: calc(var(--ui-btn-height-sm) / 2);
+  border-radius: var(--ui-radius-md);
+  padding: 0 20px;
+  font-size: 0.9375rem;
+}
+
+.ui-btn:active {
+  transform: scale(0.98);
+}
+
+.ui-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* 主按钮 - 活力橙 */
+.ui-btn--primary {
+  background: rgb(var(--ui-primary));
+  color: white;
+}
+
+.ui-btn--primary:hover:not(:disabled) {
+  background: rgb(var(--ui-primary-strong));
+}
+
+/* 次要按钮 - 信任蓝 */
+.ui-btn--secondary {
+  background: rgb(var(--ui-secondary));
+  color: white;
+}
+
+.ui-btn--secondary:hover:not(:disabled) {
+  background: rgb(var(--ui-secondary-light));
+}
+
+/* 成功按钮 - 绿色 */
+.ui-btn--success {
+  background: rgb(var(--ui-success));
+  color: white;
+}
+
+.ui-btn--success:hover:not(:disabled) {
+  background: rgba(var(--ui-success), 0.9);
+}
+
+/* 轮廓按钮 */
+.ui-btn--outline {
+  background: transparent;
+  border: 2px solid rgb(var(--ui-primary));
+  color: rgb(var(--ui-primary));
+}
+
+.ui-btn--outline:hover:not(:disabled) {
+  background: rgba(var(--ui-primary), 0.1);
+}
+
+/* 文本按钮 */
+.ui-btn--text {
+  background: transparent;
+  color: var(--ui-text-muted);
+  padding: 0 16px;
+}
+
+.ui-btn--text:hover:not(:disabled) {
+  color: var(--ui-text);
+  background: var(--ui-surface-muted);
 }
 
 .ui-muted {
@@ -321,8 +437,8 @@ button, a, input, select, textarea {
 }
 
 .v-theme--dark .theme-toggle:hover {
-  background: rgba(96, 165, 250, 0.15);
-  color: #60a5fa;
+  background: rgba(251, 146, 60, 0.15);
+  color: rgb(var(--ui-primary-light));
 }
 
 .v-theme--dark .header-link {
@@ -332,4 +448,64 @@ button, a, input, select, textarea {
 .v-theme--dark .link-divider {
   color: #475569;
 }
+
+/* Vuetify 下拉菜单优化 - 扁平化现代设计 */
+.v-overlay__content {
+  border-radius: var(--ui-radius-lg) !important;
+  overflow: hidden;
+}
+
+.v-overlay__content .v-list {
+  padding: 6px !important;
+  background: var(--ui-surface) !important;
+  border: 2px solid var(--ui-border) !important;
+  border-radius: var(--ui-radius-lg) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.1) !important;
+}
+
+.v-list-item {
+  border-radius: var(--ui-radius-md) !important;
+  margin: 2px 0 !important;
+  min-height: 48px !important;
+  padding: 12px 16px !important;
+  font-family: var(--ui-font-body) !important;
+  transition: all var(--ui-transition-fast) ease-out !important;
+  cursor: pointer !important;
+}
+
+.v-list-item:hover {
+  background: rgba(var(--ui-primary), 0.1) !important;
+}
+
+.v-list-item--active {
+  background: rgba(var(--ui-primary), 0.15) !important;
+  color: rgb(var(--ui-primary)) !important;
+  font-weight: 600 !important;
+}
+
+.v-list-item__content {
+  font-size: 0.9375rem !important;
+  font-weight: 500 !important;
+}
+
+.v-list-item-title {
+  font-family: var(--ui-font-body) !important;
+  color: var(--ui-text) !important;
+}
+
+.v-list-item--active .v-list-item-title {
+  color: rgb(var(--ui-primary)) !important;
+}
+
+/* 深色模式下的下拉菜单 */
+.v-theme--dark .v-overlay__content .v-list {
+  background: var(--ui-surface-strong) !important;
+  border-color: var(--ui-border) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.v-theme--dark .v-list-item-title {
+  color: var(--ui-text) !important;
+}
+
 </style>

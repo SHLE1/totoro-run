@@ -58,7 +58,7 @@ const handleScanned = async () => {
 
 
 <template>
-  <div class="page-container flex justify-center items-center" @mousemove="handleMouseMove">
+  <div class="page-container flex justify-start" @mousemove="handleMouseMove">
     <!-- 鼠标跟随光圈 -->
     <div
       class="cursor-glow"
@@ -155,9 +155,7 @@ const handleScanned = async () => {
 
 <style scoped>
 .page-container {
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding: 0 16px 16px;
+  padding: 24px 16px 40px;
   flex-direction: column;
   background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #f0f4f8 100%);
   overflow-y: auto;
@@ -190,7 +188,7 @@ const handleScanned = async () => {
 .hero-section {
   text-align: center;
   margin-bottom: 20px;
-  padding-top: 8px;
+  padding-top: 16px;
 }
 
 .hero-title {
@@ -379,6 +377,10 @@ const handleScanned = async () => {
   .hero-section {
     padding-top: 8px;
     margin-bottom: 16px;
+  }
+
+  .page-container {
+    padding-bottom: 32px;
   }
 
   .hero-title {

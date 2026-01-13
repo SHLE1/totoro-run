@@ -82,46 +82,46 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 <template>
   <div class="page-wrapper">
     <!-- 步骤指示器 -->
-    <div class="step-indicator">
+    <nav class="step-indicator" aria-label="进度步骤">
       <div class="step completed">
-        <span class="step-num">&#10003;</span>
+        <span class="step-num" aria-hidden="true">&#10003;</span>
         <span class="step-text">扫码</span>
       </div>
-      <div class="step-line active"></div>
+      <div class="step-line active" aria-hidden="true"></div>
       <div class="step completed">
-        <span class="step-num">&#10003;</span>
+        <span class="step-num" aria-hidden="true">&#10003;</span>
         <span class="step-text">确认</span>
       </div>
-      <div class="step-line" :class="{ active: runned }"></div>
-      <div class="step" :class="{ active: running, completed: runned }">
-        <span class="step-num">{{ runned ? '&#10003;' : '3' }}</span>
+      <div class="step-line" :class="{ active: runned }" aria-hidden="true"></div>
+      <div class="step" :class="{ active: running, completed: runned }" :aria-current="running || runned ? 'step' : undefined">
+        <span class="step-num" aria-hidden="true">{{ runned ? '&#10003;' : '3' }}</span>
         <span class="step-text">完成</span>
       </div>
-    </div>
+    </nav>
 
     <!-- 路线信息卡片 -->
-    <div class="route-info-card">
+    <section class="route-info-card" aria-labelledby="route-info-title">
       <div class="card-header">
-        <span class="header-icon">&#128205;</span>
-        <span class="header-title">已选择路线</span>
+        <span class="header-icon" aria-hidden="true">&#128205;</span>
+        <h2 id="route-info-title" class="header-title">已选择路线</h2>
       </div>
       <div class="route-name">{{ target.pointName }}</div>
-    </div>
+    </section>
 
     <!-- 跑步状态卡片 -->
-    <div class="run-card">
+    <section class="run-card" aria-live="polite">
       <!-- 未开始状态 -->
       <template v-if="!runned && !running">
         <div class="card-header">
-          <span class="header-icon">&#9888;</span>
-          <span class="header-title">开跑前请确认</span>
+          <span class="header-icon" aria-hidden="true">&#9888;</span>
+          <h2 class="header-title">开跑前请确认</h2>
         </div>
-        <div class="warning-box">
+        <div class="warning-box" role="alert">
           <p class="warning-text">跑步过程中请保持页面前台打开</p>
           <p class="warning-subtext">不要退出 &bull; 不要断网 &bull; 不要切换应用</p>
         </div>
         <VBtn
-          color="primary"
+          color="cta"
           size="large"
           class="start-run-btn"
           prepend-icon="i-mdi-run"
@@ -134,16 +134,16 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
       <!-- 跑步中状态 -->
       <template v-if="running">
         <div class="card-header">
-          <span class="header-icon running-icon">&#127939;</span>
-          <span class="header-title">跑步进行中...</span>
+          <span class="header-icon running-icon" aria-hidden="true">&#127939;</span>
+          <h2 class="header-title">跑步进行中...</h2>
         </div>
         <div class="progress-section">
           <div class="time-display">
             <div class="time-item">
               <span class="time-label">已用时</span>
-              <span class="time-value">{{ formatTime(timePassed) }}</span>
+              <span class="time-value" aria-live="polite">{{ formatTime(timePassed) }}</span>
             </div>
-            <div class="time-divider"></div>
+            <div class="time-divider" aria-hidden="true"></div>
             <div class="time-item">
               <span class="time-label">总时长</span>
               <span class="time-value">{{ formatTime(needTime) }}</span>
@@ -155,8 +155,9 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
               :model-value="(timePassed / needTime) * 100"
               height="12"
               rounded
+              :aria-label="`跑步进度 ${Math.ceil((timePassed / needTime) * 100)}%`"
             />
-            <span class="progress-percent">{{ Math.ceil((timePassed / needTime) * 100) }}%</span>
+            <span class="progress-percent" aria-hidden="true">{{ Math.ceil((timePassed / needTime) * 100) }}%</span>
           </div>
           <p class="running-hint">请勿关闭此页面，跑步完成后会自动提示</p>
         </div>
@@ -165,11 +166,11 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
       <!-- 完成状态 -->
       <template v-if="runned">
         <div class="card-header success">
-          <span class="header-icon">&#127881;</span>
-          <span class="header-title">跑步完成</span>
+          <span class="header-icon" aria-hidden="true">&#127881;</span>
+          <h2 class="header-title">跑步完成</h2>
         </div>
-        <div class="success-section">
-          <div class="success-icon">&#10004;</div>
+        <div class="success-section" role="status">
+          <div class="success-icon" aria-hidden="true">&#10004;</div>
           <p class="success-text">恭喜！本次跑步已完成</p>
           <p class="success-hint">请前往 App 查看跑步记录</p>
         </div>
@@ -179,7 +180,7 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
           </VBtn>
         </NuxtLink>
       </template>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -217,7 +218,7 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   justify-content: center;
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
 }
 
 .step.active .step-num {
@@ -293,10 +294,17 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   50% { transform: translateY(-4px); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .running-icon {
+    animation: none;
+  }
+}
+
 .header-title {
   font-size: 1rem;
   font-weight: 600;
   color: #1e293b;
+  margin: 0;
 }
 
 /* 路线信息 */
@@ -446,5 +454,100 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   .time-value {
     font-size: 1.5rem;
   }
+}
+</style>
+
+<!-- 深色模式样式（非 scoped） -->
+<style>
+.v-theme--dark .step-num {
+  background: #334155;
+  color: #64748b;
+}
+
+.v-theme--dark .step.active .step-num {
+  background: #60a5fa;
+  color: #0f172a;
+}
+
+.v-theme--dark .step.completed .step-num {
+  background: #4ade80;
+  color: #0f172a;
+}
+
+.v-theme--dark .step.active .step-text {
+  color: #60a5fa;
+}
+
+.v-theme--dark .step.completed .step-text {
+  color: #4ade80;
+}
+
+.v-theme--dark .step-line {
+  background: #334155;
+}
+
+.v-theme--dark .step-line.active {
+  background: #4ade80;
+}
+
+.v-theme--dark .route-info-card,
+.v-theme--dark .run-card {
+  background: #1e293b;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.v-theme--dark .card-header {
+  border-bottom-color: #334155;
+}
+
+.v-theme--dark .card-header.success {
+  border-bottom-color: #166534;
+}
+
+.v-theme--dark .header-title {
+  color: #f1f5f9;
+}
+
+.v-theme--dark .route-name {
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.15);
+}
+
+.v-theme--dark .warning-box {
+  background: rgba(252, 211, 77, 0.15);
+  border-color: #a16207;
+}
+
+.v-theme--dark .warning-text {
+  color: #fde047;
+}
+
+.v-theme--dark .warning-subtext {
+  color: #fcd34d;
+}
+
+.v-theme--dark .time-value {
+  color: #f1f5f9;
+}
+
+.v-theme--dark .time-divider {
+  background: #334155;
+}
+
+.v-theme--dark .progress-percent {
+  color: #60a5fa;
+}
+
+.v-theme--dark .success-icon {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+}
+
+.v-theme--dark .success-text {
+  color: #f1f5f9;
+}
+
+.v-theme--dark .success-hint {
+  color: #94a3b8;
 }
 </style>

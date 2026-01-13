@@ -1,4 +1,10 @@
 <script setup lang="ts">
+const { isDark, toggleTheme, initTheme } = useAppTheme();
+
+onMounted(() => {
+  initTheme();
+});
+
 useHead({
   title: '龙猫!启动!',
   link: [
@@ -30,26 +36,45 @@ window.global = window;
 
 <template>
   <VApp>
-    <VAppBar class="custom-app-bar" elevation="0">
+    <VAppBar class="custom-app-bar" elevation="0" role="banner">
       <div class="app-bar-content">
         <VAppBarTitle class="app-title">
           <span>让每个人都能感受到科技的乐趣</span>
         </VAppBarTitle>
-        <div class="header-links">
-          <a href="https://github.com/SHLE1/totoro-run" target="_blank" class="header-link">
-            <span class="mdi mdi-github"></span> GitHub
+        <nav class="header-links" aria-label="外部链接">
+          <button
+            class="theme-toggle"
+            :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
+            @click="toggleTheme"
+          >
+            <span class="mdi" :class="isDark ? 'mdi-weather-sunny' : 'mdi-weather-night'" aria-hidden="true"></span>
+          </button>
+          <a
+            href="https://github.com/SHLE1/totoro-run"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="header-link"
+            aria-label="在 GitHub 上查看源代码"
+          >
+            <span class="mdi mdi-github" aria-hidden="true"></span> GitHub
           </a>
-          <span class="link-divider">|</span>
-          <a href="https://nuaaguide.online/" target="_blank" class="header-link">
-            <span class="mdi mdi-school"></span> 校友项目
+          <span class="link-divider" aria-hidden="true">|</span>
+          <a
+            href="https://nuaaguide.online/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="header-link"
+            aria-label="访问校友项目网站"
+          >
+            <span class="mdi mdi-school" aria-hidden="true"></span> 校友项目
           </a>
-        </div>
+        </nav>
       </div>
     </VAppBar>
-    <VMain>
+    <VMain role="main">
       <div class="p-4">
         <NuxtPage />
-        <p class="mt-4 text-xs">
+        <p class="mt-4 text-xs footer-text">
           Powered by Hypered1
         </p>
       </div>
@@ -59,8 +84,8 @@ window.global = window;
 
 <style scoped>
 .custom-app-bar {
-  background: #ffffff !important;
-  border-bottom: 2px solid #3b82f6;
+  background: rgb(var(--v-theme-surface)) !important;
+  border-bottom: 2px solid rgb(var(--v-theme-primary));
   height: auto !important;
   min-height: 56px;
 }
@@ -80,13 +105,37 @@ window.global = window;
 }
 
 :deep(.app-title .v-toolbar-title__placeholder) {
-  color: #1e3a5f !important;
+  color: rgb(var(--v-theme-on-surface)) !important;
 }
 
 .header-links {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 .header-link {
@@ -97,11 +146,22 @@ window.global = window;
 }
 
 .header-link:hover {
-  color: #3b82f6;
+  color: rgb(var(--v-theme-primary));
+}
+
+.header-link:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .link-divider {
   color: #cbd5e1;
+}
+
+.footer-text {
+  color: rgb(var(--v-theme-on-surface));
+  opacity: 0.6;
 }
 
 @media (max-width: 480px) {
@@ -128,5 +188,64 @@ window.global = window;
 *, *::before, *::after {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* 尊重用户动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 全局焦点样式 */
+:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
+}
+
+/* 移动端优化 */
+html, body {
+  overscroll-behavior: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS Safari 安全区域适配 */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* 防止 iOS 双击缩放 */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* 深色模式下的全局调整 */
+.v-theme--dark {
+  --v-border-color: rgba(255, 255, 255, 0.12);
+}
+
+.v-theme--dark .theme-toggle {
+  color: #94a3b8;
+}
+
+.v-theme--dark .theme-toggle:hover {
+  background: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+}
+
+.v-theme--dark .header-link {
+  color: #94a3b8;
+}
+
+.v-theme--dark .link-divider {
+  color: #475569;
 }
 </style>

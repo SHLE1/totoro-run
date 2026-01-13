@@ -63,14 +63,22 @@ const handleScanned = async () => {
     <div
       class="cursor-glow"
       :style="{ left: mouseX + 'px', top: mouseY + 'px' }"
+      aria-hidden="true"
     ></div>
 
-    <v-dialog v-model="showDialog" persistent max-width="420" :scrim="true">
-      <v-card class="dialog-card">
-        <v-card-title class="dialog-title">
-          <span class="dialog-icon">&#128075;</span> 欢迎使用
+    <v-dialog
+      v-model="showDialog"
+      persistent
+      max-width="420"
+      :scrim="true"
+      aria-labelledby="welcome-dialog-title"
+      aria-describedby="welcome-dialog-desc"
+    >
+      <v-card class="dialog-card" role="alertdialog">
+        <v-card-title id="welcome-dialog-title" class="dialog-title">
+          <span class="dialog-icon" aria-hidden="true">&#128075;</span> 欢迎使用
         </v-card-title>
-        <v-card-text class="dialog-text">
+        <v-card-text id="welcome-dialog-desc" class="dialog-text">
           <p>这是一个<strong>完全免费</strong>的公益项目。</p>
           <p class="mt-2 text-hint">如遇失败请稍后重试，可能是服务器繁忙或正在维护。</p>
         </v-card-text>
@@ -82,35 +90,41 @@ const handleScanned = async () => {
       </v-card>
     </v-dialog>
 
-    <div class="main-content">
+    <main class="main-content">
       <!-- 标题区域 -->
-      <div class="hero-section">
+      <header class="hero-section">
         <h1 class="hero-title">龙猫校园助手</h1>
         <p class="hero-subtitle">简单三步，轻松完成校园跑</p>
-      </div>
+      </header>
 
       <!-- 扫码区域 -->
-      <div class="scan-section">
-        <div class="step-indicator">
-          <div class="step active">
-            <span class="step-num">1</span>
+      <section class="scan-section" aria-label="扫码登录">
+        <nav class="step-indicator" aria-label="进度步骤">
+          <div class="step active" aria-current="step">
+            <span class="step-num" aria-hidden="true">1</span>
             <span class="step-text">扫码</span>
           </div>
-          <div class="step-line"></div>
+          <div class="step-line" aria-hidden="true"></div>
           <div class="step">
-            <span class="step-num">2</span>
+            <span class="step-num" aria-hidden="true">2</span>
             <span class="step-text">确认</span>
           </div>
-          <div class="step-line"></div>
+          <div class="step-line" aria-hidden="true"></div>
           <div class="step">
-            <span class="step-num">3</span>
+            <span class="step-num" aria-hidden="true">3</span>
             <span class="step-text">完成</span>
           </div>
-        </div>
+        </nav>
 
         <VCard class="qr-code-card" elevation="4">
-          <img v-if="!message" :src="data!.imgUrl" class="qr-image" referrerpolicy="no-referrer" />
-          <div v-else class="qr-message">
+          <img
+            v-if="!message"
+            :src="data!.imgUrl"
+            class="qr-image"
+            referrerpolicy="no-referrer"
+            alt="微信扫码登录二维码"
+          />
+          <div v-else class="qr-message" role="alert" aria-live="polite">
             {{ message }}
           </div>
         </VCard>
@@ -119,23 +133,23 @@ const handleScanned = async () => {
 
         <VBtn
           size="large"
-          color="primary"
+          color="cta"
           class="next-btn"
           append-icon="i-mdi-arrow-right"
           @click="handleScanned"
         >
           <strong>扫码完成，下一步</strong>
         </VBtn>
-      </div>
+      </section>
 
       <!-- 底部信息 -->
-      <div class="footer-section">
+      <footer class="footer-section">
         <div class="footer-badge">
-          <span class="badge-icon">&#9889;</span>
+          <span class="badge-icon" aria-hidden="true">&#9889;</span>
           <span>完全免费 &bull; 开源项目</span>
         </div>
-      </div>
-    </div>
+      </footer>
+    </main>
   </div>
 </template>
 
@@ -143,7 +157,7 @@ const handleScanned = async () => {
 .page-container {
   min-height: 100vh;
   min-height: 100dvh;
-  padding: 16px;
+  padding: 0 16px 16px;
   flex-direction: column;
   background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #f0f4f8 100%);
   overflow-y: auto;
@@ -176,7 +190,7 @@ const handleScanned = async () => {
 .hero-section {
   text-align: center;
   margin-bottom: 20px;
-  padding-top: 64px;
+  padding-top: 8px;
 }
 
 .hero-title {
@@ -220,7 +234,7 @@ const handleScanned = async () => {
   justify-content: center;
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
 }
 
 .step.active .step-num {
@@ -363,7 +377,7 @@ const handleScanned = async () => {
 /* 响应式 */
 @media (max-width: 480px) {
   .hero-section {
-    padding-top: 40px;
+    padding-top: 8px;
     margin-bottom: 16px;
   }
 
@@ -383,5 +397,72 @@ const handleScanned = async () => {
   .cursor-glow {
     display: none;
   }
+}
+</style>
+
+<!-- 深色模式样式（非 scoped） -->
+<style>
+.v-theme--dark .page-container {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+.v-theme--dark .cursor-glow {
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.2) 0%, rgba(96, 165, 250, 0.08) 40%, transparent 70%);
+}
+
+.v-theme--dark .hero-title {
+  color: #f1f5f9;
+}
+
+.v-theme--dark .hero-subtitle {
+  color: #94a3b8;
+}
+
+.v-theme--dark .step-num {
+  background: #334155;
+  color: #64748b;
+}
+
+.v-theme--dark .step.active .step-num {
+  background: #60a5fa;
+  color: #0f172a;
+}
+
+.v-theme--dark .step.active .step-text {
+  color: #60a5fa;
+}
+
+.v-theme--dark .step-line {
+  background: #334155;
+}
+
+.v-theme--dark .scan-section {
+  background: #1e293b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.v-theme--dark .qr-message {
+  color: #f87171;
+}
+
+.v-theme--dark .scan-hint {
+  color: #94a3b8;
+}
+
+.v-theme--dark .scan-hint strong {
+  color: #4ade80;
+}
+
+.v-theme--dark .footer-badge {
+  background: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+}
+
+.v-theme--dark .dialog-text {
+  color: #94a3b8;
+}
+
+.v-theme--dark .text-hint {
+  color: #64748b;
 }
 </style>

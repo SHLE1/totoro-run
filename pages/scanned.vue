@@ -23,55 +23,55 @@ const handleUpdate = (target: string) => {
 <template>
   <div class="page-wrapper">
     <!-- 步骤指示器 -->
-    <div class="step-indicator">
+    <nav class="step-indicator" aria-label="进度步骤">
       <div class="step completed">
-        <span class="step-num">&#10003;</span>
+        <span class="step-num" aria-hidden="true">&#10003;</span>
         <span class="step-text">扫码</span>
       </div>
-      <div class="step-line active"></div>
-      <div class="step active">
-        <span class="step-num">2</span>
+      <div class="step-line active" aria-hidden="true"></div>
+      <div class="step active" aria-current="step">
+        <span class="step-num" aria-hidden="true">2</span>
         <span class="step-text">确认</span>
       </div>
-      <div class="step-line"></div>
+      <div class="step-line" aria-hidden="true"></div>
       <div class="step">
-        <span class="step-num">3</span>
+        <span class="step-num" aria-hidden="true">3</span>
         <span class="step-text">完成</span>
       </div>
-    </div>
+    </nav>
 
     <!-- 个人信息卡片 -->
-    <div class="info-card">
+    <section class="info-card" aria-labelledby="info-card-title">
       <div class="card-header">
-        <span class="header-icon">&#128100;</span>
-        <span class="header-title">个人信息确认</span>
+        <span class="header-icon" aria-hidden="true">&#128100;</span>
+        <h2 id="info-card-title" class="header-title">个人信息确认</h2>
       </div>
-      <div class="info-grid">
+      <dl class="info-grid">
         <div class="info-item">
-          <span class="info-label">学校</span>
-          <span class="info-value">{{ session.campusName }}</span>
+          <dt class="info-label">学校</dt>
+          <dd class="info-value">{{ session.campusName }}</dd>
         </div>
         <div class="info-item">
-          <span class="info-label">学院</span>
-          <span class="info-value">{{ session.collegeName }}</span>
+          <dt class="info-label">学院</dt>
+          <dd class="info-value">{{ session.collegeName }}</dd>
         </div>
         <div class="info-item">
-          <span class="info-label">学号</span>
-          <span class="info-value">{{ session.stuNumber }}</span>
+          <dt class="info-label">学号</dt>
+          <dd class="info-value">{{ session.stuNumber }}</dd>
         </div>
         <div class="info-item">
-          <span class="info-label">姓名</span>
-          <span class="info-value">{{ session.stuName }}</span>
+          <dt class="info-label">姓名</dt>
+          <dd class="info-value">{{ session.stuName }}</dd>
         </div>
-      </div>
-    </div>
+      </dl>
+    </section>
 
     <!-- 路线选择卡片 -->
     <template v-if="data">
-      <div class="route-card">
+      <section class="route-card" aria-labelledby="route-card-title">
         <div class="card-header">
-          <span class="header-icon">&#128205;</span>
-          <span class="header-title">选择跑步路线</span>
+          <span class="header-icon" aria-hidden="true">&#128205;</span>
+          <h2 id="route-card-title" class="header-title">选择跑步路线</h2>
         </div>
 
         <VSelect
@@ -84,6 +84,7 @@ const handleUpdate = (target: string) => {
           class="route-select"
           density="comfortable"
           hide-details
+          aria-label="选择跑步路线"
         />
 
         <div class="btn-group">
@@ -97,29 +98,29 @@ const handleUpdate = (target: string) => {
             随机选择
           </VBtn>
           <NuxtLink v-if="selectValue" :to="`/run/${encodeURIComponent(selectValue)}`" class="start-link">
-            <VBtn color="primary" append-icon="i-mdi-run" class="start-btn">
+            <VBtn color="cta" append-icon="i-mdi-run" class="start-btn">
               开始跑步
             </VBtn>
           </NuxtLink>
-          <VBtn v-else color="primary" append-icon="i-mdi-run" class="start-btn" disabled>
+          <VBtn v-else color="cta" append-icon="i-mdi-run" class="start-btn" disabled aria-disabled="true">
             开始跑步
           </VBtn>
         </div>
-      </div>
+      </section>
 
       <!-- 地图预览卡片 -->
-      <div class="map-card">
+      <section class="map-card" aria-labelledby="map-card-title">
         <div class="card-header">
-          <span class="header-icon">&#128506;</span>
-          <span class="header-title">路线预览</span>
+          <span class="header-icon" aria-hidden="true">&#128506;</span>
+          <h2 id="map-card-title" class="header-title">路线预览</h2>
         </div>
         <p class="map-hint">地图中的路线仅为展示效果，不等于最终路线</p>
-        <div class="map-container">
+        <div class="map-container" role="img" aria-label="跑步路线地图预览">
           <ClientOnly>
             <TMap :target="selectValue" @update:target="handleUpdate" />
           </ClientOnly>
         </div>
-      </div>
+      </section>
     </template>
   </div>
 </template>
@@ -158,7 +159,7 @@ const handleUpdate = (target: string) => {
   justify-content: center;
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
 }
 
 .step.active .step-num {
@@ -226,6 +227,7 @@ const handleUpdate = (target: string) => {
   font-size: 1rem;
   font-weight: 600;
   color: #1e293b;
+  margin: 0;
 }
 
 /* 个人信息网格 */
@@ -233,6 +235,8 @@ const handleUpdate = (target: string) => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  margin: 0;
+  padding: 0;
 }
 
 .info-item {
@@ -254,6 +258,7 @@ const handleUpdate = (target: string) => {
   font-size: 0.95rem;
   color: #1e293b;
   font-weight: 600;
+  margin: 0;
 }
 
 /* 路线选择 */
@@ -327,5 +332,66 @@ const handleUpdate = (target: string) => {
   .start-link {
     min-width: 100%;
   }
+}
+</style>
+
+<!-- 深色模式样式（非 scoped） -->
+<style>
+.v-theme--dark .step-num {
+  background: #334155;
+  color: #64748b;
+}
+
+.v-theme--dark .step.active .step-num {
+  background: #60a5fa;
+  color: #0f172a;
+}
+
+.v-theme--dark .step.completed .step-num {
+  background: #4ade80;
+  color: #0f172a;
+}
+
+.v-theme--dark .step.active .step-text {
+  color: #60a5fa;
+}
+
+.v-theme--dark .step.completed .step-text {
+  color: #4ade80;
+}
+
+.v-theme--dark .step-line {
+  background: #334155;
+}
+
+.v-theme--dark .step-line.active {
+  background: #4ade80;
+}
+
+.v-theme--dark .info-card,
+.v-theme--dark .route-card,
+.v-theme--dark .map-card {
+  background: #1e293b;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.v-theme--dark .card-header {
+  border-bottom-color: #334155;
+}
+
+.v-theme--dark .header-title {
+  color: #f1f5f9;
+}
+
+.v-theme--dark .info-item {
+  background: #0f172a;
+}
+
+.v-theme--dark .info-value {
+  color: #f1f5f9;
+}
+
+.v-theme--dark .map-container {
+  background: #0f172a;
 }
 </style>

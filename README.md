@@ -1,4 +1,4 @@
-# Totoro-paradise
+# Totoro-run
 
 阳光体育跑步模拟工具，无需 MITM 中间人攻击。
 
@@ -18,14 +18,6 @@
 - **UI**: Vuetify 3 + Element Plus + UnoCSS
 - **地图**: 天地图 API
 - **包管理**: pnpm
-
-## UI/UX 设计规范
-
-- 设计 token 统一在 `app.vue` 的 CSS 变量中维护（主色、表面色、圆角、阴影、按钮高度）。
-- 字体使用本地字体文件（`public/fonts/noto-sans-sc/`），仅 400/600/700 权重，避免 500 在 Chrome 下粗细不均。
-- 复用组件：`components/StepIndicator.vue`、`components/UiCard.vue`。
-- 按钮尺寸规范：默认 48px、次级 44px（`.ui-btn` / `.ui-btn--sm`）。
-- 暗色模式通过 CSS 变量切换，避免页面级重复样式。
 
 ## 快速开始
 

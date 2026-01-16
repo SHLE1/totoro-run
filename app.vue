@@ -2,8 +2,21 @@
 const { isDark, toggleTheme, initTheme } = useAppTheme();
 const isRouteLoading = useState<boolean>('route-loading', () => true);
 
+const mouseX = ref(0);
+const mouseY = ref(0);
+
+const handleMouseMove = (e: MouseEvent) => {
+  mouseX.value = e.clientX;
+  mouseY.value = e.clientY;
+};
+
 onMounted(() => {
   initTheme();
+  window.addEventListener('mousemove', handleMouseMove);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', handleMouseMove);
 });
 
 useHead({
@@ -37,6 +50,11 @@ window.global = window;
 
 <template>
   <VApp>
+    <div
+      class="cursor-glow"
+      :style="{ left: mouseX + 'px', top: mouseY + 'px' }"
+      aria-hidden="true"
+    ></div>
     <LoadingOverlay :active="isRouteLoading" />
     <VAppBar class="custom-app-bar" elevation="0" role="banner">
       <div class="app-bar-content">
@@ -279,6 +297,44 @@ window.global = window;
   --ui-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+:root {
+  /* Glassmorphism Tokens */
+  --ui-surface-glass: rgba(255, 255, 255, 0.7);
+  --ui-surface-glass-strong: rgba(255, 255, 255, 0.85);
+  --ui-border-glass: rgba(255, 255, 255, 0.5);
+  --ui-shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --ui-blur-glass: blur(12px);
+
+  /* Animation Tokens */
+  --ui-anim-duration-enter: 0.6s;
+  --ui-anim-ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.v-theme--dark {
+  /* Dark Glass Tokens */
+  --ui-surface-glass: rgba(15, 23, 42, 0.6);
+  --ui-surface-glass-strong: rgba(30, 41, 59, 0.7);
+  --ui-border-glass: rgba(255, 255, 255, 0.08);
+  --ui-shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Global Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 .ui-btn {
   height: var(--ui-btn-height);
   border-radius: var(--ui-radius-lg);
@@ -464,6 +520,38 @@ button, a, input, select, textarea {
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.1) !important;
 }
 
+.cursor-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(var(--ui-primary) / 0.3) 0%,
+    rgb(var(--ui-secondary) / 0.15) 30%,
+    transparent 70%
+  );
+  filter: blur(80px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  transition: left 0.1s cubic-bezier(0.2, 0, 0.2, 1), 
+              top 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+  mix-blend-mode: normal;
+}
+
+@media (prefers-color-scheme: dark) {
+  .cursor-glow {
+    background: radial-gradient(
+      circle,
+      rgb(var(--ui-primary) / 0.4) 0%,
+      rgb(var(--ui-primary) / 0.1) 40%,
+      transparent 70%
+    );
+    mix-blend-mode: screen;
+  }
+}
+
 .v-list-item {
   border-radius: var(--ui-radius-md) !important;
   margin: 2px 0 !important;
@@ -503,6 +591,18 @@ button, a, input, select, textarea {
   background: var(--ui-surface-strong) !important;
   border-color: var(--ui-border) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.anim-enter {
+  animation: fadeInUp var(--ui-anim-duration-enter) var(--ui-anim-ease-out-back) backwards;
+}
+
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
+.anim-delay-3 { animation-delay: 0.3s; }
+
+.anim-float {
+  animation: floatSlow 6s ease-in-out infinite;
 }
 
 .v-theme--dark .v-list-item-title {

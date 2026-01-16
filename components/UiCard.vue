@@ -29,15 +29,22 @@ const toneClass = computed(() => `tone-${props.tone}`);
 
 <style scoped>
 .ui-card {
-  background: var(--ui-surface);
+  background: var(--ui-surface-glass);
+  backdrop-filter: var(--ui-blur-glass);
+  -webkit-backdrop-filter: var(--ui-blur-glass);
   border-radius: var(--ui-radius-lg);
-  border: 2px solid var(--ui-border);
+  border: 1px solid var(--ui-border-glass);
   padding: 24px;
-  transition: border-color var(--ui-transition-normal) ease-out;
+  box-shadow: var(--ui-shadow-glass);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.3s ease, 
+              border-color 0.3s ease;
 }
 
 .ui-card:hover {
-  border-color: rgb(var(--ui-primary));
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px -4px rgba(0, 0, 0, 0.12);
+  border-color: rgb(var(--ui-primary) / 0.5);
 }
 
 .ui-card__header {
@@ -46,7 +53,7 @@ const toneClass = computed(() => `tone-${props.tone}`);
   gap: 12px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 2px solid var(--ui-divider);
+  border-bottom: 1px solid var(--ui-border-glass);
 }
 
 .ui-card__icon {
@@ -71,7 +78,7 @@ const toneClass = computed(() => `tone-${props.tone}`);
 
 /* Tone variations */
 .tone-success .ui-card__header {
-  border-bottom-color: rgba(var(--ui-success), 0.3);
+  border-bottom-color: rgb(var(--ui-success) / 0.3);
 }
 
 .tone-success .ui-card__icon {
@@ -79,11 +86,11 @@ const toneClass = computed(() => `tone-${props.tone}`);
 }
 
 .tone-success:hover {
-  border-color: rgb(var(--ui-success));
+  border-color: rgb(var(--ui-success) / 0.5);
 }
 
 .tone-warning .ui-card__header {
-  border-bottom-color: rgba(var(--ui-warning), 0.3);
+  border-bottom-color: rgb(var(--ui-warning) / 0.3);
 }
 
 .tone-warning .ui-card__icon {
@@ -91,7 +98,7 @@ const toneClass = computed(() => `tone-${props.tone}`);
 }
 
 .tone-warning:hover {
-  border-color: rgb(var(--ui-warning));
+  border-color: rgb(var(--ui-warning) / 0.5);
 }
 
 .tone-info .ui-card__icon {
@@ -99,11 +106,12 @@ const toneClass = computed(() => `tone-${props.tone}`);
 }
 
 .tone-info:hover {
-  border-color: rgb(var(--ui-secondary));
+  border-color: rgb(var(--ui-secondary) / 0.5);
 }
 
 /* 深色模式优化 */
 .v-theme--dark .ui-card {
-  background: var(--ui-surface-muted);
+  background: var(--ui-surface-glass);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 </style>

@@ -8,8 +8,7 @@ const session = useSession();
 const showDialog = ref(true);
 const scanLoading = ref(false);
 
-const mouseX = ref(0);
-const mouseY = ref(0);
+// Cursor logic moved to app.vue for global effect
 
 const qrErrorMessage = computed(() => message.value || (error.value ? '二维码获取失败，请稍后重试。' : ''));
 const hasQrError = computed(() => !!qrErrorMessage.value);
@@ -17,11 +16,6 @@ const hasQrImage = computed(() => !!data.value?.imgUrl);
 const canScan = computed(
   () => hasQrImage.value && !pending.value && !scanLoading.value && !hasQrError.value
 );
-
-const handleMouseMove = (e: MouseEvent) => {
-  mouseX.value = e.clientX;
-  mouseY.value = e.clientY;
-};
 
 const closeDialog = () => {
   showDialog.value = false;
@@ -91,12 +85,8 @@ const handleScanned = async () => {
 </script>
 
 <template>
-  <div class="page-container flex justify-start" @mousemove="handleMouseMove">
-    <div
-      class="cursor-glow"
-      :style="{ left: mouseX + 'px', top: mouseY + 'px' }"
-      aria-hidden="true"
-    ></div>
+  <div class="page-container flex justify-start">
+
 
     <v-dialog
       v-model="showDialog"
@@ -123,14 +113,14 @@ const handleScanned = async () => {
     </v-dialog>
 
     <main class="main-content">
-      <header class="hero-section">
-        <h1 class="hero-title">龙猫校园助手</h1>
+      <header class="hero-section anim-enter">
+        <h1 class="hero-title anim-float">龙猫校园助手</h1>
         <p class="hero-subtitle">简单三步，轻松完成校园跑</p>
       </header>
 
-      <StepIndicator :active-step="1" />
+      <StepIndicator :active-step="1" class="anim-enter anim-delay-1" />
 
-      <UiCard class="scan-section">
+      <UiCard class="scan-section anim-enter anim-delay-2">
         <VCard
           class="qr-code-card"
           elevation="0"
@@ -176,7 +166,7 @@ const handleScanned = async () => {
         </div>
       </UiCard>
 
-      <footer class="footer-section">
+      <footer class="footer-section anim-enter anim-delay-3">
         <div class="footer-badge">
           <span class="mdi mdi-lightning-bolt badge-icon" aria-hidden="true"></span>
           <span>完全免费 &bull; 开源项目</span>
@@ -190,33 +180,18 @@ const handleScanned = async () => {
 .page-container {
   padding: 24px 16px 40px;
   flex-direction: column;
-  background: linear-gradient(
-    135deg,
-    var(--ui-surface-muted) 0%,
-    var(--ui-surface-strong) 50%,
-    var(--ui-surface-muted) 100%
-  );
+  background: radial-gradient(at 0% 0%, rgba(var(--ui-secondary-light), 0.3) 0px, transparent 50%),
+              radial-gradient(at 100% 0%, rgba(var(--ui-primary-light), 0.3) 0px, transparent 50%),
+              radial-gradient(at 100% 100%, rgba(var(--ui-secondary), 0.1) 0px, transparent 50%),
+              radial-gradient(at 0% 100%, rgba(var(--ui-primary), 0.1) 0px, transparent 50%),
+              var(--ui-surface-muted);
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
-.cursor-glow {
-  position: fixed;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(var(--ui-primary), 0.18) 0%,
-    rgba(var(--ui-primary), 0.08) 40%,
-    transparent 70%
-  );
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  transition: left 0.1s ease-out, top 0.1s ease-out;
-}
+
+
 
 .main-content {
   position: relative;

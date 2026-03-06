@@ -13,8 +13,31 @@ const sunRunPaper = useSunRunPaper();
 const { params } = useRoute();
 const session = useSession();
 const { route } = params as { route: string };
+
+if (!session.value?.token) {
+  await navigateTo('/');
+}
+
+if (!sunRunPaper.value && session.value?.token) {
+  try {
+    sunRunPaper.value = await TotoroApiWrapper.getSunRunPaper({
+      token: session.value.token,
+      campusId: session.value.campusId,
+      schoolId: session.value.schoolId,
+      stuNumber: session.value.stuNumber,
+    });
+  } catch (error) {
+    console.error('恢复跑步配置失败:', error);
+    await navigateTo('/');
+  }
+}
+
+if (!sunRunPaper.value?.runPointList.some((targetRoute) => targetRoute.pointId === route)) {
+  await navigateTo('/scanned');
+}
+
 const runned = computed(() => !running.value && !!needTime.value);
-const target = computed(() => sunRunPaper.value.runPointList.find((r) => r.pointId === route)!);
+const target = computed(() => sunRunPaper.value?.runPointList.find((r) => r.pointId === route) ?? null);
 
 const runState = computed(() => {
   if (running.value) {
@@ -82,6 +105,11 @@ const formatTime = (ms: number) => {
 };
 
 const handleRun = async () => {
+  if (!session.value || !sunRunPaper.value || !target.value) {
+    await navigateTo('/');
+    return;
+  }
+
   const { req, endTime: targetTime } = await generateRunReq({
     distance: sunRunPaper.value.mileage,
     routeId: target.value.pointId,
@@ -137,7 +165,7 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 }
 </script>
 <template>
-  <div class="page-wrapper">
+  <div v-if="target" class="page-wrapper">
     <StepIndicator :active-step="activeStep" :completed-steps="completedSteps" />
 
     <div class="page-stack">

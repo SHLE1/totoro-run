@@ -5,8 +5,16 @@ const router = useRouter();
 const { data, pending, error, refresh } = await useFetch<{ uuid: string; imgUrl: string }>('/api/scanQr');
 const message = ref('');
 const session = useSession();
+const sunRunPaper = useSunRunPaper();
 const showDialog = ref(true);
 const scanLoading = ref(false);
+const autoChecking = ref(false);
+const pollStartedAt = ref(0);
+const pollUuid = ref<string | null>(null);
+let pollTimer: ReturnType<typeof window.setTimeout> | null = null;
+
+const POLL_INTERVAL = 1500;
+const POLL_TIMEOUT = 2 * 60 * 1000;
 
 // Cursor logic moved to app.vue for global effect
 
@@ -16,14 +24,36 @@ const hasQrImage = computed(() => !!data.value?.imgUrl);
 const canScan = computed(
   () => hasQrImage.value && !pending.value && !scanLoading.value && !hasQrError.value
 );
+const scanStatusText = computed(() => {
+  if (scanLoading.value) {
+    return '登录中...';
+  }
+  if (autoChecking.value && canScan.value) {
+    return '已开启自动检测';
+  }
+  return hasQrError.value ? '重新获取二维码' : '等待扫码';
+});
 
 const closeDialog = () => {
   showDialog.value = false;
 };
 
+const stopPolling = () => {
+  autoChecking.value = false;
+  pollUuid.value = null;
+  if (pollTimer !== null) {
+    window.clearTimeout(pollTimer);
+    pollTimer = null;
+  }
+};
+
 const handleRefresh = async () => {
+  stopPolling();
   message.value = '';
   await refresh();
+  if (data.value?.uuid && !error.value) {
+    startPolling(data.value.uuid);
+  }
 };
 
 const handleQrClick = () => {
@@ -33,27 +63,16 @@ const handleQrClick = () => {
   handleRefresh();
 };
 
-const handleScanned = async () => {
+const completeLogin = async (code: string) => {
   if (scanLoading.value) {
     return;
   }
-  const uuid = data.value?.uuid;
-  if (!uuid) {
-    message.value = '二维码未就绪，请刷新后重试。';
-    return;
-  }
 
+  stopPolling();
   scanLoading.value = true;
   message.value = '';
 
   try {
-    const scanRes = await $fetch(`/api/scanQr/${uuid}`);
-    const { code, message: scanMessage } = scanRes as { code: string | null; message: string | null };
-    if (!code) {
-      message.value = scanMessage || '扫码失败，请重试。';
-      return;
-    }
-
     const loginResult = (
       await Promise.all([TotoroApiWrapper.getLesseeServer(code), TotoroApiWrapper.getAppAd(code)])
     )[0];
@@ -64,6 +83,7 @@ const handleScanned = async () => {
 
     const personalInfo = await TotoroApiWrapper.login({ token: loginResult.token });
     session.value = { ...personalInfo, token: loginResult.token, code, data: null };
+    sunRunPaper.value = null;
     const breq = {
       token: loginResult.token,
       campusId: personalInfo.campusId,
@@ -82,6 +102,61 @@ const handleScanned = async () => {
     scanLoading.value = false;
   }
 };
+
+const pollScanStatus = async (uuid: string) => {
+  if (scanLoading.value || data.value?.uuid !== uuid || pollUuid.value !== uuid) {
+    return;
+  }
+
+  if (Date.now() - pollStartedAt.value >= POLL_TIMEOUT) {
+    stopPolling();
+    message.value = '二维码可能已过期，请点击刷新。';
+    return;
+  }
+
+  try {
+    const scanRes = await $fetch(`/api/scanQr/${uuid}`);
+    const { code } = scanRes as { code: string | null; message: string | null };
+    if (code) {
+      await completeLogin(code);
+      return;
+    }
+  } catch (e) {
+    console.error('自动检测扫码状态失败:', e);
+  }
+
+  pollTimer = window.setTimeout(() => {
+    void pollScanStatus(uuid);
+  }, POLL_INTERVAL);
+};
+
+const startPolling = (uuid: string) => {
+  if (!uuid || scanLoading.value) {
+    return;
+  }
+
+  stopPolling();
+  autoChecking.value = true;
+  pollUuid.value = uuid;
+  pollStartedAt.value = Date.now();
+  void pollScanStatus(uuid);
+};
+
+watch(
+  () => data.value?.uuid,
+  (uuid) => {
+    if (!uuid || pending.value || error.value) {
+      stopPolling();
+      return;
+    }
+    startPolling(uuid);
+  },
+  { immediate: true },
+);
+
+onUnmounted(() => {
+  stopPolling();
+});
 </script>
 
 <template>
@@ -150,18 +225,17 @@ const handleScanned = async () => {
           />
         </VCard>
 
-        <p class="scan-hint">请使用<strong>微信</strong>扫描上方二维码</p>
+        <p class="scan-hint">请使用<strong>微信</strong>扫描上方二维码，扫码成功后会自动进入下一步</p>
 
         <div class="scan-actions">
           <VBtn
             color="cta"
             class="ui-btn next-btn"
-            append-icon="i-mdi-arrow-right"
             :loading="scanLoading"
-            :disabled="!canScan"
-            @click="handleScanned"
+            :disabled="pending || (!hasQrError && canScan)"
+            @click="handleRefresh"
           >
-            <strong>扫码完成，下一步</strong>
+            <strong>{{ scanStatusText }}</strong>
           </VBtn>
         </div>
       </UiCard>

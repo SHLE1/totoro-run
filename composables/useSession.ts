@@ -30,6 +30,7 @@ interface Session {
   code: string;
 }
 
-const useSession = () => useState<Session>('totoroSession');
+const useSession = () =>
+  usePersistedState<Session | null>('totoroSessionState', 'totoro:session', () => null);
 
 export default useSession;

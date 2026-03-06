@@ -1,7 +1,5 @@
 import { format, intervalToDuration } from 'date-fns';
-import { v4 as uuidv4 } from 'uuid';
 import type SunRunExercisesRequest from '../types/requestTypes/SunRunExercisesRequest';
-import calCalculator from '../utils/calCalculator';
 import generateMac from '../utils/generateMac';
 import normalRandom from '../utils/normalRandom';
 import timeUtil from '../utils/timeUtil';
@@ -31,14 +29,20 @@ const generateRunReq = async ({
   minTime: string;
   maxTime: string;
 }) => {
-  const { minSecond, maxSecond } = {
-    minSecond: Number(minTime) * 60,
-    maxSecond: Number(maxTime) * 60,
-  };
-  const avgSecond = minSecond + maxSecond / 2;
+  const fixedMinMinute = 20;
+  const fixedMaxMinute = 24;
+  const minSecond = fixedMinMinute * 60;
+  const maxSecond = fixedMaxMinute * 60;
+  const lowerBound = Math.min(minSecond, maxSecond);
+  const upperBound = Math.max(minSecond, maxSecond);
+  const avgSecond = (lowerBound + upperBound) / 2;
+  const stdSecond = Math.max((upperBound - lowerBound) / 6, 1);
   /** 正态分布，以最短和最长用时的平均值为平均值，以 1/2 区间的 1/3 为标准差 */
   const waitSecond = Math.floor(
-    normalRandom(minSecond + maxSecond / 2, (maxSecond - avgSecond) / 3),
+    Math.min(
+      upperBound,
+      Math.max(lowerBound, normalRandom(avgSecond, stdSecond)),
+    ),
   );
   const startTime = new Date();
   const endTime = new Date(Number(startTime) + waitSecond * 1000);

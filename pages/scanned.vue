@@ -1,18 +1,34 @@
 <script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
+import type GetSunRunPaperResponse from '~~/src/types/responseTypes/GetSunRunPaperResponse';
 
 const sunrunPaper = useSunRunPaper();
 const session = useSession();
 const selectValue = ref<string | null>(null);
-const data = await TotoroApiWrapper.getSunRunPaper({
-  token: session.value.token,
-  campusId: session.value.campusId,
-  schoolId: session.value.schoolId,
-  stuNumber: session.value.stuNumber,
-});
+const data = ref<GetSunRunPaperResponse | null>(sunrunPaper.value);
+
+if (!session.value?.token) {
+  await navigateTo('/');
+}
+
+if (!data.value && session.value?.token) {
+  try {
+    data.value = await TotoroApiWrapper.getSunRunPaper({
+      token: session.value.token,
+      campusId: session.value.campusId,
+      schoolId: session.value.schoolId,
+      stuNumber: session.value.stuNumber,
+    });
+    sunrunPaper.value = data.value;
+  } catch (error) {
+    console.error('恢复跑步配置失败:', error);
+    await navigateTo('/');
+  }
+}
+
 watchEffect(() => {
-  if (data) {
-    sunrunPaper.value = data;
+  if (data.value) {
+    sunrunPaper.value = data.value;
   }
 });
 
@@ -29,19 +45,19 @@ const handleUpdate = (target: string | null) => {
         <dl class="info-grid">
           <div class="info-item">
             <dt class="info-label">学校</dt>
-            <dd class="info-value">{{ session.campusName }}</dd>
+            <dd class="info-value">{{ session?.campusName }}</dd>
           </div>
           <div class="info-item">
             <dt class="info-label">学院</dt>
-            <dd class="info-value">{{ session.collegeName }}</dd>
+            <dd class="info-value">{{ session?.collegeName }}</dd>
           </div>
           <div class="info-item">
             <dt class="info-label">学号</dt>
-            <dd class="info-value">{{ session.stuNumber }}</dd>
+            <dd class="info-value">{{ session?.stuNumber }}</dd>
           </div>
           <div class="info-item">
             <dt class="info-label">姓名</dt>
-            <dd class="info-value">{{ session.stuName }}</dd>
+            <dd class="info-value">{{ session?.stuName }}</dd>
           </div>
         </dl>
       </UiCard>

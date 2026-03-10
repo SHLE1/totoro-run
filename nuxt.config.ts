@@ -9,10 +9,11 @@ export default defineNuxtConfig({
   vite: {
     build: { commonjsOptions: { transformMixedEsModules: true } },
     resolve: { alias: { buffer: 'buffer' } },
+    define: { global: 'globalThis' },
     plugins: [inject({ Buffer: ['buffer', 'Buffer'] })],
     ssr: { noExternal: ['vuetify'] },
     optimizeDeps: {
-      include: ['@vueuse/core', 'date-fns', 'uuid', 'md5', '@amap/amap-jsapi-loader'],
+      include: ['@vueuse/core', 'date-fns', 'uuid', 'md5'],
     },
   },
   build: {

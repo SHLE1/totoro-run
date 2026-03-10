@@ -109,8 +109,8 @@ const updateLine = () => {
       offset: new T.value.Point(-30, -10),
     });
     label.setFontSize(12);
-    label.setBorderColor('#3b82f6');
-    label.setBackgroundColor('#fff');
+    label.setBorderColor('#2e9ff0');
+    label.setBackgroundColor('#ffffff');
     label.addEventListener('click', () => {
       emit('update:target', pointId);
     });

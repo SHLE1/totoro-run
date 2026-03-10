@@ -1,7 +1,18 @@
 <script setup lang="ts">
 import decryptRequestContent from '~/src/utils/decryptRequestContent';
 import encryptRequestContent from '~/src/utils/encryptRequestContent';
-import { onMounted } from 'vue';
+
+useHead({
+  script: [
+    {
+      src: 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ',
+      async: true,
+    },
+    {
+      innerHTML: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-KEFCFSXRWJ');`,
+    },
+  ],
+});
 
 const encoded = ref('');
 const decoded = computed(() => {
@@ -20,27 +31,11 @@ const encrypted = computed(() => {
     return 'Failed';
   }
 });
-
-onMounted(() => {
-  const script1 = document.createElement('script');
-  script1.async = true;
-  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-KEFCFSXRWJ';
-  document.head.appendChild(script1);
-
-  const script2 = document.createElement('script');
-  script2.textContent = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-KEFCFSXRWJ');
-  `;
-  document.head.appendChild(script2);
-});
 </script>
 <template>
   <div class="page-wrapper">
     <UiCard title="请求解码" icon="mdi mdi-code-json">
-      <VTextarea v-model="encoded" variant="outlined" auto-grow rows="6" />
+      <VTextarea v-model="encoded" variant="outlined" auto-grow rows="6" aria-label="输入加密请求内容" />
       <div class="result-block">
         <pre class="pre-wrap">{{ JSON.stringify(decoded, null, 2) }}</pre>
         <div class="encoded-again">{{ encrypted }}</div>

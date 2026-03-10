@@ -81,14 +81,14 @@ const isLineActive = (step: number) => isCompleted(step);
   justify-content: center;
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all 0.3s ease-out;
+  transition: all var(--ui-transition-slow) ease-out;
 }
 
 .step.active .step-num {
   background: rgb(var(--ui-primary));
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(var(--ui-primary), 0.3);
 }
 
 .step.completed .step-num {

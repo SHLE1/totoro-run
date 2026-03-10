@@ -29,22 +29,16 @@ const toneClass = computed(() => `tone-${props.tone}`);
 
 <style scoped>
 .ui-card {
-  background: var(--ui-surface-glass);
-  backdrop-filter: var(--ui-blur-glass);
-  -webkit-backdrop-filter: var(--ui-blur-glass);
+  background: var(--ui-surface);
   border-radius: var(--ui-radius-lg);
-  border: 1px solid var(--ui-border-glass);
+  border: 1px solid var(--ui-border);
   padding: 24px;
-  box-shadow: var(--ui-shadow-glass);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
-              box-shadow 0.3s ease, 
-              border-color 0.3s ease;
+  box-shadow: var(--ui-shadow-card);
+  transition: border-color var(--ui-transition-normal) ease-out;
 }
 
 .ui-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px -4px rgba(0, 0, 0, 0.12);
-  border-color: rgb(var(--ui-primary) / 0.5);
+  border-color: rgb(var(--ui-primary) / 0.4);
 }
 
 .ui-card__header {
@@ -53,7 +47,7 @@ const toneClass = computed(() => `tone-${props.tone}`);
   gap: 12px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--ui-border-glass);
+  border-bottom: 1px solid var(--ui-border);
 }
 
 .ui-card__icon {
@@ -111,7 +105,7 @@ const toneClass = computed(() => `tone-${props.tone}`);
 
 /* 深色模式优化 */
 .v-theme--dark .ui-card {
-  background: var(--ui-surface-glass);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: var(--ui-surface-strong);
+  box-shadow: var(--ui-shadow-card);
 }
 </style>

@@ -16,8 +16,6 @@ let pollTimer: ReturnType<typeof window.setTimeout> | null = null;
 const POLL_INTERVAL = 1500;
 const POLL_TIMEOUT = 2 * 60 * 1000;
 
-// Cursor logic moved to app.vue for global effect
-
 const qrErrorMessage = computed(() => message.value || (error.value ? '二维码获取失败，请稍后重试。' : ''));
 const hasQrError = computed(() => !!qrErrorMessage.value);
 const hasQrImage = computed(() => !!data.value?.imgUrl);
@@ -90,10 +88,12 @@ const completeLogin = async (code: string) => {
       schoolId: personalInfo.schoolId,
       stuNumber: personalInfo.stuNumber,
     };
-    await TotoroApiWrapper.getAppFrontPage(breq);
-    await TotoroApiWrapper.getAppSlogan(breq);
-    await TotoroApiWrapper.updateAppVersion(breq);
-    await TotoroApiWrapper.getAppNotice(breq);
+    await Promise.all([
+      TotoroApiWrapper.getAppFrontPage(breq),
+      TotoroApiWrapper.getAppSlogan(breq),
+      TotoroApiWrapper.updateAppVersion(breq),
+      TotoroApiWrapper.getAppNotice(breq),
+    ]);
     router.push('/scanned');
   } catch (e) {
     console.error(e);
@@ -161,8 +161,6 @@ onUnmounted(() => {
 
 <template>
   <div class="page-container flex justify-start">
-
-
     <v-dialog
       v-model="showDialog"
       persistent
@@ -188,14 +186,14 @@ onUnmounted(() => {
     </v-dialog>
 
     <main class="main-content">
-      <header class="hero-section anim-enter">
-        <h1 class="hero-title anim-float">龙猫校园助手</h1>
+      <header class="hero-section">
+        <h1 class="hero-title">龙猫校园助手</h1>
         <p class="hero-subtitle">简单三步，轻松完成校园跑</p>
       </header>
 
-      <StepIndicator :active-step="1" class="anim-enter anim-delay-1" />
+      <StepIndicator :active-step="1" />
 
-      <UiCard class="scan-section anim-enter anim-delay-2">
+      <UiCard class="scan-section">
         <VCard
           class="qr-code-card"
           elevation="0"
@@ -240,7 +238,7 @@ onUnmounted(() => {
         </div>
       </UiCard>
 
-      <footer class="footer-section anim-enter anim-delay-3">
+      <footer class="footer-section">
         <div class="footer-badge">
           <span class="mdi mdi-lightning-bolt badge-icon" aria-hidden="true"></span>
           <span>完全免费 &bull; 开源项目</span>
@@ -254,22 +252,13 @@ onUnmounted(() => {
 .page-container {
   padding: 24px 16px 40px;
   flex-direction: column;
-  background: radial-gradient(at 0% 0%, rgba(var(--ui-secondary-light), 0.3) 0px, transparent 50%),
-              radial-gradient(at 100% 0%, rgba(var(--ui-primary-light), 0.3) 0px, transparent 50%),
-              radial-gradient(at 100% 100%, rgba(var(--ui-secondary), 0.1) 0px, transparent 50%),
-              radial-gradient(at 0% 100%, rgba(var(--ui-primary), 0.1) 0px, transparent 50%),
-              var(--ui-surface-muted);
+  background: var(--ui-surface-muted);
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
-
-
-
 .main-content {
-  position: relative;
-  z-index: 1;
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
@@ -342,7 +331,7 @@ onUnmounted(() => {
   font-size: 0.9rem;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition: opacity var(--ui-transition-normal) ease-out, background-color var(--ui-transition-normal) ease-out;
 }
 
 .qr-code-card:hover .qr-refresh-hint,
@@ -437,7 +426,7 @@ onUnmounted(() => {
   background: rgba(var(--ui-primary), 0.1);
   color: rgb(var(--ui-primary));
   padding: 6px 16px;
-  border-radius: 20px;
+  border-radius: var(--ui-radius-pill);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -447,7 +436,7 @@ onUnmounted(() => {
 }
 
 :deep(.dialog-card) {
-  border-radius: 16px !important;
+  border-radius: var(--ui-radius-xl) !important;
   overflow: hidden;
 }
 
@@ -497,10 +486,6 @@ onUnmounted(() => {
   .qr-code-card {
     width: 190px;
     height: 190px;
-  }
-
-  .cursor-glow {
-    display: none;
   }
 }
 </style>

@@ -171,6 +171,8 @@ const handleUpdate = (target: string | null) => {
   font-weight: 600;
   font-family: var(--ui-font-heading);
   margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .route-select {

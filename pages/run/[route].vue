@@ -36,10 +36,14 @@ if (!sunRunPaper.value?.runPointList.some((targetRoute) => targetRoute.pointId =
   await navigateTo('/scanned');
 }
 
-const runned = computed(() => !running.value && !!needTime.value);
+const runned = computed(() => !running.value && !!needTime.value && !runError.value);
+const runError = ref<string | null>(null);
 const target = computed(() => sunRunPaper.value?.runPointList.find((r) => r.pointId === route) ?? null);
 
 const runState = computed(() => {
+  if (runError.value) {
+    return 'error';
+  }
   if (running.value) {
     return 'running';
   }
@@ -59,6 +63,9 @@ const completedSteps = computed(() => {
 });
 
 const runCardTone = computed(() => {
+  if (runError.value) {
+    return 'warning';
+  }
   if (runned.value) {
     return 'success';
   }
@@ -69,6 +76,9 @@ const runCardTone = computed(() => {
 });
 
 const runHeaderTitle = computed(() => {
+  if (runState.value === 'error') {
+    return '跑步提交失败';
+  }
   if (runState.value === 'running') {
     return '跑步进行中...';
   }
@@ -79,6 +89,9 @@ const runHeaderTitle = computed(() => {
 });
 
 const runHeaderIcon = computed(() => {
+  if (runState.value === 'error') {
+    return 'mdi mdi-alert-circle';
+  }
   if (runState.value === 'running') {
     return 'mdi mdi-run';
   }
@@ -132,20 +145,25 @@ const handleRun = async () => {
     token: session.value.token,
   });
   setTimeout(async () => {
-    const res = await TotoroApiWrapper.sunRunExercises(req);
-    const runRoute = generateRoute(sunRunPaper.value.mileage, target.value);
-    await TotoroApiWrapper.sunRunExercisesDetail({
-      pointList: runRoute.mockRoute,
-      scantronId: res.scantronId,
-      breq: {
-        campusId: session.value.campusId,
-        schoolId: session.value.schoolId,
-        stuNumber: session.value.stuNumber,
-        token: session.value.token,
-      },
-    });
-
-    running.value = false;
+    try {
+      const res = await TotoroApiWrapper.sunRunExercises(req);
+      const runRoute = generateRoute(sunRunPaper.value.mileage, target.value);
+      await TotoroApiWrapper.sunRunExercisesDetail({
+        pointList: runRoute.mockRoute,
+        scantronId: res.scantronId,
+        breq: {
+          campusId: session.value.campusId,
+          schoolId: session.value.schoolId,
+          stuNumber: session.value.stuNumber,
+          token: session.value.token,
+        },
+      });
+      running.value = false;
+    } catch (e) {
+      console.error('跑步提交失败:', e);
+      running.value = false;
+      runError.value = (e as Error).message || '跑步提交失败，请稍后重试';
+    }
   }, needTime.value);
 };
 
@@ -218,6 +236,21 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
           </div>
         </template>
 
+        <template v-else-if="runState === 'error'">
+          <div class="error-section" role="alert">
+            <div class="error-icon" aria-hidden="true">
+              <span class="mdi mdi-alert" aria-hidden="true"></span>
+            </div>
+            <p class="error-text">{{ runError }}</p>
+            <p class="error-hint">请返回重新选择路线后再试</p>
+          </div>
+          <NuxtLink to="/scanned" class="back-link">
+            <VBtn variant="tonal" color="primary" class="ui-btn ui-btn--sm back-btn">
+              返回选择路线
+            </VBtn>
+          </NuxtLink>
+        </template>
+
         <template v-else>
           <div class="success-section" role="status">
             <div class="success-icon" aria-hidden="true">
@@ -263,6 +296,8 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   background: rgba(var(--ui-primary), 0.1);
   border-radius: var(--ui-radius-md);
   border: 2px solid rgba(var(--ui-primary), 0.2);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .warning-box {
@@ -379,6 +414,38 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
   color: var(--ui-text-muted);
 }
 
+.error-section {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.error-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(var(--ui-warning), 0.15);
+  border: 3px solid rgba(var(--ui-warning), 0.3);
+  color: rgb(var(--ui-warning));
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.error-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-family: var(--ui-font-heading);
+  color: var(--ui-text);
+  margin-bottom: 4px;
+}
+
+.error-hint {
+  font-size: 0.9rem;
+  color: var(--ui-text-muted);
+}
+
 .back-link {
   display: block;
   margin-top: 16px;
@@ -386,21 +453,6 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
 
 .back-btn {
   width: 100%;
-}
-
-:deep(.run-card.running .ui-card__icon) {
-  animation: bounce 1s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :deep(.run-card.running .ui-card__icon) {
-    animation: none;
-  }
 }
 
 @media (max-width: 480px) {

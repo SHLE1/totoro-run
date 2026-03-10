@@ -15,7 +15,7 @@
 ## 技术栈
 
 - **框架**: Nuxt 4 + Vue 3 + TypeScript
-- **UI**: Vuetify 3 + Element Plus + UnoCSS
+- **UI**: Vuetify 3 + UnoCSS
 - **地图**: 天地图 API
 - **包管理**: pnpm
 

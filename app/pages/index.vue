@@ -16,7 +16,7 @@ const busy = ref(false);
 const errorMessage = ref('');
 const polling = ref(false);
 
-const POLL_INTERVAL = 1500;
+const POLL_INTERVAL = 300;
 const POLL_TIMEOUT = 2 * 60 * 1000;
 
 let pollTimer: ReturnType<typeof setTimeout> | null = null;

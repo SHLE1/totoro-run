@@ -17,7 +17,7 @@ export default defineEventHandler(async (e) => {
       };
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       message: '龙猫服务器错误',
       paper: null,

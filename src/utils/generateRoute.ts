@@ -1,5 +1,5 @@
-import Vector from '../classes/Vector';
 import type RunPoint from '../types/RunPoint';
+import Vector from '../classes/Vector';
 import distanceOfLine from './distanceCalculator';
 import formatRouteToAMap from './formatRouteToAMap';
 import normalRandom from './normalRandom';
@@ -27,9 +27,10 @@ const generateRoute = (distance: string, taskToday: RunPoint) => {
     const pointVector = new Vector([pointB[0] - pointA[0], pointB[1] - pointA[1]]);
     const numberOfPoints = Math.floor(pointVector.norm / Number(stepLength));
     const points = [pointA];
+    const [unitX, unitY] = pointVector.unitVector;
     for (let i = 1; i < numberOfPoints; i += 1) {
-      const pointX = pointA[0] + i * stepLengthnum * pointVector.unitVector[0];
-      const pointY = pointA[1] + i * stepLengthnum * pointVector.unitVector[1];
+      const pointX = pointA[0] + i * stepLengthnum * unitX!;
+      const pointY = pointA[1] + i * stepLengthnum * unitY!;
       points.push([pointX, pointY]);
     }
     return points;
@@ -39,16 +40,16 @@ const generateRoute = (distance: string, taskToday: RunPoint) => {
 
   const combinePoints = (): Point[] => {
     const { pointList } = taskToday;
-    if (!pointList[0].latitude) throw new Error('任务为空');
+    if (!pointList[0]?.latitude) throw new Error('任务为空');
     const route = formatRouteToAMap(pointList);
     const combinedPoints = [];
     for (let index = 0; index < route.length; index += 1) {
       if (index === route.length - 1) {
-        combinedPoints.push(route[index]);
+        combinedPoints.push(route[index]!);
         break;
       }
-      const pointA = route[index];
-      const pointB = route[index + 1];
+      const pointA = route[index]!;
+      const pointB = route[index + 1]!;
       addPoints(pointA, pointB).forEach((points) => {
         combinedPoints.push(points);
       });
@@ -63,10 +64,10 @@ const generateRoute = (distance: string, taskToday: RunPoint) => {
     let r = 0;
     const oriI = Math.floor(Math.random() * route.length);
     let i = oriI;
-    const points = [addDeviation(route[oriI])];
+    const points = [addDeviation(route[oriI]!)];
     const distanceM = Number(distance) * 1000;
     while (r < distanceM) {
-      const point = addDeviation(route[i]);
+      const point = addDeviation(route[i]!);
       points.push(point);
       r = distanceOfLine(points);
       i += 1;

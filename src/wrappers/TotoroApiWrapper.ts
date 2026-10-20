@@ -1,5 +1,3 @@
-import ky from 'ky';
-import type { Point } from '../types/RunPoint';
 import type BasicRequest from '../types/requestTypes/BasicRequest';
 import type GetSchoolMonthByTermRequest from '../types/requestTypes/GetSchoolMonthByTermRequest';
 import type GetSchoolTermRequest from '../types/requestTypes/GetSchoolTermRequest';
@@ -24,6 +22,8 @@ import type LoginResponse from '../types/responseTypes/LoginResponse';
 import type SunRunExercisesDetailResponse from '../types/responseTypes/SunRunExercisesDetailResponse';
 import type SunRunExercisesResponse from '../types/responseTypes/SunRunExercisesResponse';
 import type UpdateAppVersionResponse from '../types/responseTypes/UpdateAppVersionResponse';
+import type { Point } from '../types/RunPoint';
+import ky from 'ky';
 import encryptRequestContent from '../utils/encryptRequestContent';
 
 const TotoroApiWrapper = {

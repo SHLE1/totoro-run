@@ -1,23 +1,19 @@
-import { format, intervalToDuration } from 'date-fns';
 import type SunRunExercisesRequest from '../types/requestTypes/SunRunExercisesRequest';
+import { format, intervalToDuration } from 'date-fns';
 import generateMac from '../utils/generateMac';
 import normalRandom from '../utils/normalRandom';
 import timeUtil from '../utils/timeUtil';
 
-/**
- * @param minTime 最短用时，以分钟计
- *  @param maxTime 最长用时，以分钟计
- */
 const generateRunReq = async ({
   distance,
   routeId,
   taskId,
   token,
-  schoolId,
+  schoolId: _schoolId,
   stuNumber,
-  phoneNumber,
-  minTime,
-  maxTime,
+  phoneNumber: _phoneNumber,
+  minTime: _minTime,
+  maxTime: _maxTime,
 }: {
   distance: string;
   routeId: string;

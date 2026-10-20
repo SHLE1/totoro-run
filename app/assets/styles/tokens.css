@@ -1,0 +1,70 @@
+:root {
+  color-scheme: light;
+
+  /* 纸面与墨色 */
+  --paper: #f1f4ee;
+  --surface: #ffffff;
+  --surface-2: #e7ece2;
+  --ink: #0c1a24;
+  --ink-2: #33424f;
+  --muted: #56666f;
+  --line: #c7d2c8;
+  --line-strong: #0c1a24;
+
+  /* 品牌蓝：主操作与状态信号 */
+  --blue: #2e9ff0;
+  --blue-strong: #0b649f;
+  --blue-wash: rgb(46 159 240 / 12%);
+  --on-blue: #ffffff;
+
+  /* 跑道砖红：只用于跑道线、警示和完成态 */
+  --track: #c2410c;
+  --track-wash: rgb(194 65 12 / 10%);
+
+  --ok: #106c33;
+  --ok-wash: rgb(21 128 61 / 10%);
+  --warn: #b45309;
+  --warn-wash: rgb(180 83 9 / 10%);
+  --bad: #b91c1c;
+  --bad-wash: rgb(185 28 28 / 10%);
+
+  --shadow: 3px 3px 0 rgb(12 26 36 / 8%);
+  --radius: 8px;
+  --radius-sm: 4px;
+
+  --font-body: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-display: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --head-height: 68px;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --paper: #0a131a;
+  --surface: #101d26;
+  --surface-2: #162832;
+  --ink: #edf4f1;
+  --ink-2: #bdcbd2;
+  --muted: #8aa0aa;
+  --line: #29414a;
+  --line-strong: #7f99a4;
+
+  --blue: #6bbef6;
+  --blue-strong: #9bd7ff;
+  --blue-wash: rgb(107 190 246 / 14%);
+  --on-blue: #07131a;
+
+  --track: #fb923c;
+  --track-wash: rgb(251 146 60 / 12%);
+
+  --ok: #4ade80;
+  --ok-wash: rgb(74 222 128 / 12%);
+  --warn: #fbbf24;
+  --warn-wash: rgb(251 191 36 / 12%);
+  --bad: #f87171;
+  --bad-wash: rgb(248 113 113 / 12%);
+
+  --shadow: 3px 3px 0 rgb(0 0 0 / 35%);
+}

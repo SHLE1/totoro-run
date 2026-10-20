@@ -8,8 +8,12 @@ export default defineEventHandler(async () => {
       },
     },
   );
-  const uuid = html.split('uuid: "')[1].split('"')[0];
-  const imgUrl = html.split('auth_qrcode" src="')[1].split('"')[0];
+  const uuid = html.split('uuid: "')[1]?.split('"')[0] ?? '';
+  const imgUrl = html.split('auth_qrcode" src="')[1]?.split('"')[0] ?? '';
+
+  if (!uuid || !imgUrl) {
+    throw createError({ statusCode: 502, statusMessage: '二维码解析失败' });
+  }
 
   return { uuid, imgUrl };
 });

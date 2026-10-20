@@ -5,4 +5,13 @@ export default antfu({
   unocss: true,
   vue: true,
   stylistic: false,
+  ignores: [
+    'src/utils/nodeRSA.ts',
+    '.agents/**',
+    '.claude/**',
+    '.commandcode/**',
+    '.grok/**',
+    '.zcode/**',
+    '.oil-ui/**',
+  ],
 })

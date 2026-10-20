@@ -8,22 +8,23 @@
 
 - 扫描二维码登录，获取用户认证信息
 - 生成模拟跑步路线和 GPS 轨迹
-- 支持自定义跑步距离和路径
-- 集成天地图显示路线信息
+- 路线几何预览，不依赖外部地图服务
 - 服务端 API 代理，与阳光体育系统通信
 
 ## 技术栈
 
 - **框架**: Nuxt 4 + Vue 3 + TypeScript
-- **UI**: Vuetify 3 + UnoCSS
-- **地图**: 天地图 API
+- **状态**: Pinia
+- **样式**: UnoCSS + 设计令牌
+- **校验**: Zod（接口边界）
+- **测试**: Vitest
 - **包管理**: pnpm
 
 ## 快速开始
 
 ### 环境要求
 
-- Node.js 18+
+- Node.js 20+
 - pnpm 8+
 
 ### 安装依赖
@@ -39,6 +40,14 @@ pnpm dev
 ```
 
 访问 http://localhost:3000
+
+### 检查
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+```
 
 ### 构建生产版本
 
@@ -62,16 +71,20 @@ docker run -p 3000:3000 totoro-paradise
 ## 项目结构
 
 ```
-├── pages/              # 页面组件
-├── server/api/         # 服务端 API
+├── app/
+│   ├── pages/          # 页面
+│   ├── components/     # 界面组件
+│   ├── composables/    # 组合式函数
+│   ├── stores/         # Pinia 状态
+│   ├── assets/styles/  # 设计令牌与基础样式
+│   └── utils/          # 前端工具与接口校验
+├── server/api/         # 服务端 API 代理
 ├── src/
-│   ├── classes/        # 类定义（会话管理、向量计算）
-│   ├── utils/          # 工具函数（路线生成、加密等）
-│   ├── wrappers/       # API 封装
+│   ├── classes/        # 类定义（向量计算等）
+│   ├── utils/          # 协议工具（加密、路线生成）
+│   ├── wrappers/       # 第三方接口封装
 │   └── types/          # TypeScript 类型定义
-├── components/         # Vue 组件
-├── composables/        # Vue 组合式函数
-└── plugins/            # Nuxt 插件
+└── tests/              # 核心逻辑测试
 ```
 
 ## 许可证

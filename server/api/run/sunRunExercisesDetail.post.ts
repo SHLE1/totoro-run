@@ -1,5 +1,5 @@
-import type { Point } from '~~/src/types/RunPoint';
 import type BasicRequest from '~~/src/types/requestTypes/BasicRequest';
+import type { Point } from '~~/src/types/RunPoint';
 import TotoroApiWrapper from '~~/src/wrappers/TotoroApiWrapper';
 
 export default defineEventHandler(async (e) => {

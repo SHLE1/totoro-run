@@ -17,3 +17,5 @@ pnpm-lock.yaml
 # Claude Code 配置目录
 .claude/
 .codex/
+
+.oil-ui/

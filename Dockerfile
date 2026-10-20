@@ -1,9 +1,14 @@
-FROM node:lts-alpine
+FROM --platform=$BUILDPLATFORM node:24-alpine AS build
 RUN apk add --update python3 build-base
 WORKDIR /usr/src/app
-COPY ["package.json", "pnpm-lock.yaml", ".npmrc", "./"]
-RUN corepack enable && pnpm i --frozen-lockfile && rm -rf ~/.local/share/pnpm/store
+COPY package.json pnpm-lock.yaml .npmrc ./
+RUN npm install -g pnpm@8.15.5 && pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm build && rm -rf node_modules app server src .nuxt dist state
+RUN pnpm build
+
+FROM node:24-alpine
+WORKDIR /usr/src/app
+ENV NODE_ENV=production
+COPY --from=build /usr/src/app/.output ./.output
 EXPOSE 3000
-CMD ["pnpm", "start"]
+CMD ["node", ".output/server/index.mjs"]

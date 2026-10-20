@@ -11151,10 +11151,10 @@ var require_main = __commonJS({
           if ("function" != typeof t2)
             throw new TypeError('The "original" argument must be of type Function');
           if (x && t2[x]) {
-            var e2;
-            if ("function" != typeof (e2 = t2[x]))
+            var customPromisify;
+            if ("function" != typeof (customPromisify = t2[x]))
               throw new TypeError('The "util.promisify.custom" argument must be of type Function');
-            return Object.defineProperty(e2, x, { value: e2, enumerable: false, writable: false, configurable: true }), e2;
+            return Object.defineProperty(customPromisify, x, { value: customPromisify, enumerable: false, writable: false, configurable: true }), customPromisify;
           }
           function e2() {
             for (var e3, r2, n2 = new Promise(function(t3, n3) {

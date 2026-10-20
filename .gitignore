@@ -19,3 +19,4 @@ pnpm-lock.yaml
 .codex/
 
 .oil-ui/
+.env*

@@ -21,3 +21,13 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 README.md
+.output
+.nuxt
+.oil-ui
+.agents
+.claude
+.commandcode
+.grok
+.zcode
+tests
+.git

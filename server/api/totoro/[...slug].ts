@@ -5,9 +5,17 @@ import { request as httpsRequest } from 'node:https';
 const UPSTREAM_HOST = 'app.xtotoro.com';
 const TIMEOUT_MS = 8000;
 
-const fixedLookup = (address: string): LookupFunction => (_hostname, _options, callback) => {
-  callback(null, address, 4);
-};
+const fixedLookup =
+  (address: string): LookupFunction =>
+  (_hostname, options, callback) => {
+    if (typeof options === 'object' && options !== null && 'all' in options && options.all) {
+      (callback as unknown as (err: null, addresses: { address: string; family: number }[]) => void)(null, [
+        { address, family: 4 },
+      ]);
+      return;
+    }
+    (callback as unknown as (err: null, addr: string, family: number) => void)(null, address, 4);
+  };
 
 async function resolveUpstreamIp(): Promise<string | null> {
   try {

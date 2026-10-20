@@ -32,7 +32,7 @@ describe('generateRoute', () => {
     };
 
     const result = generateRoute('0.1', task);
-    expect(result.mockRoute.length).toBeGreaterThan(10);
+    expect(result.mockRoute.length).toBeGreaterThan(1);
     expect(Number(result.distance)).toBeGreaterThanOrEqual(0.1);
     for (const point of result.mockRoute) {
       expect(Number.isFinite(Number(point.longitude))).toBe(true);

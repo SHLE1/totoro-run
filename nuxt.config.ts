@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   pages: true,
   ssr: false,
   devtools: { enabled: false },
+  nitro: {
+    vercel: {
+      functions: { maxDuration: 30 },
+    },
+  },
   routeRules: { '/totoro/**': { proxy: 'https://app.xtotoro.com/app/**' } },
   css: [
     '@unocss/reset/tailwind.css',

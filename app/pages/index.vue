@@ -54,20 +54,24 @@ async function completeLogin(code: string) {
   errorMessage.value = '';
 
   try {
-    const [loginResult] = await Promise.all([
-      TotoroApiWrapper.getLesseeServer(code),
-      TotoroApiWrapper.getAppAd(code),
-    ]);
+    void TotoroApiWrapper.getAppAd(code).catch((error) => {
+      console.warn('广告接口失败，忽略:', error);
+    });
+    const loginResult = await TotoroApiWrapper.getLesseeServer(code);
     if (!loginResult.token) {
       errorMessage.value = loginResult.message || '登录失败，请重新扫码。';
       return;
     }
     const personalInfo = await TotoroApiWrapper.login({ token: loginResult.token });
+    if (!personalInfo.token && !personalInfo.stuNumber) {
+      errorMessage.value = personalInfo.message || '登录信息获取失败，请重新扫码。';
+      return;
+    }
     sessionStore.setLogin(personalInfo, loginResult.token, code);
     await router.push('/scanned');
   } catch (error) {
     console.error('登录失败:', error);
-    errorMessage.value = '龙猫服务器错误，请稍后重试。';
+    errorMessage.value = '登录请求失败，请检查网络后重试。';
   } finally {
     busy.value = false;
   }

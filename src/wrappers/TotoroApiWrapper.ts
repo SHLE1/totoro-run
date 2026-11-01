@@ -26,73 +26,58 @@ import type { Point } from '../types/RunPoint';
 import ky from 'ky';
 import encryptRequestContent from '../utils/encryptRequestContent';
 
-const TotoroApiWrapper = {
-  client: ky.create({
-    prefixUrl: '/api/totoro',
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      // "Content-Length": "0",
-      Host: 'app.xtotoro.com',
-      Connection: 'Keep-Alive',
-      'Accept-Encoding': 'gzip',
-      'User-Agent': 'okhttp/4.9.0',
-    },
-  }),
+const client = ky.create({
+  prefixUrl: '/api/totoro',
+  headers: {
+    'Content-Type': 'text/plain; charset=utf-8',
+    // "Content-Length": "0",
+    Host: 'app.xtotoro.com',
+    Connection: 'Keep-Alive',
+    'Accept-Encoding': 'gzip',
+    'User-Agent': 'okhttp/4.9.0',
+  },
+});
 
+/** POST an RSA-encrypted JSON body to the Totoro proxy and parse the JSON response. */
+function postEncrypted<T>(path: string, req: Record<string, any>): Promise<T> {
+  return client.post(path, { body: encryptRequestContent(req) }).json<T>();
+}
+
+const TotoroApiWrapper = {
   async getRegisterUrl() {
-    return this.client.post('platform/serverlist/getRegisterUrl').json<GetRegisterUrlResponse>();
+    return client.post('platform/serverlist/getRegisterUrl').json<GetRegisterUrlResponse>();
   },
 
   async getLesseeServer(code: string) {
-    return this.client
-      .post('platform/serverlist/getLesseeServer', {
-        body: encryptRequestContent({ code }),
-      })
-      .json<GetLesseeServerResponse>();
+    return postEncrypted<GetLesseeServerResponse>('platform/serverlist/getLesseeServer', { code });
   },
 
   async getAppAd(code: string) {
-    return this.client
-      .post('platform/serverlist/getAppAd', {
-        body: encryptRequestContent({ code }),
-      })
-      .json<GetAppAdResponse>();
+    return postEncrypted<GetAppAdResponse>('platform/serverlist/getAppAd', { code });
   },
 
   async login({ token }: { token: string }) {
-    return this.client
-      .post('platform/login/login', {
-        body: encryptRequestContent({
-          code: '',
-          latitude: '',
-          loginWay: '',
-          longitude: '',
-          password: '',
-          phoneNumber: '',
-          token,
-        }),
-      })
-      .json<LoginResponse>();
+    return postEncrypted<LoginResponse>('platform/login/login', {
+      code: '',
+      latitude: '',
+      loginWay: '',
+      longitude: '',
+      password: '',
+      phoneNumber: '',
+      token,
+    });
   },
 
   async getAppSlogan(req: BasicRequest): Promise<GetAppSloganResponse> {
-    return this.client
-      .post('platform/serverlist/getAppSlogan', {
-        body: encryptRequestContent(req),
-      })
-      .json();
+    return postEncrypted('platform/serverlist/getAppSlogan', req);
   },
 
   async getAppFrontPage(req: BasicRequest): Promise<GetAppFrontPageResponse> {
-    return this.client
-      .post('platform/login/getAppFrontPage', {
-        body: encryptRequestContent(req),
-      })
-      .json();
+    return postEncrypted('platform/login/getAppFrontPage', req);
   },
 
   async updateAppVersion(breq: BasicRequest): Promise<UpdateAppVersionResponse> {
-    const req: UpdateAppVersionRequest & Record<string, string | number | null> = {
+    const req: UpdateAppVersionRequest = {
       campusId: breq.campusId,
       schoolId: breq.schoolId,
       token: breq.token,
@@ -100,39 +85,23 @@ const TotoroApiWrapper = {
       deviceType: '2',
       stuNumber: breq.stuNumber,
     };
-    return this.client
-      .post('platform/serverlist/updateAppVersion', {
-        body: encryptRequestContent(req),
-      })
-      .json();
+    return postEncrypted('platform/serverlist/updateAppVersion', req);
   },
 
   async getAppNotice(req: BasicRequest): Promise<GetAppNoticeResponse> {
-    return this.client
-      .post('platform/serverlist/getAppNotice', {
-        body: encryptRequestContent({ ...req, version: '' }),
-      })
-      .json();
+    return postEncrypted('platform/serverlist/getAppNotice', { ...req, version: '' });
   },
 
   async getSunRunPaper(req: BasicRequest): Promise<GetSunRunPaperResponse> {
-    return this.client.post('sunrun/getSunrunPaper', { body: encryptRequestContent(req) }).json();
+    return postEncrypted('sunrun/getSunrunPaper', req);
   },
 
   async getRunBegin(req: BasicRequest) {
-    return await this.client
-      .post('sunrun/getRunBegin', {
-        body: encryptRequestContent(req),
-      })
-      .json<GetRunBeginResponse>();
+    return postEncrypted<GetRunBeginResponse>('sunrun/getRunBegin', req);
   },
 
   async sunRunExercises(req: SunRunExercisesRequest): Promise<SunRunExercisesResponse> {
-    return this.client
-      .post('platform/recrecord/sunRunExercises', {
-        body: encryptRequestContent(req),
-      })
-      .json();
+    return postEncrypted('platform/recrecord/sunRunExercises', req);
   },
 
   async sunRunExercisesDetail({
@@ -150,36 +119,30 @@ const TotoroApiWrapper = {
       stuNumber: breq.stuNumber,
       token: breq.token,
     };
-    return this.client
+    return client
       .post('platform/recrecord/sunRunExercisesDetail', { json: req })
       .json<SunRunExercisesDetailResponse>();
   },
 
   async getSchoolTerm(breq: BasicRequest): Promise<GetSchoolTermResponse> {
-    const req: GetSchoolTermRequest & Record<string, string | number | null> = {
+    const req: GetSchoolTermRequest = {
       schoolId: breq.schoolId,
       token: breq.token,
     };
-    return this.client
-      .post('platform/course/getSchoolTerm', { body: encryptRequestContent(req) })
-      .json();
+    return postEncrypted('platform/course/getSchoolTerm', req);
   },
 
   async getSchoolMonthByTerm(
     termId: string,
     breq: BasicRequest,
   ): Promise<GetSchoolMonthByTermResponse> {
-    const req: GetSchoolMonthByTermRequest & Record<string, string | number | null> = {
+    const req: GetSchoolMonthByTermRequest = {
       schoolId: breq.schoolId,
       stuNumber: breq.stuNumber,
       token: breq.token,
       termId,
     };
-    return this.client
-      .post('platform/course/getSchoolMonthByTerm', {
-        body: encryptRequestContent(req),
-      })
-      .json();
+    return postEncrypted('platform/course/getSchoolMonthByTerm', req);
   },
 
   async getSunRunArch(
@@ -187,32 +150,24 @@ const TotoroApiWrapper = {
     termId: string,
     breq: BasicRequest,
   ): Promise<GetSunRunArchResponse> {
-    const req: GetSunRunArchRequest & Record<string, string | number | null> = {
+    const req: GetSunRunArchRequest = {
       ...breq,
       runType: '0',
       monthId,
       termId,
     };
-    return this.client
-      .post('sunrun/getSunrunArch', {
-        body: encryptRequestContent(req),
-      })
-      .json();
+    return postEncrypted('sunrun/getSunrunArch', req);
   },
 
   async getSunRunArchDetail(
     scoreId: string,
     breq: BasicRequest,
   ): Promise<GetSunRunArchDetailResponse> {
-    const req: GetSunRunArchDetailRequest & Record<string, string> = {
+    const req: GetSunRunArchDetailRequest = {
       scoreId,
       token: breq.token,
     };
-    return this.client
-      .post('sunrun/getSunrunArchDetail', {
-        body: encryptRequestContent(req),
-      })
-      .json();
+    return postEncrypted('sunrun/getSunrunArchDetail', req);
   },
 };
 

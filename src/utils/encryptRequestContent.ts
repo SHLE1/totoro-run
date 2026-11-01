@@ -102,6 +102,11 @@ const encryptRequestContent = (req: Record<string, any>): string => {
   for (let i = 0; i < chunkCount; i++) {
     out.set(encryptBlock(data.subarray(i * chunkSize, (i + 1) * chunkSize), key), i * key.size);
   }
-  return btoa(String.fromCharCode(...out));
+  // Block by block: spreading the whole array overflows JSC's argument limit (iOS WebView) on large payloads.
+  let binary = '';
+  for (let i = 0; i < out.length; i += key.size) {
+    binary += String.fromCharCode(...out.subarray(i, i + key.size));
+  }
+  return btoa(binary);
 };
 export default encryptRequestContent;

@@ -44,6 +44,12 @@ describe('encryptRequestContent', () => {
     }
   });
 
+  it('encodes ciphertext larger than the engine argument limit', () => {
+    const json = JSON.stringify({ a: 'z'.repeat(1_000_000) });
+    const blocks = Math.ceil(json.length / 117);
+    expect(encryptRequestContent({ a: 'z'.repeat(1_000_000) })).toHaveLength(Math.ceil((blocks * 128) / 3) * 4);
+  });
+
   it('is randomized like PKCS#1 v1.5 type 2 padding', () => {
     expect(encryptRequestContent({ a: 1 })).not.toBe(encryptRequestContent({ a: 1 }));
   });

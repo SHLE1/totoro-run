@@ -31,3 +31,14 @@ README.md
 .zcode
 tests
 .git
+# Not read by `nuxt build`; kept out so that changing them does not rebuild the image.
+.github
+.vscode
+.vercel
+.env*
+LICENSE
+.prettierrc.toml
+.prettierignore
+eslint.config.js
+vitest.config.ts
+skills-lock.json

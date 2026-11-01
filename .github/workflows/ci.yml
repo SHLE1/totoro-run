@@ -4,7 +4,18 @@ on:
   push:
     branches:
       - main
+    # No check of this workflow is required for merging; if one ever is, a docs-only PR would wait on it forever,
+    # so drop paths-ignore under pull_request first.
+    paths-ignore: &docs
+      - '**.md'
+      - LICENSE
   pull_request:
+    paths-ignore: *docs
+
+# A newer push to a PR cancels its older run; each push to main gets its own group (the run id) and runs in full.
+concurrency:
+  group: ci-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -27,11 +38,23 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test
+      # The three checks are independent and each uses about one core, so they run side by side; each one's output
+      # is printed in its own group, and the step fails if any of them does.
+      - name: Lint, typecheck, test
+        run: |
+          tasks=(lint typecheck test)
+          pids=()
+          for task in "${tasks[@]}"; do
+            pnpm "$task" > "$RUNNER_TEMP/$task.log" 2>&1 &
+            pids+=($!)
+          done
+          status=0
+          for i in "${!tasks[@]}"; do
+            task=${tasks[$i]}
+            if wait "${pids[$i]}"; then result=passed; else result=failed; status=1; fi
+            echo "::group::pnpm $task ($result)"
+            cat "$RUNNER_TEMP/$task.log"
+            echo "::endgroup::"
+            if [ "$result" = failed ]; then echo "::error::pnpm $task failed"; fi
+          done
+          exit $status

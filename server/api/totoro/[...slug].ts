@@ -30,10 +30,15 @@ async function resolveUpstreamIp(): Promise<string | null> {
   }
 }
 
+interface UpstreamOptions {
+  family?: 4 | 6;
+  address?: string;
+}
+
 function postUpstream(
   path: string,
   body: string,
-  options: { family?: 4 | 6; address?: string },
+  options: UpstreamOptions,
 ): Promise<{ status: number; text: string }> {
   const { promise, resolve, reject } = Promise.withResolvers<{ status: number; text: string }>();
   const req = httpsRequest(
@@ -66,32 +71,38 @@ function postUpstream(
   return promise;
 }
 
+const describeError = (error: unknown) =>
+  (error as NodeJS.ErrnoException).code || (error as Error).message;
+
 export default defineEventHandler(async (event) => {
   const raw = await readBody(event);
   const body = typeof raw === 'string' ? raw : JSON.stringify(raw ?? {});
   const path = event.path.replace('/api/totoro/', '/app/');
 
-  const plans: { label: string; options: { family?: 4 | 6; address?: string } }[] = [
-    { label: 'system-ipv4', options: { family: 4 } },
-  ];
-  const address = await resolveUpstreamIp();
-  if (address) {
-    plans.push({ label: `doh-${address}`, options: { address } });
+  const respond = (upstream: { status: number; text: string }) => {
+    setResponseStatus(event, upstream.status);
+    try {
+      return JSON.parse(upstream.text);
+    } catch {
+      return { header: { msg: upstream.text.slice(0, 200) || '上游返回空响应', code: '1' }, body: {} };
+    }
+  };
+
+  // First try the system resolver (IPv4 only); only if that fails, resolve via DoH and pin the address.
+  let lastError = '';
+  try {
+    return respond(await postUpstream(path, body, { family: 4 }));
+  } catch (error) {
+    lastError = `system-ipv4 ${describeError(error)}`;
+    console.warn('上游请求失败:', path, lastError);
   }
 
-  let lastError = '';
-  for (const plan of plans) {
+  const address = await resolveUpstreamIp();
+  if (address) {
     try {
-      const upstream = await postUpstream(path, body, plan.options);
-      setResponseStatus(event, upstream.status);
-      try {
-        return JSON.parse(upstream.text);
-      } catch {
-        return { header: { msg: upstream.text.slice(0, 200) || '上游返回空响应', code: '1' }, body: {} };
-      }
+      return respond(await postUpstream(path, body, { address }));
     } catch (error) {
-      const reason = (error as NodeJS.ErrnoException).code || (error as Error).message;
-      lastError = `${plan.label} ${reason}`;
+      lastError = `doh-${address} ${describeError(error)}`;
       console.warn('上游请求失败:', path, lastError);
     }
   }

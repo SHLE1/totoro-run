@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     define: { global: 'globalThis' },
     plugins: [inject({ Buffer: ['buffer', 'Buffer'] })],
     optimizeDeps: {
-      include: ['@vueuse/core', 'date-fns', 'uuid', 'md5'],
+      include: ['@vueuse/core', 'date-fns'],
     },
   },
 });

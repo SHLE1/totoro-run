@@ -1,5 +1,11 @@
 import rsaKeys from '../data/rsaKeys';
 
+// BigInt() rather than literals such as 0n: Nitro bundles this for the server with an es2019 target, which warns on them.
+const ZERO = BigInt(0);
+const ONE = BigInt(1);
+const BYTE_BITS = BigInt(8);
+const BYTE_MASK = BigInt(0xFF);
+
 /**
  * RSAES-PKCS1-v1_5 encryption (public-key operation) with the same chunking as node-rsa,
  * so the 500 kB vendored node-rsa bundle is not needed on the request path.
@@ -28,7 +34,7 @@ function readTlv(der: Uint8Array, offset: number) {
 }
 
 const bytesToBigInt = (bytes: Uint8Array) =>
-  bytes.reduce((acc, byte) => (acc << 8n) | BigInt(byte), 0n);
+  bytes.reduce((acc, byte) => (acc << BYTE_BITS) | BigInt(byte), ZERO);
 
 /** Parse n and e from a PEM encoded SubjectPublicKeyInfo (RSA). */
 function parsePublicKey(pem: string): PublicKey {
@@ -50,13 +56,13 @@ function parsePublicKey(pem: string): PublicKey {
 }
 
 function modPow(base: bigint, exponent: bigint, modulus: bigint): bigint {
-  let result = 1n;
+  let result = ONE;
   let b = base % modulus;
   let e = exponent;
-  while (e > 0n) {
-    if (e & 1n) result = (result * b) % modulus;
+  while (e > ZERO) {
+    if (e & ONE) result = (result * b) % modulus;
     b = (b * b) % modulus;
-    e >>= 1n;
+    e >>= ONE;
   }
   return result;
 }
@@ -83,8 +89,8 @@ function encryptBlock(block: Uint8Array, key: PublicKey): Uint8Array {
   const out = new Uint8Array(key.size);
   let rest = cipher;
   for (let i = key.size - 1; i >= 0; i--) {
-    out[i] = Number(rest & 0xFFn);
-    rest >>= 8n;
+    out[i] = Number(rest & BYTE_MASK);
+    rest >>= BYTE_BITS;
   }
   return out;
 }

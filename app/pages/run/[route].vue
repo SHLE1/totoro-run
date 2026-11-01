@@ -21,7 +21,7 @@ if (!paper.value && sessionStore.isLoggedIn) {
   const basic = sessionStore.basicRequest;
   if (basic) {
     try {
-      sessionStore.paper = await TotoroApiWrapper.getSunRunPaper(basic);
+      sessionStore.setPaper(await TotoroApiWrapper.getSunRunPaper(basic));
     } catch (error) {
       console.error('恢复跑步配置失败:', error);
     }
@@ -37,7 +37,12 @@ if (!target.value) {
   await navigateTo('/scanned');
 }
 
-const now = useNow({ interval: 1000 });
+// The clock only needs to tick while a run is in progress.
+const { now, pause: pauseClock, resume: resumeClock } = useNow({
+  interval: 1000,
+  controls: true,
+  immediate: false,
+});
 const startedAt = ref(0);
 const totalMs = ref(0);
 const running = ref(false);
@@ -61,6 +66,19 @@ const state = computed<'ready' | 'running' | 'done' | 'error'>(() => {
   }
   return 'ready';
 });
+
+watch(
+  running,
+  (isRunning) => {
+    if (isRunning) {
+      now.value = new Date();
+      resumeClock();
+    } else {
+      pauseClock();
+    }
+  },
+  { immediate: true },
+);
 
 const elapsedMs = computed(() =>
   running.value ? Math.min(totalMs.value, Math.max(0, Number(now.value) - startedAt.value)) : 0,
@@ -195,13 +213,13 @@ function stayOnPage() {
 }
 
 function leavePage() {
-  const target = leaveTarget.value;
+  const destination = leaveTarget.value;
   leavePrompt.value = false;
   leaveTarget.value = null;
   running.value = false;
   clearSubmitTimer();
-  if (target) {
-    void router.push(target);
+  if (destination) {
+    void router.push(destination);
   }
 }
 

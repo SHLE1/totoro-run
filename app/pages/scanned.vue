@@ -26,7 +26,7 @@ async function loadPaper() {
   loadError.value = '';
   try {
     const result = await TotoroApiWrapper.getSunRunPaper(basic);
-    sessionStore.paper = result;
+    sessionStore.setPaper(result);
     selected.value ??= result.runPointList[0]?.pointId ?? null;
   } catch (error) {
     console.error('获取跑步配置失败:', error);

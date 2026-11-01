@@ -62,11 +62,6 @@ export const useSessionStore = defineStore('session', () => {
     paper.value = value;
   }
 
-  function clear() {
-    session.value = null;
-    paper.value = null;
-  }
-
   return {
     session,
     paper,
@@ -74,6 +69,5 @@ export const useSessionStore = defineStore('session', () => {
     basicRequest,
     setLogin,
     setPaper,
-    clear,
   };
 });
